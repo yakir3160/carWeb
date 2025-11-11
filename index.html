@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דוח השוואת רכב סופי (מותאם מובייל)</title>
+    <title>דוח השוואת רכב סופי - הצגה</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -17,15 +17,15 @@
         .tab-link {
             transition: all 0.3s ease;
             cursor: pointer;
-            padding: 0.75rem 1rem; /* Smaller padding for mobile */
+            padding: 0.75rem 1rem;
             border-bottom: 4px solid transparent;
             font-weight: 500;
-            text-align: center; /* Center for mobile */
+            text-align: center;
         }
-        @media (min-width: 640px) { /* sm breakpoint */
+        @media (min-width: 640px) {
             .tab-link {
-                text-align: right; /* Back to right for desktop */
-                padding: 1rem 1.5rem; /* Larger padding for desktop */
+                text-align: right;
+                padding: 1rem 1.5rem;
             }
         }
         .tab-link.active {
@@ -63,7 +63,7 @@
         .chart-container {
             position: relative;
             margin: auto;
-            height: 400px;
+            height: 400px; /* Increased height for 4 bars */
             width: 100%;
             max-width: 1000px;
         }
@@ -80,19 +80,24 @@
                 font-size: 0.8rem;
             }
             .chart-container {
-                height: 300px;
+                height: 350px;
             }
             .chart-container-radar {
                 height: 400px;
             }
-            /* Enable horizontal scroll for tables on mobile */
             .table-container {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
             table {
                 width: 100%;
-                min-width: 1000px; /* Force scroll */
+                min-width: 1000px;
+            }
+            .cost-table-min-width {
+                min-width: 1000px;
+            }
+            .loan-table-min-width {
+                min-width: 800px;
             }
         }
     </style>
@@ -101,11 +106,11 @@
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-5xl font-bold text-gray-800">דוח השוואת רכב סופי</h1>
-            <p class="text-lg md:text-xl text-gray-600 mt-2">ניתוח עלויות ופרקטיות ל-6 רכבים מובילים (צפי 2026)</p>
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-800">דוח השוואת רכב סופי להצגה</h1>
+            <p class="text-lg md:text-xl text-gray-600 mt-2">ניתוח עלות כוללת ל-6 שנים (TCO) ותרחישי הלוואה (3 ו-4 שנים)</p>
         </header>
 
-        <!-- Navigation Tabs - UPDATED FOR MOBILE -->
+        <!-- Navigation Tabs -->
         <nav class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center bg-white rounded-lg shadow-md mb-8">
             <a class="tab-link active" onclick="showTab('tab-main')">דוח מלא</a>
             <a class="tab-link" onclick="showTab('tab-graphs')">גרפים (אינפוגרפיקה)</a>
@@ -116,254 +121,344 @@
         <div>
             <!-- Main Report Tab -->
             <div id="tab-main" class="tab-content active space-y-8">
-                <!-- Card Padding UPDATED FOR MOBILE -->
+                
+                <!-- Executive Summary -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">סיכום והמלצה סופית</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">תקציר מנהלים והמלצות</h2>
                     <p class="text-gray-700 leading-relaxed">
-                        לאחר ניתוח מעמיק של 6 רכבים, הפחתת מחירים ריאלית, והוספת עלות משמעותית לסיכון תיקוני גיר יקרים (DSG) ברכבי קבוצת פולקסווגן (כ-250 ₪ לחודש), התמונה הסופית מציגה טרייד-אוף ברור בין חיסכון, אמינות ופרקטיות.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed mt-4">
-                        ה<b>פולקסווגן טיגואן</b> מציע את החבילה הפרקטית והאיכותית ביותר (בגאז' 615 ליטר, מרווח), אך הוא הרכב היקר ביותר לאחזקה חודשית בפער ניכר (כ-3,718 ₪) ואינו עומד בתחרות העלויות.
+                        ניתוח זה בוחן 5 דגמי רכב פוטנציאליים (צפי רכישה 2026) תוך התמקדות בעלות בעלות כוללת (TCO) לתקופה של 6 שנים ובהתאמה לצרכים משפחתיים. הניתוח כולל שני תרחישי מימון (פריסה ל-36 או 48 תשלומים) ותוספת סיכון מחושבת לתיקוני גיר DSG.
                     </p>
                     
-                    <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-800">ארבע האפשרויות הסופיות:</h3>
+                    <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-800">ממצאים עיקריים</h3>
+                    <ul class="list-disc list-outside mr-5 space-y-2 text-gray-700">
+                        <li>
+                            <b>פריסת הלוואה (36 מול 48 חודשים):</b> פריסת הלוואה קצרה יותר (36 חודשים) מייקרת את ההחזר החודשי בכ-25-30%, אך מוזילה את העלות הכוללת (TCO) בכ-1,500 ₪ עד 3,000 ₪ לאורך 6 השנים, עקב חיסכון בריבית.
+                        </li>
+                        <li>
+                            <b>קלות חניה (אורך):</b> רכבי ה-SUV הקצרים (קארוק ואטקה, 4.38 מ') מציעים יתרון מובהק בחניה יומיומית. המאזדה (4.55 מ') והטיגואן (4.51 מ') ארוכות יותר, והאוקטביה (4.69 מ') היא הארוכה ביותר ודורשת הסתגלות.
+                        </li>
+                        <li>
+                            <b>התאמה ל-3 ילדים:</b> האוקטביה והטיגואן הם היחידים שנותנים מענה גבולי אך אפשרי לשלושה מושבים. שאר הרכבים צפופים מדי.
+                        </li>
+                        <li>
+                            <b>עלות מול אמינות ב-SUV:</b> העלות הכוללת (TCO) של 3 רכבי ה-SUV המרכזיים (מאזדה, אטקה, קארוק) קרובה מאוד, בטווח של כ-6,000 ₪ (כ-3%) ביניהם לאורך 6 שנים.
+                        </li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-800">ההתלבטות הסופית: דירוג וניתוח</h3>
                     
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="border-l-4 border-blue-600 p-4 bg-blue-50 rounded-md">
-                            <h4 class="text-lg font-bold text-blue-800">1. בחירת החיסכון: יונדאי איוניק</h4>
-                            <p class="text-gray-700 mt-2">בפער ניכר, האיוניק היא הזולה ביותר לאחזקה (כ-<b>2,645 ₪</b> לחודש), בזכות צריכת דלק פנומנלית ואמינות מוכחת (ללא סיכון גיר). <br><b class="text-red-600">הפשרה:</b> פרקטיות. תא מטען של 443 ליטר ומבנה נמוך יהפכו את הלוגיסטיקה עם עגלה ומזוודות למאתגרת ביותר.</p>
-                        </div>
-                        
+                    <div class="space-y-4">
                         <div class="border-l-4 border-green-600 p-4 bg-green-50 rounded-md">
-                            <h4 class="text-lg font-bold text-green-800">2. בחירת הפרקטיות/עלות: סקודה אוקטביה</h4>
-                            <p class="text-gray-700 mt-2">האפשרות השנייה הכי זולה לאחזקה (כ-<b>2,845 ₪</b> לחודש). החיסכון בדלק עדיין טוב, ומתקזז חלקית עם סיכון הגיר. <br><b class="text-green-700">היתרון:</b> תא מטען ענק (600 ליטר) שיבלע הכל. <br><b class="text-red-600">הפשרה:</b> רכב נמוך (פחות נוח להכניס ילדים) וסיכון הגיר שחייבים לקחת בחשבון.</p>
+                            <h4 class="text-lg font-bold text-green-800">הבחירה הכלכלית-פרקטית: סקודה אוקטביה 1.0L</h4>
+                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~169,200 ₪</b><br>
+                               <b>יתרון:</b> תא מטען ענק (600 ל'), מנוע חסכוני, TCO נמוך משמעותית מה-SUV, גבולי ל-3 ילדים.<br>
+                               <b>פשרה:</b> סיכון גיר (DSG) מגולם במחיר, רכב נמוך (פחות נוח לתינוקות), הכי ארוכה לחניה.
+                            </p>
                         </div>
                         
+                        <h4 class="text-lg font-bold text-gray-800 pt-4">ההתלבטות המרכזית - בחירת ה-SUV:</h4>
+
                         <div class="border-l-4 border-red-600 p-4 bg-red-50 rounded-md">
-                            <h4 class="text-lg font-bold text-red-800">3. בחירת האמינות (SUV): מאזדה CX-5</h4>
-                            <p class="text-gray-700 mt-2">באופן מפתיע, לאחר חישוב סיכון הגיר, המאזדה (כ-<b>3,022 ₪</b>) הופכת זולה יותר לאחזקה חודשית מהקארוק. היא מציעה אמינות "יפנית" ללא כוכביות, איכות חומרים גבוהה וישיבה גבוהה. <br><b class="text-red-600">הפשרה:</b> תא מטען קטן (442 ליטר) שיהיה גבולי מאוד לעגלה + מזוודות לחופשה, וצריכת דלק גבוהה יותר.</p>
+                            <h4 class="text-lg font-bold text-red-800">מאזדה CX-5 (האמינה)</h4>
+                             <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~179,000 ₪</b><br>
+                               <b>יתרון:</b> אמינות מוכחת (אפס סיכון גיר), איכות פנים פרימיום, נוחות גבוהה לתינוקות.<br>
+                               <b>פשרה:</b> עלות דלק גבוהה, תא מטען קטן יחסית (442 ל'), ארוכה יחסית לחניה (4.55 מ').
+                            </p>
                         </div>
                         
                         <div class="border-l-4 border-yellow-600 p-4 bg-yellow-50 rounded-md">
-                            <h4 class="text-lg font-bold text-yellow-800">4. בחירת הפרקטיות (SUV): קארוק / אטקה</h4>
-                            <p class="text-gray-700 mt-2">הקארוק (כ-<b>3,085 ₪</b>) והאטקה (כ-<b>2,990 ₪</b>) מציעים את השילוב הטוב ביותר של ישיבה גבוהה, חניה נוחה (קצרים) ותא מטען מצוין (510-521 ליטר) שיספיק לכל הציוד. <br><b class="text-red-600">הפשרה:</b> זו העלות החודשית (למעט הטיגואן), בעיקר בגלל סיכון הגיר. הן יקרות יותר מהמאזדה.</p>
+                             <h4 class="text-lg font-bold text-yellow-800">סיאט אטקה (המאוזנת)</h4>
+                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~180,200 ₪</b><br>
+                               <b>יתרון:</b> תא מטען טוב (510 ל'), נוחות גבוהה לתינוקות, מצוינת לחניה (4.38 מ').<br>
+                               <b>פשרה:</b> נושאת בסיכון גיר (מגולם ב-TCO), צרה במושב האחורי.
+                            </p>
+                        </div>
+
+                         <div class="border-l-4 border-teal-600 p-4 bg-teal-50 rounded-md">
+                             <h4 class="text-lg font-bold text-teal-800">סקודה קארוק (השיקול הנוסף)</h4>
+                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~185,400 ₪</b><br>
+                               <b>יתרון:</b> תא מטען מצוין (521 ל'), נוחות גבוהה לתינוקות, מצוינת לחניה (4.38 מ').<br>
+                               <b>פשרה:</b> נושאת בסיכון גיר, יקרה בכ-3% מהמאזדה/אטקה לאורך 6 שנים, צרה במושב האחורי.
+                            </p>
+                        </div>
+                        
+                         <div class="border-l-4 border-gray-600 p-4 bg-gray-50 rounded-md">
+                             <h4 class="text-lg font-bold text-gray-800">האופציה הגדולה: פולקסווגן טיגואן</h4>
+                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~220,400 ₪</b><br>
+                               <b>יתרון:</b> תא מטען ענק (615 ל'), איכות פרימיום, האופציה היחידה שסבירה ל-3 ילדים.<br>
+                               <b>פשרה:</b> יקרה משמעותית (כ-40,000 ₪ יותר מהאחרות), נושאת בסיכון גיר.
+                            </p>
                         </div>
                     </div>
-
-                    <p class="text-gray-700 leading-relaxed mt-6 font-semibold">
-                        בשורה התחתונה: ההחלטה היא בין האמינות ועלות האחזקה הנמוכה יותר של המאזדה (עם בגאז' קטן), לבין הפרקטיות העדיפה של הקארוק/אטקה (עם בגאז' גדול יותר) שמגיעה עם תג מחיר חודשי גבוה יותר וסיכון מכאני. אם הפרקטיות של תא המטען היא הקריטריון המכריע, האטקה והקארוק עדיין הבחירה ההגיונית.
-                    </p>
                 </div>
 
                 <!-- Main Comparison Table -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">טבלת השוואה מקיפה (נתונים סופיים)</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">טבלת השוואה מקיפה</h2>
                     <div class="table-container">
                         <table class="min-w-full">
                             <thead>
                                 <tr>
                                     <th>פרמטר</th>
-                                    <th>סקודה אוקטביה (2021-22)</th>
-                                    <th>סקודה קארוק (2021-22)</th>
-                                    <th>סיאט אטקה (2022)</th>
-                                    <th>מאזדה CX-5 (2019-20)</th>
-                                    <th>יונדאי איוניק היברידית (2022)</th>
-                                    <th>פולקסווגן טיגואן (2020-22)</th>
+                                    <th>סקודה אוקטביה (1.0L)</th>
+                                    <th>סקודה קארוק</th>
+                                    <th>סיאט אטקה</th>
+                                    <th>מאזדה CX-5</th>
+                                    <th>פולקסווגן טיגואן</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                 <tr>
+                                    <td class="font-semibold">מנוע</td>
+                                    <td class="font-bold text-[#007A33]">1.0 ליטר טורבו</td>
+                                    <td>1.5 ליטר טורבו</td>
+                                    <td>1.5 ליטר טורבו</td>
+                                    <td>2.0 ליטר אטמוספרי</td>
+                                    <td>1.5 ליטר טורבו</td>
+                                </tr>
                                 <tr>
-                                    <td class="font-semibold">1. מחיר צפוי ב-2026</td>
+                                    <td class="font-semibold">מחיר צפוי (2026)</td>
                                     <td>כ-85,500 ₪</td>
                                     <td>כ-94,500 ₪</td>
                                     <td>כ-90,000 ₪</td>
                                     <td>כ-99,000 ₪</td>
-                                    <td>כ-90,000 ₪</td>
                                     <td>כ-121,500 ₪</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">2. צריכת דלק (משולב)</td>
-                                    <td>6.5 ליטר / 100 ק"מ (כ-15.4 ק"מ/ליטר)</td>
-                                    <td>7.0 ליטר / 100 ק"מ (כ-14.3 ק"מ/ליטר)</td>
-                                    <td>7.0 ליטר / 100 ק"מ (כ-14.3 ק"מ/ליטר)</td>
-                                    <td>8.0 ליטר / 100 ק"מ (כ-12.5 ק"מ/ליטר)</td>
-                                    <td>4.2 ליטר / 100 ק"מ (כ-23.8 ק"מ/ליטר)</td>
-                                    <td>7.5 ליטר / 100 ק"מ (כ-13.3 ק"מ/ליטר)</td>
+                                    <td class="font-semibold">צריכת דלק (משולב)</td>
+                                    <td class="font-bold text-[#007A33]">~17.0 ק"מ/ליטר</td>
+                                    <td>~14.3 ק"מ/ליטר</td>
+                                    <td>~14.3 ק"מ/ליטר</td>
+                                    <td>~12.5 ק"מ/ליטר</td>
+                                    <td>~13.3 ק"מ/ליטר</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">3. תא מטען (ליטר)</td>
-                                    <td>600 (ליפטבק)</td>
+                                    <td class="font-semibold">תא מטען (ליטר)</td>
+                                    <td class="font-bold">600 (ענק)</td>
                                     <td>521</td>
                                     <td>510</td>
-                                    <td>442</td>
-                                    <td>443</td>
-                                    <td>615</td>
+                                    <td class="text-red-600">442 (קטן)</td>
+                                    <td>615 (ענק)</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">4. נוחות ושקט נסיעה</td>
-                                    <td>גבוהה. בידוד רעשים טוב מאוד.</td>
-                                    <td>טובה. מעט יותר רעשי רוח מבאוקטביה.</td>
-                                    <td>טובה. כיול מתלים מעט קשיח יותר.</td>
-                                    <td>גבוהה מאוד. שקטה ומפנקת.</td>
-                                    <td>בינונית. רעשי כביש מורגשים.</td>
-                                    <td>גבוהה מאוד. "גרמנית" טיפוסית.</td>
+                                    <td class="font-semibold bg-gray-50">קלות חניה (אורך)</td>
+                                    <td class="bg-gray-50 text-red-600">בינונית (הארוכה ביותר - 4.69 מ')</td>
+                                    <td class="bg-green-50 font-semibold">גבוהה (קצרה - 4.38 מ')</td>
+                                    <td class="bg-green-50 font-semibold">גבוהה (קצרה - 4.38 מ')</td>
+                                    <td class="bg-gray-50">בינונית (4.55 מ')</td>
+                                    <td class="bg-gray-50">בינונית (4.51 מ')</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">5. מידות (אורך / רוחב)</td>
-                                    <td>4.69 מ' / 1.83 מ'</td>
-                                    <td>4.38 מ' / 1.84 מ'</td>
-                                    <td>4.38 מ' / 1.84 מ'</td>
-                                    <td>4.55 מ' / 1.84 מ'</td>
-                                    <td>4.47 מ' / 1.82 מ'</td>
-                                    <td>4.51 מ' / 1.84 מ'</td>
+                                    <td class="font-semibold">נוחות תינוקות (גובה)</td>
+                                    <td>בינונית (נמוך)</td>
+                                    <td class="font-semibold">גבוהה (SUV)</td>
+                                    <td class="font-semibold">גבוהה (SUV)</td>
+                                    <td class="font-semibold">גבוהה (SUV)</td>
+                                    <td class="font-semibold">גבוהה (SUV)</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">6. קלות חניה</td>
-                                    <td>בינונית (ארוכה)</td>
-                                    <td>גבוהה (קצרה יחסית, ראות טובה)</td>
-                                    <td>גבוהה (קצרה, ראות טובה)</td>
-                                    <td>בינונית (ארוכה יחסית)</td>
-                                    <td>בינונית (נמוכה, ראות אחורית)</td>
-                                    <td>בינונית (מרובעת וברורה)</td>
+                                    <td class="font-semibold">סיכון גיר (DSG)</td>
+                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
+                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
+                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
+                                    <td class="text-green-600 font-bold">אין (פלנטרי אמין)</td>
+                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">7. אמינות</td>
-                                    <td class="text-sm text-red-700">גבוהה (מנוע) אך נלקח סיכון תיקון גיר גבוה (כ-250 ₪/חודש)</td>
-                                    <td class="text-sm text-red-700">גבוהה (מנוע) אך נלקח סיכון תיקון גיר גבוה (כ-250 ₪/חודש)</td>
-                                    <td class="text-sm text-red-700">גבוהה (מנוע) אך נלקח סיכון תיקון גיר גבוה (כ-250 ₪/חודש)</td>
-                                    <td>גבוהה מאוד (יפנית אטמוספרית)</td>
-                                    <td>גבוהה מאוד (מוכחת, סוללה אמינה)</td>
-                                    <td class="text-sm text-red-700">גבוהה (מנוע) אך נלקח סיכון תיקון גיר גבוה (כ-250 ₪/חודש)</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-semibold">8. עלויות שוטפות (שנתי)</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="pl-6">ביטוח מקיף (מוערך)</td>
-                                    <td>כ-5,000 ₪</td>
-                                    <td>כ-5,300 ₪</td>
-                                    <td>כ-5,000 ₪</td>
-                                    <td>כ-5,500 ₪</td>
-                                    <td>כ-7,500 ₪ (גניב)</td>
-                                    <td>כ-6,500 ₪ (יקר)</td>
-                                </tr>
-                                <tr>
-                                    <td class="pl-6">אגרת רישוי</td>
-                                    <td>כ-1,800 ₪ (קבוצה 4)</td>
-                                    <td>כ-2,100 ₪ (קבוצה 5)</td>
-                                    <td>כ-2,100 ₪ (קבוצה 5)</td>
-                                    <td>כ-2,100 ₪ (קבוצה 5)</td>
-                                    <td>כ-1,500 ₪ (קבוצה 3)</td>
-                                    <td>כ-2,400 ₪ (קבוצה 6)</td>
-                                </tr>
-                                <tr>
-                                    <td class="pl-6">טיפולים (ממוצע שנתי)</td>
-                                    <td>כ-900 ₪</td>
-                                    <td>כ-900 ₪</td>
-                                    <td>כ-900 ₪</td>
-                                    <td>כ-1,000 ₪</td>
-                                    <td>כ-800 ₪</td>
-                                    <td>כ-1,200 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-semibold">9. פרקטיות (2 ילדים)</td>
-                                    <td>מעולה (בגאז' ענק, קצת נמוך להכניס סלקל)</td>
-                                    <td>מעולה (בגאז' נהדר, ישיבה גבוהה)</td>
-                                    <td>מעולה (בגאז' נהדר, ישיבה גבוהה)</td>
-                                    <td>בינונית (בגאז' קטן מדי לעגלה+מזוודות)</td>
-                                    <td>נמוכה (בגאז' קטן, נמוך מאוד)</td>
-                                    <td>מעולה (בגאז' ענק, מרווח)</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-semibold">10. מיזוג מאחור</td>
-                                    <td>כן (פתחי אוורור)</td>
-                                    <td>כן (פתחי אוורור)</td>
-                                    <td>כן (פתחי אוורור)</td>
-                                    <td>כן (פתחי אוורור)</td>
-                                    <td>כן (פתחי אוורור)</td>
-                                    <td>כן (שליטה נפרדת בטמפ' מאחור)</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-semibold">11. שקעי טעינה מאחור</td>
-                                    <td>כן (לרוב Type C, תלוי רמת גימור)</td>
-                                    <td>כן (לרוב Type C, תלוי רמת גימור)</td>
-                                    <td>כן (לרוב Type C, תלוי רמת גימור)</td>
-                                    <td>כן (לרוב USB-A בדגמים אלו)</td>
-                                    <td>לא תמיד (תלוי רמת גימור)</td>
-                                    <td>כן (Type C + שקע 12V לרוב)</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-semibold">12. שליטה במזגן (נהג)</td>
-                                    <td>מסך מגע (נחשב חיסרון)</td>
-                                    <td>חוגות פיזיות (יתרון)</td>
-                                    <td>חוגות פיזיות (יתרון)</td>
-                                    <td>חוגות פיזיות (יתרון)</td>
-                                    <td>מסך מגע (חלק, נוח יחסית)</td>
-                                    <td>מסך מגע/טאץ' (תלוי שנתון/רמה)</td>
+                                    <td class="font-semibold">התאמה ל-3 ילדים</td>
+                                    <td>אפשרי (גבולי)</td>
+                                    <td>צפוף</td>
+                                    <td>צפוף</td>
+                                    <td>צפוף</td>
+                                    <td>אפשרי (הכי רחב)</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                 <!-- Financial Analysis -->
+                 <!-- *** UPDATED Loan Analysis Section *** -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">ניתוח עלויות והלוואה (צפי מעודכן 2026)</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">ניתוח הלוואה (פריסה ל-3 או 4 שנים)</h2>
                     <p class="text-gray-700 leading-relaxed mb-4">
-                        חישוב ההלוואה מבוסס על 70% מימון מהמחיר הצפוי ב-2026, בריבית פריים + 1.5% (כ-5.5% ריבית שנתית קבועה לצורך החישוב) למשך 4 שנים (48 תשלומים).
+                        התחשיב מבוסס על ריבית מוערכת של 5.5%.
                     </p>
+
+                    <!-- 36 Months Loan Table -->
+                    <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-800">תרחיש 1: פריסה ל-36 חודשים (3 שנים)</h3>
                     <div class="table-container">
-                        <table>
+                        <table class="min-w-full loan-table-min-width">
                             <thead>
                                 <tr>
                                     <th>רכב</th>
                                     <th>מחיר צפוי 2026</th>
                                     <th>סכום הלוואה (70%)</th>
-                                    <th>החזר חודשי (48 תשלומים)</th>
+                                    <th>החזר חודשי (70%)</th>
+                                    <th>סכום הלוואה (90%)</th>
+                                    <th>החזר חודשי (90%)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>סקודה אוקטביה</td>
+                                    <td>סקודה אוקטביה (1.0L)</td>
+                                    <td>85,500 ₪</td>
+                                    <td>59,850 ₪</td>
+                                    <td>כ-1,805 ₪</td>
+                                    <td>76,950 ₪</td>
+                                    <td>כ-2,320 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td>סקודה קארוק</td>
+                                    <td>94,500 ₪</td>
+                                    <td>66,150 ₪</td>
+                                    <td>כ-2,000 ₪</td>
+                                    <td>85,050 ₪</td>
+                                    <td>כ-2,570 ₪</td>
+                                </tr>
+                                 <tr>
+                                    <td>סיאט אטקה</td>
+                                    <td>90,000 ₪</td>
+                                    <td>63,000 ₪</td>
+                                    <td>כ-1,905 ₪</td>
+                                    <td>81,000 ₪</td>
+                                    <td>כ-2,445 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td>מאזדה CX-5</td>
+                                    <td>99,000 ₪</td>
+                                    <td>69,300 ₪</td>
+                                    <td>כ-2,095 ₪</td>
+                                    <td>89,100 ₪</td>
+                                    <td>כ-2,690 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td>פולקסווגן טיגואן</td>
+                                    <td>121,500 ₪</td>
+                                    <td>85,050 ₪</td>
+                                    <td>כ-2,570 ₪</td>
+                                    <td>109,350 ₪</td>
+                                    <td>כ-3,300 ₪</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 48 Months Loan Table -->
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-800">תרחיש 2: פריסה ל-48 חודשים (4 שנים)</h3>
+                    <div class="table-container">
+                        <table class="min-w-full loan-table-min-width">
+                            <thead>
+                                <tr>
+                                    <th>רכב</th>
+                                    <th>מחיר צפוי 2026</th>
+                                    <th>סכום הלוואה (70%)</th>
+                                    <th>החזר חודשי (70%)</th>
+                                    <th>סכום הלוואה (90%)</th>
+                                    <th>החזר חודשי (90%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>סקודה אוקטביה (1.0L)</td>
                                     <td>85,500 ₪</td>
                                     <td>59,850 ₪</td>
                                     <td>כ-1,385 ₪</td>
+                                    <td>76,950 ₪</td>
+                                    <td>כ-1,781 ₪</td>
                                 </tr>
                                 <tr>
                                     <td>סקודה קארוק</td>
                                     <td>94,500 ₪</td>
                                     <td>66,150 ₪</td>
                                     <td>כ-1,530 ₪</td>
+                                    <td>85,050 ₪</td>
+                                    <td>כ-1,969 ₪</td>
                                 </tr>
                                  <tr>
                                     <td>סיאט אטקה</td>
                                     <td>90,000 ₪</td>
                                     <td>63,000 ₪</td>
                                     <td>כ-1,460 ₪</td>
+                                    <td>81,000 ₪</td>
+                                    <td>כ-1,875 ₪</td>
                                 </tr>
                                 <tr>
                                     <td>מאזדה CX-5</td>
                                     <td>99,000 ₪</td>
                                     <td>69,300 ₪</td>
                                     <td>כ-1,605 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td>יונדאי איוניק</td>
-                                    <td>90,000 ₪</td>
-                                    <td>63,000 ₪</td>
-                                    <td>כ-1,460 ₪</td>
+                                    <td>89,100 ₪</td>
+                                    <td>כ-2,063 ₪</td>
                                 </tr>
                                 <tr>
                                     <td>פולקסווגן טיגואן</td>
                                     <td>121,500 ₪</td>
                                     <td>85,050 ₪</td>
                                     <td>כ-1,970 ₪</td>
+                                    <td>109,350 ₪</td>
+                                    <td>כ-2,531 ₪</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- *** UPDATED 6-YEAR TCO TABLE *** -->
+                <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">טבלת עלות כוללת (TCO) ל-6 שנים</h2>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        החישוב כולל: סך תשלומי הלוואה (לפי פריסה) + סך הוצאות שוטפות ל-72 חודשים (דלק, ביטוח, אגרות, טיפולים וסיכון גיר).
+                    </p>
+                    <div class="table-container">
+                        <table class="min-w-full cost-table-min-width">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="align-bottom">רכב</th>
+                                    <th colspan="2" class="text-center bg-blue-100">עלות כוללת - 70% מימון</th>
+                                    <th colspan="2" class="text-center bg-red-100">עלות כוללת - 90% מימון</th>
+                                </tr>
+                                <tr>
+                                    <th class="bg-blue-50">פריסה ל-36 חודשים</th>
+                                    <th class="bg-blue-50">פריסה ל-48 חודשים</th>
+                                    <th class="bg-red-50">פריסה ל-36 חודשים</th>
+                                    <th class="bg-red-50">פריסה ל-48 חודשים</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">אוקטביה 1.0L</td>
+                                    <td class="font-bold bg-blue-50">167,724 ₪</td>
+                                    <td class="font-bold bg-blue-50">169,224 ₪</td>
+                                    <td class="font-bold bg-red-50">186,264 ₪</td>
+                                    <td class="font-bold bg-red-50">188,232 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">מאזדה CX-5</td>
+                                    <td class="font-bold bg-blue-50">177,444 ₪</td>
+                                    <td class="font-bold bg-blue-50">179,064 ₪</td>
+                                    <td class="font-bold bg-red-50">198,864 ₪</td>
+                                    <td class="font-bold bg-red-50">201,048 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">סיאט אטקה</td>
+                                    <td class="font-bold bg-blue-50">178,740 ₪</td>
+                                    <td class="font-bold bg-blue-50">180,240 ₪</td>
+                                    <td class="font-bold bg-red-50">198,180 ₪</td>
+                                    <td class="font-bold bg-red-50">200,160 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">סקודה קארוק</td>
+                                    <td class="font-bold bg-blue-50">183,960 ₪</td>
+                                    <td class="font-bold bg-blue-50">185,400 ₪</td>
+                                    <td class="font-bold bg-red-50">204,480 ₪</td>
+                                    <td class="font-bold bg-red-50">206,472 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">פולקסווגן טיגואן</td>
+                                    <td class="font-bold bg-blue-50">218,376 ₪</td>
+                                    <td class="font-bold bg-blue-50">220,416 ₪</td>
+                                    <td class="font-bold bg-red-50">244,656 ₪</td>
+                                    <td class="font-bold bg-red-50">247,344 ₪</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -375,11 +470,11 @@
             <div id="tab-graphs" class="tab-content space-y-8">
                 <!-- Radar Chart -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">גרף רדאר השוואתי (מעודכן סיכון גיר)</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">גרף רדאר: אוקטביה 1.0L מול המתחרות</h2>
                     <div class="chart-container-radar">
                         <canvas id="radarChart"></canvas>
                     </div>
-                    <!-- Radar Filter - UPDATED FOR MOBILE -->
+                    <!-- Radar Filter -->
                     <div id="radar-filter" class="mt-6 p-4 bg-gray-50 rounded-lg">
                         <h3 class="text-lg font-semibold mb-3 text-center">סינון רכבים בגרף</h3>
                         <div class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-4">
@@ -388,19 +483,18 @@
                     </div>
                 </div>
 
-                <!-- Monthly Cost Chart -->
+                <!-- 6-Year TCO Chart -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת עלות חודשית כוללת (סופי)</h2>
-                    <p class="text-gray-600 mb-4">החישוב כולל: החזר הלוואה + ביטוח + אגרה + דלק (15,000 ק"מ/שנה) + טיפולים + תוספת סיכון גיר משמעותית (כ-250 ₪/חודש) לרכבי VAG.</p>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת עלות כוללת (TCO) ל-6 שנים</h2>
+                    <p class="text-gray-600 mb-4">הגרף מציג 4 תרחישים: מימון 70% או 90%, בפריסה של 36 או 48 חודשים.</p>
                     <div class="chart-container">
-                        <canvas id="monthlyCostChart"></canvas>
+                        <canvas id="tcoChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Trunk Size Chart -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת נפח תא מטען (ליטרים)</h2>
-                    <p class="text-gray-600 mb-4">הקריטריון הקריטי ללוגיסטיקה עם עגלה ומזוודות.</p>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">נפח תא מטען (ליטרים)</h2>
                     <div class="chart-container">
                         <canvas id="trunkChart"></canvas>
                     </div>
@@ -410,7 +504,7 @@
             <!-- Trim Levels Tab -->
             <div id="tab-trims" class="tab-content">
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת רמות גימור מפורטת (בסיס מול רמה שנייה)</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת רמות גימור מפורטת</h2>
                     <div class="table-container">
                         <table class="min-w-full">
                             <thead>
@@ -424,75 +518,63 @@
                             <tbody>
                                 <!-- סקודה אוקטביה -->
                                 <tr>
-                                    <td rowspan="2" class="font-semibold align-top">סקודה אוקטביה<br>(2021-22)</td>
+                                    <td rowspan="2" class="font-semibold align-top">סקודה אוקטביה<br>(1.0L TSI)</td>
                                     <td class="font-medium">Ambition (בסיס)</td>
                                     <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, 7 כ"א.</td>
-                                    <td>מולטימדיה 8" (או 10"), לוח מחוונים דיגיטלי 10.25" (לרוב), הנעה בכפתור, בקרת אקלים מפוצלת (שליטה ממסך), פתחי מיזוג אחוריים.</td>
+                                    <td>מנוע 1.0L חסכוני, מולטימדיה 8", הנעה בכפתור, פתחי מיזוג אחוריים.</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-medium">Style (רמה שנייה)</td>
-                                    <td><u>בנוסף:</u> לעיתים ניטור שטח מת והתראת תנועה חוזרת (אופציונלי).</td>
-                                    <td><u>בנוסף:</u> לרוב מולטימדיה 10", כניסה ללא מפתח, חישוקי 17", תאורת אווירה, ריפוד משודרג, לעיתים גג שמש.</td>
+                                    <td class="font-medium">Dynamic/Style</td>
+                                    <td><u>בנוסף:</u> לעיתים ניטור שטח מת (תלוי מלאי/שנה).</td>
+                                    <td><u>בנוסף:</u> לוח מחוונים דיגיטלי, מושבים ספורטיביים (Dynamic), חישוקי 17", תאורת אווירה.</td>
                                 </tr>
                                 <!-- סקודה קארוק -->
                                 <tr>
-                                    <td rowspan="2" class="font-semibold align-top">סקודה קארוק<br>(2021-22)</td>
-                                    <td class="font-medium">Ambition (בסיס)</td>
+                                    <td rowspan="2" class="font-semibold align-top">סקודה קארוק<br>(1.5L TSI)</td>
+                                    <td class="font-medium">Ambition</td>
                                     <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, 7 כ"א.</td>
-                                    <td>מולטימדיה 8", שליטה פיזית במזגן (מפוצל), פתחי מיזוג אחוריים, בלם יד חשמלי, הנעה בכפתור, חישוקי 16" או 17".</td>
+                                    <td>מולטימדיה 8", שליטה פיזית במזגן, פתחי מיזוג אחוריים, בלם יד חשמלי.</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-medium">Style (רמה שנייה)</td>
+                                    <td class="font-medium">Style</td>
                                     <td><u>בנוסף:</u> ניטור שטח מת, התראת תנועה חוזרת.</td>
-                                    <td><u>בנוסף:</u> לוח מחוונים דיגיטלי, חישוקי 18", כניסה ללא מפתח, תאורת אווירה, מושבים משודרגים.</td>
+                                    <td><u>בנוסף:</u> לוח מחוונים דיגיטלי, חישוקי 18", כניסה ללא מפתח (Kessy).</td>
                                 </tr>
                                 <!-- סיאט אטקה -->
                                 <tr>
-                                    <td rowspan="2" class="font-semibold align-top">סיאט אטקה<br>(2022)</td>
-                                    <td class="font-medium">Style (בסיס)</td>
-                                    <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, 7 כ"א, זיהוי עייפות נהג.</td>
-                                    <td>מולטימדיה 8.25", בקרת אקלים מפוצלת (פיזית), פתחי מיזוג אחוריים, הנעה בכפתור, בלם יד חשמלי.</td>
+                                    <td rowspan="2" class="font-semibold align-top">סיאט אטקה<br>(1.5L TSI)</td>
+                                    <td class="font-medium">Style</td>
+                                    <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, זיהוי עייפות.</td>
+                                    <td>מולטימדיה 8.25", בקרת אקלים מפוצלת, פתחי מיזוג אחוריים.</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-medium">Xperience (רמה שנייה)</td>
-                                    <td><u>בנוסף:</u> ניטור שטח מת, התראת תנועה חוזרת, בקרת יציאה בטוחה.</td>
-                                    <td><u>בנוסף:</u> לוח מחוונים דיגיטלי, מולטימדיה 9.2", כניסה ללא מפתח, מושבים משודרגים, פנסי לד קדמיים.</td>
+                                    <td class="font-medium">Xperience</td>
+                                    <td><u>בנוסף:</u> ניטור שטח מת, יציאה בטוחה.</td>
+                                    <td><u>בנוסף:</u> לוח דיגיטלי, מסך 9.2", כניסה ללא מפתח, גג פנורמי (לעיתים).</td>
                                 </tr>
                                 <!-- מאזדה CX-5 -->
                                 <tr>
-                                    <td rowspan="2" class="font-semibold align-top">מאזדה CX-5<br>(2019-20)</td>
-                                    <td class="font-medium">Comfort (בסיס)</td>
-                                    <td>בלימה אוטונומית (כולל אחורית), בקרת שיוט אדפטיבית, ניטור שטח מת, התראת תנועה חוזרת, שמירת נתיב.</td>
-                                    <td>מולטימדיה 8" (תפעול חוגה), בקרת אקלים מפוצלת (פיזית), פתחי מיזוג אחוריים, בלם יד חשמלי, הנעה בכפתור, ריפוד בד.</td>
+                                    <td rowspan="2" class="font-semibold align-top">מאזדה CX-5<br>(2.0L)</td>
+                                    <td class="font-medium">Comfort</td>
+                                    <td>בלימה אוטונומית (גם ברוורס), שיוט אדפטיבי, שטח מת, שמירת נתיב.</td>
+                                    <td>מולטימדיה 8" עם חוגה, בקרת אקלים, פתחי מיזוג אחוריים, ריפוד בד.</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-medium">Executive (רמה שנייה)</td>
-                                    <td>זהה (מפרט בטיחות גבוה כבר מהבסיס).</td>
-                                    <td><u>בנוסף:</u> ריפוד עור, מושבים חשמליים, גג שמש, תצוגה עילית (HUD), כניסה ללא מפתח.</td>
-                                </tr>
-                                <!-- יונדאי איוניק -->
-                                <tr>
-                                    <td rowspan="2" class="font-semibold align-top">יונדאי איוניק<br>(2022)</td>
-                                    <td class="font-medium">Premium (בסיס)</td>
-                                    <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, התראת עייפות.</td>
-                                    <td>מולטימדיה 8", לוח מחוונים דיגיטלי חלקי, בקרת אקלים מפוצלת (מגע), הנעה בכפתור, בלם יד ברגל.</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium">Supreme (רמה שנייה)</td>
-                                    <td><u>בנוסף:</u> ניטור שטח מת, התראת תנועה חוזרת.</td>
-                                    <td><u>בנוסף:</u> מולטימדיה 10.25", לוח מחוונים דיגיטלי מלא, ריפוד משודרג, גג שמש.</td>
+                                    <td class="font-medium">Executive</td>
+                                    <td>זהה לבסיס (גבוה מאוד).</td>
+                                    <td><u>בנוסף:</u> ריפוד עור, מושב נהג חשמלי, גג שמש, תצוגה עילית (HUD).</td>
                                 </tr>
                                 <!-- פולקסווגן טיגואן -->
                                 <tr>
-                                    <td rowspan="2" class="font-semibold align-top">פולקסווגן טיגואן<br>(2020-22)</td>
+                                    <td rowspan="2" class="font-semibold align-top">פולקסווגן טיגואן<br>(1.5L TSI)</td>
                                     <td class="font-medium">Life (בסיס)</td>
                                     <td>בלימה אוטונומית, בקרת שיוט אדפטיבית, שמירת נתיב, 9 כ"א (כולל ברכיים).</td>
-                                    <td>מולטימדיה 8", לוח מחוונים דיגיטלי, בקרת אקלים 3 אזורים (מגע/פיזי תלוי שנתון), פתחי מיזוג ושליטה מאחור, בלם יד חשמלי.</td>
+                                    <td>מולטימדיה 8", לוח מחוונים דיגיטלי, בקרת אקלים 3 אזורים, פתחי מיזוג ושליטה מאחור.</td>
                                 </tr>
                                 <tr>
                                     <td class="font-medium">Elegance (רמה שנייה)</td>
-                                    <td><u>בנוסף:</u> ניטור שטח מת, התראת תנועה חוזרת, מערך מצלמות 360.</td>
-                                    <td><u>בנוסף:</u> גג פנורמי, כניסה ללא מפתח, מושבי עור חשמליים ומחוממים, חישוקים גדולים יותר.</td>
+                                    <td><u>בנוסף:</u> ניטור שטח מת, מצלמות 360.</td>
+                                    <td><u>בנוסף:</u> גג פנורמי, כניסה ללא מפתח, מושבי עור חשמליים ומחוממים.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -503,15 +585,15 @@
     </div>
 
     <footer class="text-center p-4 mt-8 bg-gray-800 text-gray-300">
-        <p>דוח זה הופק באופן אוטומטי ומהווה סיכום נתונים. יש לאמת את הנתונים לפני קבלת החלטה.</p>
+        <p>דוח זה הופק באופן אוטומטי ומהווה סיכום נתונים. יש לאמת את הנתונים לפני קבלת החלטה סופית.</p>
     </footer>
 
     <script>
         // Global chart instances
         window.radarChartInstance = null;
-        window.monthlyCostChartInstance = null;
+        window.tcoChartInstance = null;
         window.trunkChartInstance = null;
-        window.chartsInitialized = false; // Flag to create charts only once
+        window.chartsInitialized = false;
 
         // Tab switching logic
         function showTab(tabId) {
@@ -527,82 +609,35 @@
             });
             document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
             
-            // *** FIX: Create charts ONLY when the graph tab is shown for the first time ***
             if (tabId === 'tab-graphs' && !window.chartsInitialized) {
                 createRadarChart();
-                createMonthlyCostChart();
+                createTCOChart();
                 createTrunkChart();
-                window.chartsInitialized = true; // Mark as initialized so they don't redraw
+                window.chartsInitialized = true;
             }
         }
 
-        // Data for Radar Chart (UPDATED)
+        // Radar Data (Ionic removed)
         const radarData = {
             labels: [
                 'פרקטיות (תא מטען)', 
                 'חיסכון (דלק)', 
                 'נוחות נסיעה ושקט', 
                 'עלות שוטפת (נמוכה)', 
-                'קלות חניה', 
+                'נוחות ילדים (גובה)', 
                 'אמינות'
             ],
             datasets: [
-                {
-                    label: 'סקודה אוקטביה',
-                    data: [4.5, 4, 4.5, 3, 3, 4], // עלות שוטפת ירדה ל-3
-                    borderColor: '#007A33',
-                    backgroundColor: 'rgba(0, 122, 51, 0.2)',
-                    pointBackgroundColor: '#007A33',
-                    hidden: false
-                },
-                {
-                    label: 'סקודה קארוק',
-                    data: [4, 3.5, 4, 2.5, 5, 4], // עלות שוטפת ירדה ל-2.5
-                    borderColor: '#4C9A2A',
-                    backgroundColor: 'rgba(76, 154, 42, 0.2)',
-                    pointBackgroundColor: '#4C9A2A',
-                    hidden: false
-                },
-                {
-                    label: 'סיאט אטקה',
-                    data: [4, 3.5, 3.5, 2.5, 5, 4], // עלות שוטפת ירדה ל-2.5
-                    borderColor: '#FAA61A',
-                    backgroundColor: 'rgba(250, 166, 26, 0.2)',
-                    pointBackgroundColor: '#FAA61A',
-                    hidden: false
-                },
-                {
-                    label: 'מאזדה CX-5',
-                    data: [2.5, 2.5, 5, 3, 3.5, 5], // נשאר 3
-                    borderColor: '#DA291C',
-                    backgroundColor: 'rgba(218, 41, 28, 0.2)',
-                    pointBackgroundColor: '#DA291C',
-                    hidden: false
-                },
-                {
-                    label: 'יונדאי איוניק',
-                    data: [2, 5, 3, 2.5, 3.5, 5], // נשאר 2.5 (ביטוח)
-                    borderColor: '#002C5F',
-                    backgroundColor: 'rgba(0, 44, 95, 0.2)',
-                    pointBackgroundColor: '#002C5F',
-                    hidden: false
-                },
-                {
-                    label: 'פולקסווגן טיגואן',
-                    data: [5, 3, 5, 1, 3.5, 4], // עלות שוטפת ירדה ל-1
-                    borderColor: '#004B8D',
-                    backgroundColor: 'rgba(0, 75, 141, 0.2)',
-                    pointBackgroundColor: '#004B8D',
-                    hidden: false
-                }
+                { label: 'אוקטביה 1.0L', data: [4.5, 4.5, 4.5, 3.5, 3, 4], borderColor: '#007A33', backgroundColor: 'rgba(0, 122, 51, 0.2)', pointBackgroundColor: '#007A33' },
+                { label: 'קארוק', data: [4, 3.5, 4, 2.5, 4.5, 4], borderColor: '#4C9A2A', backgroundColor: 'rgba(76, 154, 42, 0.2)', pointBackgroundColor: '#4C9A2A', hidden: false }, // No longer hidden
+                { label: 'אטקה', data: [4, 3.5, 3.5, 2.5, 4.5, 4], borderColor: '#FAA61A', backgroundColor: 'rgba(250, 166, 26, 0.2)', pointBackgroundColor: '#FAA61A' },
+                { label: 'מאזדה CX-5', data: [2.5, 2.5, 5, 3, 4.5, 5], borderColor: '#DA291C', backgroundColor: 'rgba(218, 41, 28, 0.2)', pointBackgroundColor: '#DA291C' },
+                { label: 'טיגואן', data: [5, 3, 5, 1, 5, 4], borderColor: '#004B8D', backgroundColor: 'rgba(0, 75, 141, 0.2)', pointBackgroundColor: '#004B8D', hidden: false } // No longer hidden
             ]
         };
 
-        // Function to create Radar Chart
         function createRadarChart() {
             const ctx = document.getElementById('radarChart').getContext('2d');
-            
-            // *** FIX FOR MOBILE: Responsive font size for radar labels ***
             const isMobile = window.innerWidth < 768;
             const radarLabelFontSize = isMobile ? 10 : 14;
 
@@ -617,207 +652,115 @@
                             angleLines: { display: true },
                             suggestedMin: 0,
                             suggestedMax: 5,
-                            ticks: {
-                                stepSize: 1,
-                                backdropColor: 'rgba(255, 255, 255, 0.5)'
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: radarLabelFontSize, // Use responsive variable
-                                    weight: 'bold'
-                                }
-                            }
+                            pointLabels: { font: { size: radarLabelFontSize, weight: 'bold' } }
                         }
                     },
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                usePointStyle: true,
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += context.raw;
-                                    return label;
-                                }
-                            }
-                        }
+                        legend: { position: 'bottom' }
                     }
                 }
             });
         }
         
-        // Function to setup Radar Chart filters
         function setupRadarFilters() {
             const filterContainer = document.getElementById('radar-filter').querySelector('.flex');
             radarData.datasets.forEach((dataset, index) => {
                 const color = dataset.borderColor;
                 const label = dataset.label;
-                
                 const wrapper = document.createElement('div');
-                wrapper.classList.add('flex', 'items-center', 'sm:w-auto', 'w-full', 'justify-center'); // Center items in mobile stack
-                
+                wrapper.classList.add('flex', 'items-center', 'sm:w-auto', 'w-full', 'justify-center');
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.checked = true;
+                checkbox.checked = !dataset.hidden;
                 checkbox.id = `radar-filter-${index}`;
                 checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'rounded');
                 checkbox.style.accentColor = color;
-                
                 checkbox.onchange = () => {
                     if (window.radarChartInstance) {
-                        const isHidden = !checkbox.checked;
-                        window.radarChartInstance.getDatasetMeta(index).hidden = isHidden;
+                        window.radarChartInstance.getDatasetMeta(index).hidden = !checkbox.checked;
                         window.radarChartInstance.update();
                     }
                 };
-                
                 const labelEl = document.createElement('label');
                 labelEl.htmlFor = `radar-filter-${index}`;
                 labelEl.textContent = label;
                 labelEl.classList.add('mr-2', 'text-gray-700', 'font-medium');
-                
                 wrapper.appendChild(checkbox);
                 wrapper.appendChild(labelEl);
                 filterContainer.appendChild(wrapper);
             });
         }
 
-
-        // Data for Monthly Cost (UPDATED)
-        // חישובים:
-        // דלק חודשי = (15000 / ק"מ לליטר / 12) * מחיר ליטר (נניח 7 ₪)
-        // אוקטביה: 568
-        // קארוק/אטקה: 613
-        // מאזדה: 700
-        // איוניק: 368
-        // טיגואן: 656
-        
-        // עלות שוטפת חודשית = (ביטוח + אגרה + טיפולים) / 12
-        // אוקטביה: 642
-        // קארוק: 692
-        // אטקה: 667
-        // מאזדה: 717
-        // איוניק: 817
-        // טיגואן: 842
-
-        // סיכון DSG חודשי = 250 (לרכבי VAG)
-        
-        // סה"כ חודשי = הלוואה + דלק + עלות שוטפת + סיכון DSG
-        const monthlyCostData = {
-            'יונדאי איוניק': 1460 + 368 + 817 + 0,    // 2645 (הכי זול)
-            'סקודה אוקטביה': 1385 + 568 + 642 + 250, // 2845
-            'סיאט אטקה': 1460 + 613 + 667 + 250,      // 2990
-            'מאזדה CX-5': 1605 + 700 + 717 + 0,     // 3022 (זול יותר מהקארוק)
-            'סקודה קארוק': 1530 + 613 + 692 + 250,  // 3085
-            'פולקסווגן טיגואן': 1970 + 656 + 842 + 250 // 3718 (הכי יקר)
+        // TCO Data (Ionic removed)
+        const tcoData = {
+            'אוקטביה 1.0L': { tco_70_36: 167724, tco_70_48: 169224, tco_90_36: 186264, tco_90_48: 188232 },
+            'מאזדה CX-5': { tco_70_36: 177444, tco_70_48: 179064, tco_90_36: 198864, tco_90_48: 201048 },
+            'סיאט אטקה': { tco_70_36: 178740, tco_70_48: 180240, tco_90_36: 198180, tco_90_48: 200160 },
+            'סקודה קארוק': { tco_70_36: 183960, tco_70_48: 185400, tco_90_36: 204480, tco_90_48: 206472 },
+            'פ. טיגואן': { tco_70_36: 218376, tco_70_48: 220416, tco_90_36: 244656, tco_90_48: 247344 }
         };
 
-        // Function to create Monthly Cost Chart
-        function createMonthlyCostChart() {
-            const ctx = document.getElementById('monthlyCostChart').getContext('2d');
-            const sortedLabels = Object.keys(monthlyCostData).sort((a, b) => monthlyCostData[a] - monthlyCostData[b]);
-            const sortedData = sortedLabels.map(label => monthlyCostData[label]);
-            const sortedColors = sortedLabels.map(label => {
-                switch (label) {
-                    case 'יונדאי איוניק': return '#002C5F';
-                    case 'סקודה אוקטביה': return '#007A33';
-                    case 'סיאט אטקה': return '#FAA61A';
-                    case 'מאזדה CX-5': return '#DA291C';
-                    case 'סקודה קארוק': return '#4C9A2A';
-                    case 'פולקסווגן טיגואן': return '#004B8D';
-                    default: return '#888888';
-                }
-            });
+        function createTCOChart() {
+            const ctx = document.getElementById('tcoChart').getContext('2d');
+            
+            const sortedLabels = Object.keys(tcoData).sort((a, b) => tcoData[a].tco_70_48 - tcoData[b].tco_70_48);
+            
+            const data_70_36 = sortedLabels.map(label => tcoData[label].tco_70_36);
+            const data_70_48 = sortedLabels.map(label => tcoData[label].tco_70_48);
+            const data_90_36 = sortedLabels.map(label => tcoData[label].tco_90_36);
+            const data_90_48 = sortedLabels.map(label => tcoData[label].tco_90_48);
 
-            window.monthlyCostChartInstance = new Chart(ctx, {
+            window.tcoChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: sortedLabels,
-                    datasets: [{
-                        label: 'עלות חודשית כוללת (₪)',
-                        data: sortedData,
-                        backgroundColor: sortedColors,
-                    }]
+                    datasets: [
+                    { label: 'TCO (70% / 36 חוד\')', data: data_70_36, backgroundColor: '#60a5fa' },
+                    { label: 'TCO (70% / 48 חוד\')', data: data_70_48, backgroundColor: '#2563eb' },
+                    { label: 'TCO (90% / 36 חוד\')', data: data_90_36, backgroundColor: '#f87171' },
+                    { label: 'TCO (90% / 48 חוד\')', data: data_90_48, backgroundColor: '#dc2626' }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    indexAxis: 'y', // Horizontal bar chart
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'עלות חודשית (₪)'
-                            }
-                        }
+                    indexAxis: 'y',
+                    scales: { 
+                        x: { beginAtZero: false, min: 160000, title: { display: true, text: 'עלות כוללת ל-6 שנים (₪)' } },
+                        y: { ticks: { autoSkip: false } }
                     },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
+                    plugins: { 
+                        legend: { position: 'bottom' } 
                     }
                 }
             });
         }
 
-        // Function to create Trunk Chart
+        // Trunk Chart (Ionic removed)
         function createTrunkChart() {
             const ctx = document.getElementById('trunkChart').getContext('2d');
             window.trunkChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['פולקסווגן טיגואן', 'סקודה אוקטביה', 'סקודה קארוק', 'סיאט אטקה', 'יונדאי איוניק', 'מאזדה CX-5'],
+                    labels: ['פ. טיגואן', 'אוקטביה', 'קארוק', 'אטקה', 'CX-5'],
                     datasets: [{
                         label: 'נפח תא מטען (ליטר)',
-                        data: [615, 600, 521, 510, 443, 442],
-                        backgroundColor: [
-                            '#004B8D',
-                            '#007A33',
-                            '#4C9A2A',
-                            '#FAA61A',
-                            '#002C5F',
-                            '#DA291C'
-                        ],
+                        data: [615, 600, 521, 510, 442],
+                        backgroundColor: ['#004B8D', '#007A33', '#4C9A2A', '#FAA61A', '#DA291C'],
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'נפח (ליטר)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
         }
         
         // Initial setup on DOM load
         document.addEventListener('DOMContentLoaded', () => {
-            showTab('tab-main'); // Show main tab by default
-            setupRadarFilters(); // Setup filters, this is fine
-            // DO NOT create charts here, they will be created by showTab when needed
+            showTab('tab-main');
+            setupRadarFilters();
         });
-
     </script>
-
 </body>
 </html>
