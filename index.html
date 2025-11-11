@@ -63,7 +63,7 @@
         .chart-container {
             position: relative;
             margin: auto;
-            height: 400px; /* Increased height for 4 bars */
+            height: 400px;
             width: 100%;
             max-width: 1000px;
         }
@@ -107,7 +107,7 @@
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-5xl font-bold text-gray-800">דוח השוואת רכב סופי להצגה</h1>
-            <p class="text-lg md:text-xl text-gray-600 mt-2">ניתוח עלות כוללת ל-6 שנים (TCO) ותרחישי הלוואה (3 ו-4 שנים)</p>
+            <p class="text-lg md:text-xl text-gray-600 mt-2">ניתוח עלות כוללת ל-6 שנים (TCO), סיכוני גיר ומערכות תזמון</p>
         </header>
 
         <!-- Navigation Tabs -->
@@ -126,22 +126,19 @@
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
                     <h2 class="text-2xl font-bold mb-4 text-[#007A33]">תקציר מנהלים והמלצות</h2>
                     <p class="text-gray-700 leading-relaxed">
-                        ניתוח זה בוחן 5 דגמי רכב פוטנציאליים (צפי רכישה 2026) תוך התמקדות בעלות בעלות כוללת (TCO) לתקופה של 6 שנים ובהתאמה לצרכים משפחתיים. הניתוח כולל שני תרחישי מימון (פריסה ל-36 או 48 תשלומים) ותוספת סיכון מחושבת לתיקוני גיר DSG.
+                        ניתוח זה בוחן 6 דגמי רכב פוטנציאליים (צפי רכישה 2026). הניתוח מתמקד בעלות כוללת (TCO) ל-6 שנים, פרקטיות משפחתית, סיכוני גיר (DSG) וסוג מערכת התזמון (שרשרת מול רצועה).
                     </p>
                     
                     <h3 class="text-xl font-semibold mt-6 mb-3 text-gray-800">ממצאים עיקריים</h3>
                     <ul class="list-disc list-outside mr-5 space-y-2 text-gray-700">
                         <li>
-                            <b>פריסת הלוואה (36 מול 48 חודשים):</b> פריסת הלוואה קצרה יותר (36 חודשים) מייקרת את ההחזר החודשי בכ-25-30%, אך מוזילה את העלות הכוללת (TCO) בכ-1,500 ₪ עד 3,000 ₪ לאורך 6 השנים, עקב חיסכון בריבית.
+                            <b>מערכת תזמון (שרשרת מול רצועה):</b> למאזדה ולפיג'ו 3008 (במנוע 1.6T) יש שרשרת תזמון (Chain) אמינה. שאר רכבי הקבוצה (סקודה, סיאט, פולקסווגן) משתמשים ברצועת תזמון (Belt), שדורשת החלפה תקופתית (זו אינה "הרצועה הרטובה" הבעייתית של מנועי ה-1.2).
                         </li>
                         <li>
-                            <b>קלות חניה (אורך):</b> רכבי ה-SUV הקצרים (קארוק ואטקה, 4.38 מ') מציעים יתרון מובהק בחניה יומיומית. המאזדה (4.55 מ') והטיגואן (4.51 מ') ארוכות יותר, והאוקטביה (4.69 מ') היא הארוכה ביותר ודורשת הסתגלות.
+                            <b>פיג'ו 3008 - חבילה אמינה:</b> שילוב של מנוע 1.6T (עם שרשרת) וגיר יפני פלנטרי (Aisin) הופך את ה-3008 לאופציה אמינה מאוד מכאנית, בדומה למאזדה, ומהווה אלטרנטיבה חזקה ללא "סיכון DSG".
                         </li>
                         <li>
-                            <b>התאמה ל-3 ילדים:</b> האוקטביה והטיגואן הם היחידים שנותנים מענה גבולי אך אפשרי לשלושה מושבים. שאר הרכבים צפופים מדי.
-                        </li>
-                        <li>
-                            <b>עלות מול אמינות ב-SUV:</b> העלות הכוללת (TCO) של 3 רכבי ה-SUV המרכזיים (מאזדה, אטקה, קארוק) קרובה מאוד, בטווח של כ-6,000 ₪ (כ-3%) ביניהם לאורך 6 שנים.
+                            <b>קלות חניה:</b> רכבי ה-SUV הקצרים (קארוק, אטקה, 3008) קלים מאוד לחניה (כ-4.4 מ'). האוקטביה היא המאתגרת ביותר (כמעט 4.7 מ').
                         </li>
                     </ul>
 
@@ -151,42 +148,40 @@
                         <div class="border-l-4 border-green-600 p-4 bg-green-50 rounded-md">
                             <h4 class="text-lg font-bold text-green-800">הבחירה הכלכלית-פרקטית: סקודה אוקטביה 1.0L</h4>
                             <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~169,200 ₪</b><br>
-                               <b>יתרון:</b> תא מטען ענק (600 ל'), מנוע חסכוני, TCO נמוך משמעותית מה-SUV, גבולי ל-3 ילדים.<br>
-                               <b>פשרה:</b> סיכון גיר (DSG) מגולם במחיר, רכב נמוך (פחות נוח לתינוקות), הכי ארוכה לחניה.
+                               הזולה ביותר לתפעול, תא מטען ענק. הפשרות: רכב נמוך, ארוך לחניה, סיכון גיר (DSG) ורצועת תזמון להחלפה.
                             </p>
                         </div>
                         
-                        <h4 class="text-lg font-bold text-gray-800 pt-4">ההתלבטות המרכזית - בחירת ה-SUV:</h4>
+                        <h4 class="text-lg font-bold text-gray-800 pt-4">ההתלבטות המרכזית - גזרת ה-SUV:</h4>
 
                         <div class="border-l-4 border-red-600 p-4 bg-red-50 rounded-md">
-                            <h4 class="text-lg font-bold text-red-800">מאזדה CX-5 (האמינה)</h4>
+                            <h4 class="text-lg font-bold text-red-800">מאזדה CX-5 (האמינה והסולידית)</h4>
                              <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~179,000 ₪</b><br>
-                               <b>יתרון:</b> אמינות מוכחת (אפס סיכון גיר), איכות פנים פרימיום, נוחות גבוהה לתינוקות.<br>
-                               <b>פשרה:</b> עלות דלק גבוהה, תא מטען קטן יחסית (442 ל'), ארוכה יחסית לחניה (4.55 מ').
+                               <b>יתרון:</b> שקט נפשי (גיר פלנטרי + שרשרת תזמון), איכות פנים.<br>
+                               <b>פשרה:</b> תא מטען קטן יחסית, עלות דלק.
+                            </p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-600 p-4 bg-purple-50 rounded-md">
+                            <h4 class="text-lg font-bold text-purple-800">פיג'ו 3008 (הסטייליסטית האמינה)</h4>
+                             <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~190,500 ₪</b><br>
+                               <b>יתרון:</b> שקט נפשי (גיר פלנטרי + שרשרת תזמון), מנוע חזק, עיצוב מרהיב, רצפה אחורית שטוחה.<br>
+                               <b>פשרה:</b> צריכת דלק גבוהה, מעט יקרה יותר ב-TCO.
                             </p>
                         </div>
                         
                         <div class="border-l-4 border-yellow-600 p-4 bg-yellow-50 rounded-md">
-                             <h4 class="text-lg font-bold text-yellow-800">סיאט אטקה (המאוזנת)</h4>
-                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~180,200 ₪</b><br>
-                               <b>יתרון:</b> תא מטען טוב (510 ל'), נוחות גבוהה לתינוקות, מצוינת לחניה (4.38 מ').<br>
-                               <b>פשרה:</b> נושאת בסיכון גיר (מגולם ב-TCO), צרה במושב האחורי.
-                            </p>
-                        </div>
-
-                         <div class="border-l-4 border-teal-600 p-4 bg-teal-50 rounded-md">
-                             <h4 class="text-lg font-bold text-teal-800">סקודה קארוק (השיקול הנוסף)</h4>
-                            <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~185,400 ₪</b><br>
-                               <b>יתרון:</b> תא מטען מצוין (521 ל'), נוחות גבוהה לתינוקות, מצוינת לחניה (4.38 מ').<br>
-                               <b>פשרה:</b> נושאת בסיכון גיר, יקרה בכ-3% מהמאזדה/אטקה לאורך 6 שנים, צרה במושב האחורי.
+                             <h4 class="text-lg font-bold text-yellow-800">סיאט אטקה / סקודה קארוק (הפרקטיות)</h4>
+                            <p class="text-gray-700 mt-2"><b>עלות TCO: ~180,000-185,000 ₪</b><br>
+                               <b>יתרון:</b> שילוב טוב של גודל, תא מטען וקלות חניה.<br>
+                               <b>פשרה:</b> סיכון גיר DSG + רצועת תזמון להחלפה (מגולמים בעלות).
                             </p>
                         </div>
                         
                          <div class="border-l-4 border-gray-600 p-4 bg-gray-50 rounded-md">
-                             <h4 class="text-lg font-bold text-gray-800">האופציה הגדולה: פולקסווגן טיגואן</h4>
+                             <h4 class="text-lg font-bold text-gray-800">פולקסווגן טיגואן (הפרימיום)</h4>
                             <p class="text-gray-700 mt-2"><b>עלות TCO (70%/48ח'): ~220,400 ₪</b><br>
-                               <b>יתרון:</b> תא מטען ענק (615 ל'), איכות פרימיום, האופציה היחידה שסבירה ל-3 ילדים.<br>
-                               <b>פשרה:</b> יקרה משמעותית (כ-40,000 ₪ יותר מהאחרות), נושאת בסיכון גיר.
+                               היקרה ביותר, אך המרווחת ביותר ל-3 ילדים. הפשרות: עלות, סיכון גיר ורצועת תזמון.
                             </p>
                         </div>
                     </div>
@@ -203,6 +198,7 @@
                                     <th>סקודה אוקטביה (1.0L)</th>
                                     <th>סקודה קארוק</th>
                                     <th>סיאט אטקה</th>
+                                    <th>פיג'ו 3008</th>
                                     <th>מאזדה CX-5</th>
                                     <th>פולקסווגן טיגואן</th>
                                 </tr>
@@ -213,6 +209,7 @@
                                     <td class="font-bold text-[#007A33]">1.0 ליטר טורבו</td>
                                     <td>1.5 ליטר טורבו</td>
                                     <td>1.5 ליטר טורבו</td>
+                                    <td class="font-bold text-purple-600">1.6 ליטר טורבו (180 כ"ס)</td>
                                     <td>2.0 ליטר אטמוספרי</td>
                                     <td>1.5 ליטר טורבו</td>
                                 </tr>
@@ -221,6 +218,7 @@
                                     <td>כ-85,500 ₪</td>
                                     <td>כ-94,500 ₪</td>
                                     <td>כ-90,000 ₪</td>
+                                    <td>כ-98,000 ₪</td>
                                     <td>כ-99,000 ₪</td>
                                     <td>כ-121,500 ₪</td>
                                 </tr>
@@ -230,6 +228,7 @@
                                     <td>~14.3 ק"מ/ליטר</td>
                                     <td>~14.3 ק"מ/ליטר</td>
                                     <td>~12.5 ק"מ/ליטר</td>
+                                    <td>~12.5 ק"מ/ליטר</td>
                                     <td>~13.3 ק"מ/ליטר</td>
                                 </tr>
                                 <tr>
@@ -237,14 +236,16 @@
                                     <td class="font-bold">600 (ענק)</td>
                                     <td>521</td>
                                     <td>510</td>
+                                    <td class="font-bold">520 (מצוין)</td>
                                     <td class="text-red-600">442 (קטן)</td>
                                     <td>615 (ענק)</td>
                                 </tr>
                                 <tr>
                                     <td class="font-semibold bg-gray-50">קלות חניה (אורך)</td>
-                                    <td class="bg-gray-50 text-red-600">בינונית (הארוכה ביותר - 4.69 מ')</td>
-                                    <td class="bg-green-50 font-semibold">גבוהה (קצרה - 4.38 מ')</td>
-                                    <td class="bg-green-50 font-semibold">גבוהה (קצרה - 4.38 מ')</td>
+                                    <td class="bg-gray-50 text-red-600">בינונית (4.69 מ')</td>
+                                    <td class="bg-green-50 font-semibold">גבוהה (4.38 מ')</td>
+                                    <td class="bg-green-50 font-semibold">גבוהה (4.38 מ')</td>
+                                    <td class="bg-green-50 font-semibold">גבוהה (4.45 מ')</td>
                                     <td class="bg-gray-50">בינונית (4.55 מ')</td>
                                     <td class="bg-gray-50">בינונית (4.51 מ')</td>
                                 </tr>
@@ -255,20 +256,32 @@
                                     <td class="font-semibold">גבוהה (SUV)</td>
                                     <td class="font-semibold">גבוהה (SUV)</td>
                                     <td class="font-semibold">גבוהה (SUV)</td>
+                                    <td class="font-semibold">גבוהה (SUV)</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">סיכון גיר (DSG)</td>
-                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
-                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
-                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
-                                    <td class="text-green-600 font-bold">אין (פלנטרי אמין)</td>
-                                    <td class="text-red-600">קיים (מחושב בעלות)</td>
+                                    <td class="font-semibold">סיכון גיר</td>
+                                    <td class="text-red-600">קיים (DSG)</td>
+                                    <td class="text-red-600">קיים (DSG)</td>
+                                    <td class="text-red-600">קיים (DSG)</td>
+                                    <td class="text-green-600 font-bold">אין (Aisin 8 הילוכים)</td>
+                                    <td class="text-green-600 font-bold">אין (פלנטרי)</td>
+                                    <td class="text-red-600">קיים (DSG)</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="font-semibold bg-gray-100">מערכת תזמון</td>
+                                    <td class="bg-gray-50 text-orange-600">רצועה (Belt)</td>
+                                    <td class="bg-gray-50 text-orange-600">רצועה (Belt)</td>
+                                    <td class="bg-gray-50 text-orange-600">רצועה (Belt)</td>
+                                    <td class="bg-gray-50 text-green-600 font-bold">שרשרת (Chain) - מנוע 1.6T</td>
+                                    <td class="bg-gray-50 text-green-600 font-bold">שרשרת (Chain)</td>
+                                    <td class="bg-gray-50 text-orange-600">רצועה (Belt)</td>
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">התאמה ל-3 ילדים</td>
                                     <td>אפשרי (גבולי)</td>
                                     <td>צפוף</td>
                                     <td>צפוף</td>
+                                    <td class="text-green-600 font-bold">טוב (רצפה שטוחה)</td>
                                     <td>צפוף</td>
                                     <td>אפשרי (הכי רחב)</td>
                                 </tr>
@@ -277,7 +290,7 @@
                     </div>
                 </div>
 
-                 <!-- *** UPDATED Loan Analysis Section *** -->
+                 <!-- *** Loan Analysis Section *** -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
                     <h2 class="text-2xl font-bold mb-4 text-[#007A33]">ניתוח הלוואה (פריסה ל-3 או 4 שנים)</h2>
                     <p class="text-gray-700 leading-relaxed mb-4">
@@ -322,6 +335,14 @@
                                     <td>כ-1,905 ₪</td>
                                     <td>81,000 ₪</td>
                                     <td>כ-2,445 ₪</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-purple-700">פיג'ו 3008</td>
+                                    <td>98,000 ₪</td>
+                                    <td>68,600 ₪</td>
+                                    <td>כ-2,070 ₪</td>
+                                    <td>88,200 ₪</td>
+                                    <td>כ-2,660 ₪</td>
                                 </tr>
                                 <tr>
                                     <td>מאזדה CX-5</td>
@@ -383,6 +404,14 @@
                                     <td>כ-1,875 ₪</td>
                                 </tr>
                                 <tr>
+                                    <td class="font-bold text-purple-700">פיג'ו 3008</td>
+                                    <td>98,000 ₪</td>
+                                    <td>68,600 ₪</td>
+                                    <td>כ-1,590 ₪</td>
+                                    <td>88,200 ₪</td>
+                                    <td>כ-2,045 ₪</td>
+                                </tr>
+                                <tr>
                                     <td>מאזדה CX-5</td>
                                     <td>99,000 ₪</td>
                                     <td>69,300 ₪</td>
@@ -403,11 +432,11 @@
                     </div>
                 </div>
 
-                <!-- *** UPDATED 6-YEAR TCO TABLE *** -->
+                <!-- *** 6-YEAR TCO TABLE *** -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
                     <h2 class="text-2xl font-bold mb-4 text-[#007A33]">טבלת עלות כוללת (TCO) ל-6 שנים</h2>
                     <p class="text-gray-700 leading-relaxed mb-4">
-                        החישוב כולל: סך תשלומי הלוואה (לפי פריסה) + סך הוצאות שוטפות ל-72 חודשים (דלק, ביטוח, אגרות, טיפולים וסיכון גיר).
+                        החישוב כולל: הלוואה + דלק, ביטוח, אגרות, טיפולים, סיכון גיר (ל-VAG) והחלפת רצועת תזמון (ל-VAG).
                     </p>
                     <div class="table-container">
                         <table class="min-w-full cost-table-min-width">
@@ -454,6 +483,13 @@
                                     <td class="font-bold bg-red-50">206,472 ₪</td>
                                 </tr>
                                 <tr>
+                                    <td class="font-semibold text-purple-700">פיג'ו 3008</td>
+                                    <td class="font-bold bg-blue-50">189,000 ₪</td>
+                                    <td class="font-bold bg-blue-50">190,500 ₪</td>
+                                    <td class="font-bold bg-red-50">209,800 ₪</td>
+                                    <td class="font-bold bg-red-50">211,500 ₪</td>
+                                </tr>
+                                <tr>
                                     <td class="font-semibold">פולקסווגן טיגואן</td>
                                     <td class="font-bold bg-blue-50">218,376 ₪</td>
                                     <td class="font-bold bg-blue-50">220,416 ₪</td>
@@ -470,7 +506,7 @@
             <div id="tab-graphs" class="tab-content space-y-8">
                 <!-- Radar Chart -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">גרף רדאר: אוקטביה 1.0L מול המתחרות</h2>
+                    <h2 class="text-2xl font-bold mb-4 text-[#007A33]">גרף רדאר: פיג'ו 3008 נגד המתחרות</h2>
                     <div class="chart-container-radar">
                         <canvas id="radarChart"></canvas>
                     </div>
@@ -486,7 +522,7 @@
                 <!-- 6-Year TCO Chart -->
                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
                     <h2 class="text-2xl font-bold mb-4 text-[#007A33]">השוואת עלות כוללת (TCO) ל-6 שנים</h2>
-                    <p class="text-gray-600 mb-4">הגרף מציג 4 תרחישים: מימון 70% או 90%, בפריסה של 36 או 48 חודשים.</p>
+                    <p class="text-gray-600 mb-4">הגרף מציג 4 תרחישים. שימו לב שהפיג'ו יקרה במעט מהמאזדה/אטקה, אך זולה מהטיגואן.</p>
                     <div class="chart-container">
                         <canvas id="tcoChart"></canvas>
                     </div>
@@ -516,6 +552,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- פיג'ו 3008 -->
+                                <tr class="bg-purple-50">
+                                    <td rowspan="2" class="font-semibold align-top text-purple-800">פיג'ו 3008<br>(1.6L)</td>
+                                    <td class="font-medium">Active (בסיס)</td>
+                                    <td>בלימה אוטונומית, התראת סטייה מנתיב (ללא תיקון בחלק מהשנתונים!), זיהוי תמרורים.</td>
+                                    <td>לוח מחוונים דיגיטלי (i-Cockpit), מסך 8", הנעה בכפתור, חישוקי 18".</td>
+                                </tr>
+                                <tr class="bg-purple-50">
+                                    <td class="font-medium">Premium</td>
+                                    <td><u>בנוסף:</u> בקרת שיוט אדפטיבית, שמירת נתיב אקטיבית, שטח מת.</td>
+                                    <td><u>בנוסף:</u> גג פנורמי נפתח, טעינה אלחוטית, מושבים משולבי בד-עור, כניסה ללא מפתח.</td>
+                                </tr>
                                 <!-- סקודה אוקטביה -->
                                 <tr>
                                     <td rowspan="2" class="font-semibold align-top">סקודה אוקטביה<br>(1.0L TSI)</td>
@@ -617,22 +665,23 @@
             }
         }
 
-        // Radar Data (Ionic removed)
+        // Radar Data (Peugeot Reliability Updated)
         const radarData = {
             labels: [
                 'פרקטיות (תא מטען)', 
                 'חיסכון (דלק)', 
-                'נוחות נסיעה ושקט', 
+                'נוחות ועיצוב', 
                 'עלות שוטפת (נמוכה)', 
-                'נוחות ילדים (גובה)', 
+                'נוחות ילדים (גובה/רצפה)', 
                 'אמינות'
             ],
             datasets: [
-                { label: 'אוקטביה 1.0L', data: [4.5, 4.5, 4.5, 3.5, 3, 4], borderColor: '#007A33', backgroundColor: 'rgba(0, 122, 51, 0.2)', pointBackgroundColor: '#007A33' },
-                { label: 'קארוק', data: [4, 3.5, 4, 2.5, 4.5, 4], borderColor: '#4C9A2A', backgroundColor: 'rgba(76, 154, 42, 0.2)', pointBackgroundColor: '#4C9A2A', hidden: false }, // No longer hidden
+                { label: 'אוקטביה 1.0L', data: [4.5, 4.5, 4, 3.5, 3, 4], borderColor: '#007A33', backgroundColor: 'rgba(0, 122, 51, 0.2)', pointBackgroundColor: '#007A33' },
+                { label: 'קארוק', data: [4, 3.5, 4, 2.5, 4.5, 4], borderColor: '#4C9A2A', backgroundColor: 'rgba(76, 154, 42, 0.2)', pointBackgroundColor: '#4C9A2A', hidden: false },
                 { label: 'אטקה', data: [4, 3.5, 3.5, 2.5, 4.5, 4], borderColor: '#FAA61A', backgroundColor: 'rgba(250, 166, 26, 0.2)', pointBackgroundColor: '#FAA61A' },
+                { label: 'פיג\'ו 3008', data: [4, 2.5, 5, 3, 5, 4.5], borderColor: '#8b5cf6', backgroundColor: 'rgba(139, 92, 246, 0.2)', pointBackgroundColor: '#8b5cf6' }, // Reliability set to 4.5
                 { label: 'מאזדה CX-5', data: [2.5, 2.5, 5, 3, 4.5, 5], borderColor: '#DA291C', backgroundColor: 'rgba(218, 41, 28, 0.2)', pointBackgroundColor: '#DA291C' },
-                { label: 'טיגואן', data: [5, 3, 5, 1, 5, 4], borderColor: '#004B8D', backgroundColor: 'rgba(0, 75, 141, 0.2)', pointBackgroundColor: '#004B8D', hidden: false } // No longer hidden
+                { label: 'טיגואן', data: [5, 3, 5, 1, 5, 4], borderColor: '#004B8D', backgroundColor: 'rgba(0, 75, 141, 0.2)', pointBackgroundColor: '#004B8D', hidden: false }
             ]
         };
 
@@ -691,12 +740,13 @@
             });
         }
 
-        // TCO Data (Ionic removed)
+        // TCO Data
         const tcoData = {
             'אוקטביה 1.0L': { tco_70_36: 167724, tco_70_48: 169224, tco_90_36: 186264, tco_90_48: 188232 },
             'מאזדה CX-5': { tco_70_36: 177444, tco_70_48: 179064, tco_90_36: 198864, tco_90_48: 201048 },
             'סיאט אטקה': { tco_70_36: 178740, tco_70_48: 180240, tco_90_36: 198180, tco_90_48: 200160 },
             'סקודה קארוק': { tco_70_36: 183960, tco_70_48: 185400, tco_90_36: 204480, tco_90_48: 206472 },
+            'פיג\'ו 3008': { tco_70_36: 189000, tco_70_48: 190500, tco_90_36: 209800, tco_90_48: 211500 },
             'פ. טיגואן': { tco_70_36: 218376, tco_70_48: 220416, tco_90_36: 244656, tco_90_48: 247344 }
         };
 
@@ -735,17 +785,17 @@
             });
         }
 
-        // Trunk Chart (Ionic removed)
+        // Trunk Chart
         function createTrunkChart() {
             const ctx = document.getElementById('trunkChart').getContext('2d');
             window.trunkChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['פ. טיגואן', 'אוקטביה', 'קארוק', 'אטקה', 'CX-5'],
+                    labels: ['פ. טיגואן', 'אוקטביה', 'קארוק', '3008', 'אטקה', 'CX-5'],
                     datasets: [{
                         label: 'נפח תא מטען (ליטר)',
-                        data: [615, 600, 521, 510, 442],
-                        backgroundColor: ['#004B8D', '#007A33', '#4C9A2A', '#FAA61A', '#DA291C'],
+                        data: [615, 600, 521, 520, 510, 442],
+                        backgroundColor: ['#004B8D', '#007A33', '#4C9A2A', '#8b5cf6', '#FAA61A', '#DA291C'],
                     }]
                 },
                 options: {
