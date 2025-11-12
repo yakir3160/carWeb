@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דוח רכב אולטימטיבי (כולל ניתוח מצב קיים)</title>
+    <title>דוח רכב אולטימטיבי (מבוסס חשבוניות)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
@@ -74,17 +74,211 @@
 
         <!-- ניווט טאבים -->
         <nav class="flex flex-wrap justify-center p-4 bg-slate-100 border-b-2 border-slate-200 tab-nav">
-            <button class="tab-button active" onclick="showTab('tab-data')">📊 דוח נתונים</button>
+            <button class="tab-button active" onclick="showTab('tab-strategy')">🧠 כלי החלטה (אסטרטגיה)</button>
+            <button class="tab-button" onclick="showTab('tab-data')">📊 דוח נתונים</button>
             <button class="tab-button" onclick="showTab('tab-graphs')">📈 גרפים</button>
             <button class="tab-button" onclick="showTab('tab-trims')">📋 רמות גימור</button>
-            <button class="tab-button" onclick="showTab('tab-strategy')">🧠 כלי החלטה (אסטרטגיה)</button>
         </nav>
 
         <!-- תוכן הטאבים -->
         <main class="p-4 md:p-8 space-y-8">
 
+            <!-- ########## TAB 4: כלי החלטה (אסטרטגיה) - עכשיו הטאב הראשי ########## -->
+            <div id="tab-strategy" class="tab-content active space-y-10">
+                
+                <!-- חלק 0: ניתוח מצב קיים (מעודכן חשבוניות) -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-yellow-400">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 0: ניתוח מצב קיים (מבוסס חשבוניות)</h2>
+                    <p class="text-slate-600 mb-6">לפני שמחליטים, חשוב להבין כמה עולה המצב הנוכחי. הטבלה מנתחת את ההוצאה החודשית הריאלית על האופל קורסה, מבוססת על החשבוניות שסיפקת.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead>
+                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
+                                    <th class="p-4 w-1/2">סעיף הוצאה (אופל קורסה)</th>
+                                    <th class="p-4 w-1/4">חישוב (ינואר 2023 - מרץ 2025)</th>
+                                    <th class="p-4 w-1/4">עלות חודשית ממוצעת</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr><td class="p-3 font-medium">הלוואה</td><td class="p-3">1,000 ₪ * 12</td><td class="p-3 font-bold text-red-600">1,000 ₪</td></tr>
+                                <tr><td class="p-3 font-medium">דלק</td><td class="p-3">700 ₪ * 12</td><td class="p-3 font-bold text-red-600">700 ₪</td></tr>
+                                <tr><td class="p-3 font-medium">ביטוח (נתון ממך)</td><td class="p-3">4,500 ₪ / 12</td><td class="p-3 font-bold text-red-600">375 ₪</td></tr>
+                                <tr><td class="p-3 font-medium">אגרת רישוי (הערכה)</td><td class="p-3">~700 ₪ / 12</td><td class="p-3 font-bold text-red-600">58 ₪</td></tr>
+                                <tr><td class="p-3 font-medium bg-yellow-50">בלאי ותיקונים (מבוסס חשבוניות)</td><td class="p-3 bg-yellow-50">(5,835 ₪ + 1,890 ₪ + 1,200 ₪) / 27 חודשים</td><td class="p-3 font-bold text-red-600 bg-yellow-50">330 ₪</td></tr>
+                            </tbody>
+                            <tfoot class="final-row">
+                                <tr>
+                                    <td class="p-6 text-lg" colspan="2">שורה תחתונה: עלות חודשית אמיתית (קורסה)</td>
+                                    <td class="p-6 text-3xl font-bold text-red-300">
+                                        ~2,463 ₪
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="p-4 bg-yellow-100 text-center border-t border-yellow-300 mt-4 rounded-b-lg">
+                        <h3 class="text-xl font-bold text-yellow-900">מסקנה: אתה כבר משלם מחיר של SUV</h3>
+                        <p class="text-yellow-800 mt-1">העלות האמיתית של הקורסה הישנה היא כ-2,463 ₪ בחודש. הצעת הליסינג לאטקה חדשה (2,670 ₪) יקרה ב-<b>207 ₪ בלבד</b>.</p>
+                    </div>
+                </div>
+
+                <!-- חלק 1: מצפן החלטה -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 1: מצפן ההחלטה (פסיכולוגיה)</h2>
+                    <p class="text-slate-600 mb-6">ענה על 4 השאלות הבאות ובדוק לאיזה פרופיל אתה משתייך.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-medium text-slate-700">1. כשאתה חושב על מוסך, אתה מרגיש:</p>
+                            <ul class="list-disc pr-6 mt-2 text-slate-600">
+                                <li><b>(א)</b> חרדה. אין לי זמן/כוח לזה, רק שלא ירמו אותי.</li>
+                                <li><b>(ב)</b> חלק מהחיים. מוצאים מוסכניק אמין ומטפלים כשצריך.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">2. כשאתה רואה חשבון של 2,670 ₪ על ליסינג חודשי:</p>
+                            <ul class="list-disc pr-6 mt-2 text-slate-600">
+                                <li><b>(א)</b> מרגיש נוח. אני יודע בדיוק מה ההוצאה ואין הפתעות.</li>
+                                <li><b>(ב)</b> בזבוז. אני "זורק" כסף לפח במקום לקנות נכס.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">3. המחשבה על מכירת רכב בעוד 4 שנים גורמת לך:</p>
+                            <ul class="list-disc pr-6 mt-2 text-slate-600">
+                                <li><b>(א)</b> כאב ראש. להתעסק עם קונים, בדיקות, טלפונים.</li>
+                                <li><b>(ב)</b> סבבה. זה חלק מהתהליך, אקבל כסף טוב חזרה.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">4. כשתינוק בוכה באוטו ואתה ממהר, הדבר האחרון שאתה רוצה הוא:</p>
+                            <ul class="list-disc pr-6 mt-2 text-slate-600">
+                                <li><b>(א)</b> נורה שנדלקת בלוח מחוונים או רעש מוזר מהגיר.</li>
+                                <li><b>(ב)</b> לחשוב כמה כסף הליסינג הזה עולה לי כל חודש.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-blue-800 text-lg">רוב התשובות (א): פרופיל "שקט נפשי"</h4>
+                            <p class="text-slate-700 mt-2">הנוחות, הוודאות והיעדר הסיכון שווים לך את הפרמיה החודשית. אתה מעדיף לשלם קצת יותר ולהוריד את הרכב מרשימת הדאגות שלך. הלחץ מתיקונים גדול יותר מהלחץ על חשבון הבנק.<br><b>המלצה: לך על עסקת הליסינג.</b></p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-green-800 text-lg">פרופיל "ערך כלכלי"</h4>
+                            <p class="text-slate-700 mt-2">אתה מבין שרכב זה כסף, ומוכן להתעסק קצת עם תחזוקה ובלאי כדי לחסוך עשרות אלפי שקלים בטווח הארוך. אתה לא מפחד ממוסכים ורואה בקנייה השקעה נבונה.<br><b>המלצה: קנה משומש לטווח ארוך (6+ שנים).</b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- חלק 2: טבלת כסף שרוף -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 2: טבלת "הכסף שנעלם" (3 שנים) - מעודכן</h2>
+                    <p class="text-slate-600 mb-6">השוואה לטווח קצר (3 שנים): כמה כסף "נשרף" (יצא ולא יחזור) בקניית אטקה 2021 משומשת לעומת הצעת הליסינג החדשה (2,670 ₪).</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead>
+                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
+                                    <th class="p-4 w-1/3">סעיף</th>
+                                    <th class="p-4 w-1/3 bg-orange-50 border-r border-orange-100">🔧 קניית אטקה 2021 (משומשת)</th>
+                                    <th class="p-4 w-1/3 bg-blue-50 border-r border-blue-100">✨ ליסינג אטקה 2025 (2,670 ₪)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה יוצא מהכיס במשך 3 שנים?</td></tr>
+                                <tr><td class="p-4">עלות הרכב / עסקה</td><td class="p-4 money-out">90,000 ₪-</td><td class="p-4 money-out">103,620 ₪- (7.5k + 36*2.67k)</td></tr>
+                                <tr><td class="p-4">ריבית על הלוואה</td><td class="p-4 money-out">5,000 ₪-</td><td class="p-4 text-gray-400">0 ₪</td></tr>
+                                <tr><td class="p-4">ביטוח (חובה+מקיף)</td><td class="p-4 money-out">16,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
+                                <tr><td class="p-4">טיפולים + טסטים</td><td class="p-4 money-out">7,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
+                                <tr><td class="p-4">אגרת רישוי שנתית (x3)</td><td class="p-4 money-out">6,000 ₪- (2k*3)</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
+                                <tr><td class="p-4">צמיגים ובלמים (פעם 1)</td><td class="p-4 money-out">3,000 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
+                                <tr><td class="p-4 bg-red-50">סיכון תיקונים (גיר/בלאי)</td><td class="p-4 money-out bg-red-50">9,000 ₪-</td><td class="p-4 font-bold text-green-600 bg-red-50">0 ₪ (אחריות)</td></tr>
+                                <tr class="font-bold bg-slate-50"><td class="p-4">סה"כ יצא מהארנק</td><td class="p-4 text-red-700">137,000 ₪-</td><td class="p-4 text-red-700">103,620 ₪-</td></tr>
+                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה חוזר לכיס בסוף התקופה?</td></tr>
+                                <tr><td class="p-4">מכירת הרכב (צפי ל-2028)</td><td class="p-4 money-in">45,000 ₪+</td><td class="p-4 text-gray-400">0 ₪</td></tr>
+                            </tbody>
+                            <tfoot class="final-row">
+                                <tr>
+                                    <td class="p-6 text-lg">שורה תחתונה:<br><span class="text-sm opacity-75">כסף שנשרף סופית</span></td>
+                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
+                                        92,000 ₪
+                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,555 ₪ בחודש</div>
+                                    </td>
+                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
+                                        103,620 ₪
+                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,878 ₪ בחודש</div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="p-4 bg-yellow-50 text-center border-t border-yellow-200 mt-4 rounded-b-lg">
+                        <h3 class="text-xl font-bold text-yellow-800">ההפרש האמיתי: כ-323 ₪ לחודש בלבד!</h3>
+                        <p class="text-yellow-700 mt-1">מסקנה: עלות השקט הנפשי המוחלט ("הכל כלול") היא כ-323 ₪ לחודש.</p>
+                    </div>
+                </div>
+
+                <!-- חלק 3: ציר זמן משפחתי -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 3: אסטרטגיית "מלכודת הילד השלישי" 👶👶👶</h2>
+                    <p class="text-slate-600 mb-6">ניתוח זה מראה מדוע תכנון לילד שלישי הופך את "הקנייה ל-6 שנים" למסוכנת כלכלית, וכיצד הליסינג פותר את הבעיה הזו.</p>
+                    
+                    <div class="bg-red-50 border-r-4 border-red-500 p-4 rounded-lg mb-6">
+                        <h3 class="text-lg font-bold text-red-800 mb-2">🚫 הבעיה: רכב 5 מקומות סטנדרטי (כמו אטקה) אינו מתאים ל-3 כסאות בטיחות.</h3>
+                        <p class="text-slate-700">
+                            כשהילד השלישי יגיע, תהיו חייבים להחליף את הרכב לרכב רחב יותר או 7 מקומות.
+                        </p>
+                    </div>
+
+                    <div class="relative border-l-4 border-slate-300 pr-6 py-2 space-y-12">
+                        <!-- שנה 0-3 -->
+                        <div class="relative">
+                            <div class="absolute -right-9 top-0 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                            <h4 class="text-xl font-bold text-slate-800">השנים הקרובות (2025-2028)</h4>
+                            <p class="text-slate-600 mt-1">הרכב (אטקה/קארוק) מושלם ל-2 ילדים ועגלה.</p>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-100 p-3 rounded border border-blue-200"><span class="font-bold text-blue-800">בליסינג:</span> משלמים תשלום חודשי ונהנים משקט.</div>
+                                <div class="bg-orange-100 p-3 rounded border border-orange-200"><span class="font-bold text-orange-800">בקנייה:</span> משלמים הלוואה כבדה ומתכננים ליהנות מ-3 שנים "חינם" (4-6).</div>
+                            </div>
+                        </div>
+
+                        <!-- שנה 3-4: הילד השלישי מגיע -->
+                        <div class="relative">
+                            <div class="absolute -right-9 top-0 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                            <h4 class="text-xl font-bold text-indigo-700">נקודת המפנה: הילד השלישי מגיע (סביב 2028-2029)</h4>
+                            <p class="text-slate-600 mt-1">פתאום הרכב קטן מדי! חייבים להחליף.</p>
+                            
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-green-50 p-4 rounded border border-green-300 shadow-sm">
+                                    <h5 class="font-bold text-green-800 border-b border-green-200 pb-2 mb-2">✅ היתרון האדיר בליסינג</h5>
+                                    <p class="text-sm text-slate-700">
+                                        בדיוק נגמרו ה-3 שנים! פשוט מחזירים את המפתח של האטקה, ואומרים: "תודה, עכשיו תביאו לי רכב 7 מקומות".
+                                        <br><b>עלות המעבר: 0 ₪. גמישות מוחלטת.</b>
+                                    </p>
+                                </div>
+                                <div class="bg-red-50 p-4 rounded border border-red-300 shadow-sm">
+                                    <h5 class="font-bold text-red-800 border-b border-red-200 pb-2 mb-2">❌ המלכודת בקנייה</h5>
+                                    <p class="text-sm text-slate-700">
+                                        בדיוק סיימת לשלם את ההלוואה. תכננת ליהנות מהרכב "בחינם" – אבל הוא קטן מדי! אתה חייב למכור אותו בלחץ ולקחת הלוואה חדשה לרכב גדול יותר.
+                                        <br><b>הפסדת את כל החיסכון של "הטווח הארוך".</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-6 rounded-xl text-center border border-indigo-200 mt-8">
+                        <h3 class="text-2xl font-bold text-indigo-900 mb-2">מסקנה אסטרטגית</h3>
+                        <p class="text-lg text-indigo-800">
+                            בגלל הילד השלישי, אתם צריכים <b>תחנת יציאה</b> בעוד 3 שנים. הליסינג הוא הכלי היחיד שנותן לכם את הגמישות הזו בעלות כמעט זהה.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
             <!-- ########## TAB 1: דוח נתונים מלא ########## -->
-            <div id="tab-data" class="tab-content active space-y-8">
+            <div id="tab-data" class="tab-content space-y-8">
                 
                 <!-- תקציר מנהלים -->
                 <div class="bg-indigo-50 border-r-4 border-indigo-400 p-6 rounded-lg shadow-md">
@@ -108,7 +302,7 @@
                     <h3 class="text-xl font-bold text-slate-800 mt-4">3. ממצאים עיקריים (קלות חניה וליסינג)</h3>
                     <p class="text-slate-700 mt-2">
                         <b>קלות חניה:</b> המאזדה (4.55מ') והטיגואן (4.51מ') הן הארוכות והמאתגרות ביותר לחניה. האוקטביה (4.69מ') ארוכה מאוד אך צרה. ה<b>קארוק (4.38מ') והאטקה (4.36מ') הן הקומפקטיות והנוחות ביותר לחניה</b>.
-                        <br><b>ניתוח ליסינג מול מצב קיים:</b> העלות החודשית האמיתית של החזקת האופל קורסה הנוכחית (כ-2,469 ₪) כמעט זהה לעלות עסקת ליסינג "הכל כלול" (2,670 ₪) לאטקה חדשה. <b>המשמעות: בתוספת של כ-200 ₪ בחודש, ניתן לשדרג מרכב ישן וקטן ל-SUV משפחתי חדש עם 0 סיכונים.</b>
+                        <br><b>ניתוח ליסינג מול מצב קיים:</b> העלות החודשית האמיתית של החזקת האופל קורסה הנוכחית (כ-2,380 ₪, מבוסס חשבוניות) כמעט זהה לעלות עסקת ליסינג "הכל כלול" (2,670 ₪) לאטקה חדשה. <b>המשמעות: בתוספת של כ-290 ₪ בחודש, ניתן לשדרג מרכב ישן וקטן ל-SUV משפחתי חדש עם 0 סיכונים.</b>
                     </p>
                 </div>
 
@@ -515,201 +709,6 @@
                 </div>
             </div>
 
-            <!-- ########## TAB 4: כלי החלטה (אסטרטגיה) ########## -->
-            <div id="tab-strategy" class="tab-content space-y-10">
-                
-                <!-- חלק 0: ניתוח מצב קיים -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-yellow-400">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 0: ניתוח מצב קיים (אופל קורסה)</h2>
-                    <p class="text-slate-600 mb-6">לפני שמחליטים, חשוב להבין כמה עולה המצב הנוכחי. הטבלה מנתחת את ההוצאה החודשית הריאלית על האופל קורסה, כולל כל התיקונים והבלאי שציינת.</p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
-                                    <th class="p-4 w-1/2">סעיף הוצאה (אופל קורסה)</th>
-                                    <th class="p-4 w-1/4">חישוב שנתי</th>
-                                    <th class="p-4 w-1/4">עלות חודשית ממוצעת</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr><td class="p-3 font-medium">הלוואה</td><td class="p-3">1,000 ₪ * 12</td><td class="p-3 font-bold text-red-600">1,000 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">דלק</td><td class="p-3">700 ₪ * 12</td><td class="p-3 font-bold text-red-600">700 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">ביטוח (הערכה)</td><td class="p-3">~3,500 ₪</td><td class="p-3 font-bold text-red-600">292 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">אגרת רישוי</td><td class="p-3">~700 ₪</td><td class="p-3 font-bold text-red-600">58 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">טיפולים (כל 10k ק"מ)</td><td class="p-3">~1,125 ₪ (ל-15,000 ק"מ)</td><td class="p-3 font-bold text-red-600">94 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">בלאי ותיקונים (בלמים, צמיגים, סלילים, כריות)</td><td class="p-3">1,000+1,200+1,200+500 = 3,900 ₪</td><td class="p-3 font-bold text-red-600">325 ₪</td></tr>
-                            </tbody>
-                            <tfoot class="final-row">
-                                <tr>
-                                    <td class="p-6 text-lg" colspan="2">שורה תחתונה: עלות חודשית אמיתית (קורסה)</td>
-                                    <td class="p-6 text-3xl font-bold text-red-300">
-                                        ~2,469 ₪
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="p-4 bg-yellow-100 text-center border-t border-yellow-300 mt-4 rounded-b-lg">
-                        <h3 class="text-xl font-bold text-yellow-900">מסקנה: אתה כבר משלם מחיר של SUV</h3>
-                        <p class="text-yellow-800 mt-1">העלות האמיתית של הקורסה הישנה היא כ-2,469 ₪ בחודש. הצעת הליסינג לאטקה חדשה (2,670 ₪) יקרה ב-<b>201 ₪ בלבד</b>.</p>
-                    </div>
-                </div>
-
-                <!-- חלק 1: מצפן החלטה -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 1: מצפן ההחלטה (פסיכולוגיה)</h2>
-                    <p class="text-slate-600 mb-6">ענה על 4 השאלות הבאות ובדוק לאיזה פרופיל אתה משתייך.</p>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <p class="font-medium text-slate-700">1. כשאתה חושב על מוסך, אתה מרגיש:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> חרדה. אין לי זמן/כוח לזה, רק שלא ירמו אותי.</li>
-                                <li><b>(ב)</b> חלק מהחיים. מוצאים מוסכניק אמין ומטפלים כשצריך.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">2. כשאתה רואה חשבון של 2,670 ₪ על ליסינג חודשי:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> מרגיש נוח. אני יודע בדיוק מה ההוצאה ואין הפתעות.</li>
-                                <li><b>(ב)</b> בזבוז. אני "זורק" כסף לפח במקום לקנות נכס.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">3. המחשבה על מכירת רכב בעוד 4 שנים גורמת לך:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> כאב ראש. להתעסק עם קונים, בדיקות, טלפונים.</li>
-                                <li><b>(ב)</b> סבבה. זה חלק מהתהליך, אקבל כסף טוב חזרה.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">4. כשתינוק בוכה באוטו ואתה ממהר, הדבר האחרון שאתה רוצה הוא:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> נורה שנדלקת בלוח מחוונים או רעש מוזר מהגיר.</li>
-                                <li><b>(ב)</b> לחשוב כמה כסף הליסינג הזה עולה לי כל חודש.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <h4 class="font-bold text-blue-800 text-lg">רוב התשובות (א): פרופיל "שקט נפשי"</h4>
-                            <p class="text-slate-700 mt-2">הנוחות, הוודאות והיעדר הסיכון שווים לך את הפרמיה החודשית. אתה מעדיף לשלם קצת יותר ולהוריד את הרכב מרשימת הדאגות שלך. הלחץ מתיקונים גדול יותר מהלחץ על חשבון הבנק.<br><b>המלצה: לך על עסקת הליסינג.</b></p>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                            <h4 class="font-bold text-green-800 text-lg">פרופיל "ערך כלכלי"</h4>
-                            <p class="text-slate-700 mt-2">אתה מבין שרכב זה כסף, ומוכן להתעסק קצת עם תחזוקה ובלאי כדי לחסוך עשרות אלפי שקלים בטווח הארוך. אתה לא מפחד ממוסכים ורואה בקנייה השקעה נבונה.<br><b>המלצה: קנה משומש לטווח ארוך (6+ שנים).</b></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- חלק 2: טבלת כסף שרוף -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 2: טבלת "הכסף שנעלם" (3 שנים) - מעודכן</h2>
-                    <p class="text-slate-600 mb-6">השוואה לטווח קצר (3 שנים): כמה כסף "נשרף" (יצא ולא יחזור) בקניית אטקה 2021 משומשת לעומת הצעת הליסינג החדשה (2,670 ₪).</p>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
-                                    <th class="p-4 w-1/3">סעיף</th>
-                                    <th class="p-4 w-1/3 bg-orange-50 border-r border-orange-100">🔧 קניית אטקה 2021 (משומשת)</th>
-                                    <th class="p-4 w-1/3 bg-blue-50 border-r border-blue-100">✨ ליסינג אטקה 2025 (2,670 ₪)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה יוצא מהכיס במשך 3 שנים?</td></tr>
-                                <tr><td class="p-4">עלות הרכב / עסקה</td><td class="p-4 money-out">90,000 ₪-</td><td class="p-4 money-out">103,620 ₪- (7.5k + 36*2.67k)</td></tr>
-                                <tr><td class="p-4">ריבית על הלוואה</td><td class="p-4 money-out">5,000 ₪-</td><td class="p-4 text-gray-400">0 ₪</td></tr>
-                                <tr><td class="p-4">ביטוח (חובה+מקיף)</td><td class="p-4 money-out">16,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">טיפולים + טסטים</td><td class="p-4 money-out">7,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">אגרת רישוי שנתית (x3)</td><td class="p-4 money-out">6,000 ₪- (2k*3)</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">צמיגים ובלמים (פעם 1)</td><td class="p-4 money-out">3,000 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4 bg-red-50">סיכון תיקונים (גיר/בלאי)</td><td class="p-4 money-out bg-red-50">9,000 ₪-</td><td class="p-4 font-bold text-green-600 bg-red-50">0 ₪ (אחריות)</td></tr>
-                                <tr class="font-bold bg-slate-50"><td class="p-4">סה"כ יצא מהארנק</td><td class="p-4 text-red-700">137,000 ₪-</td><td class="p-4 text-red-700">103,620 ₪-</td></tr>
-                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה חוזר לכיס בסוף התקופה?</td></tr>
-                                <tr><td class="p-4">מכירת הרכב (צפי ל-2028)</td><td class="p-4 money-in">45,000 ₪+</td><td class="p-4 text-gray-400">0 ₪</td></tr>
-                            </tbody>
-                            <tfoot class="final-row">
-                                <tr>
-                                    <td class="p-6 text-lg">שורה תחתונה:<br><span class="text-sm opacity-75">כסף שנשרף סופית</span></td>
-                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
-                                        92,000 ₪
-                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,555 ₪ בחודש</div>
-                                    </td>
-                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
-                                        103,620 ₪
-                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,878 ₪ בחודש</div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="p-4 bg-yellow-50 text-center border-t border-yellow-200 mt-4 rounded-b-lg">
-                        <h3 class="text-xl font-bold text-yellow-800">ההפרש האמיתי: כ-323 ₪ לחודש בלבד!</h3>
-                        <p class="text-yellow-700 mt-1">מסקנה: עלות השקט הנפשי המוחלט ("הכל כלול") היא כ-323 ₪ לחודש.</p>
-                    </div>
-                </div>
-
-                <!-- חלק 3: ציר זמן משפחתי -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 3: אסטרטגיית "מלכודת הילד השלישי" 👶👶👶</h2>
-                    <p class="text-slate-600 mb-6">ניתוח זה מראה מדוע תכנון לילד שלישי הופך את "הקנייה ל-6 שנים" למסוכנת כלכלית, וכיצד הליסינג פותר את הבעיה הזו.</p>
-                    
-                    <div class="bg-red-50 border-r-4 border-red-500 p-4 rounded-lg mb-6">
-                        <h3 class="text-lg font-bold text-red-800 mb-2">🚫 הבעיה: רכב 5 מקומות סטנדרטי (כמו אטקה) אינו מתאים ל-3 כסאות בטיחות.</h3>
-                        <p class="text-slate-700">
-                            כשהילד השלישי יגיע, תהיו חייבים להחליף את הרכב לרכב רחב יותר או 7 מקומות.
-                        </p>
-                    </div>
-
-                    <div class="relative border-l-4 border-slate-300 pr-6 py-2 space-y-12">
-                        <!-- שנה 0-3 -->
-                        <div class="relative">
-                            <div class="absolute -right-9 top-0 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                            <h4 class="text-xl font-bold text-slate-800">השנים הקרובות (2025-2028)</h4>
-                            <p class="text-slate-600 mt-1">הרכב (אטקה/קארוק) מושלם ל-2 ילדים ועגלה.</p>
-                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-blue-100 p-3 rounded border border-blue-200"><span class="font-bold text-blue-800">בליסינג:</span> משלמים תשלום חודשי ונהנים משקט.</div>
-                                <div class="bg-orange-100 p-3 rounded border border-orange-200"><span class="font-bold text-orange-800">בקנייה:</span> משלמים הלוואה כבדה ומתכננים ליהנות מ-3 שנים "חינם" (4-6).</div>
-                            </div>
-                        </div>
-
-                        <!-- שנה 3-4: הילד השלישי מגיע -->
-                        <div class="relative">
-                            <div class="absolute -right-9 top-0 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                            <h4 class="text-xl font-bold text-indigo-700">נקודת המפנה: הילד השלישי מגיע (סביב 2028-2029)</h4>
-                            <p class="text-slate-600 mt-1">פתאום הרכב קטן מדי! חייבים להחליף.</p>
-                            
-                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-green-50 p-4 rounded border border-green-300 shadow-sm">
-                                    <h5 class="font-bold text-green-800 border-b border-green-200 pb-2 mb-2">✅ היתרון האדיר בליסינג</h5>
-                                    <p class="text-sm text-slate-700">
-                                        בדיוק נגמרו ה-3 שנים! פשוט מחזירים את המפתח של האטקה, ואומרים: "תודה, עכשיו תביאו לי רכב 7 מקומות".
-                                        <br><b>עלות המעבר: 0 ₪. גמישות מוחלטת.</b>
-                                    </p>
-                                </div>
-                                <div class="bg-red-50 p-4 rounded border border-red-300 shadow-sm">
-                                    <h5 class="font-bold text-red-800 border-b border-red-200 pb-2 mb-2">❌ המלכודת בקנייה</h5>
-                                    <p class="text-sm text-slate-700">
-                                        בדיוק סיימת לשלם את ההלוואה. תכננת ליהנות מהרכב "בחינם" – אבל הוא קטן מדי! אתה חייב למכור אותו בלחץ ולקחת הלוואה חדשה לרכב גדול יותר.
-                                        <br><b>הפסדת את כל החיסכון של "הטווח הארוך".</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-indigo-50 p-6 rounded-xl text-center border border-indigo-200 mt-8">
-                        <h3 class="text-2xl font-bold text-indigo-900 mb-2">מסקנה אסטרטגית</h3>
-                        <p class="text-lg text-indigo-800">
-                            בגלל הילד השלישי, אתם צריכים <b>תחנת יציאה</b> בעוד 3 שנים. הליסינג הוא הכלי היחיד שנותן לכם את הגמישות הזו בעלות כמעט זהה.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-
         </main>
     </div>
 
@@ -741,7 +740,8 @@
 
         // טעינת גרפים בטאב הראשון
         document.addEventListener('DOMContentLoaded', () => {
-             // אין צורך לטעון גרפים מיד, רק כלי החלטה רלוונטי
+             // הפעל את הטאב האסטרטגי כברירת מחדל
+             showTab('tab-strategy');
         });
 
 
@@ -868,7 +868,6 @@
             });
         }
     </script>
-
 
 </body>
 </html>
