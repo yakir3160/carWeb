@@ -3,871 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דוח רכב אולטימטיבי (מבוסס חשבוניות)</title>
+    <title>השוואה מתוקנת: כולל דלק</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Rubik', sans-serif; background-color: #f8fafc; }
-        .tab-button {
-            padding: 0.75rem 1rem;
-            margin: 0.25rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-        .tab-button.active {
-            background-color: #1e3a8a;
-            color: white;
-            border-color: #3b82f6;
-        }
-        .tab-button:not(.active) {
-            background-color: #e2e8f0;
-            color: #334155;
-        }
-        .tab-button:not(.active):hover {
-            background-color: #cbd5e1;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        /* התאמות למובייל */
-        @media (max-width: 768px) {
-            .tab-nav {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .tab-button {
-                text-align: center;
-                width: 100%;
-                margin: 0.25rem 0;
-            }
-            .table-responsive {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            table { min-width: 800px; }
-            .radar-label { font-size: 0.6rem !important; }
-            .cost-graph-container { height: 600px !important; }
-        }
-
-        /* סגנונות לכלי ההחלטה */
-        .timeline-point { width: 20px; height: 20px; border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); }
-        .money-out { color: #dc2626; font-weight: 500; }
-        .money-in { color: #16a34a; font-weight: 700; }
-        .final-row { background-color: #1e293b; color: white; }
+        body { font-family: 'Rubik', sans-serif; background-color: #f1f5f9; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         
-        <!-- כותרת ראשית -->
-        <header class="p-6 bg-slate-800 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold text-white">דוח רכב אולטימטיבי: נתונים מול אסטרטגיה</h1>
-            <p class="text-slate-300 mt-2 text-lg">ניתוח כלכלי (TCO, ליסינג) מול ניתוח אסטרטגי (נוחות, ילד שלישי)</p>
-        </header>
+        <div class="bg-slate-800 text-white p-6 text-center">
+            <h1 class="text-3xl font-bold">השוואת אמת (כולל דלק לכולם)</h1>
+            <p class="opacity-80 mt-2">תיקון הטעות: השוואה בין המצב הקיים, קניית משומשת, וליסינג חדש</p>
+        </div>
 
-        <!-- ניווט טאבים -->
-        <nav class="flex flex-wrap justify-center p-4 bg-slate-100 border-b-2 border-slate-200 tab-nav">
-            <button class="tab-button active" onclick="showTab('tab-strategy')">🧠 כלי החלטה (אסטרטגיה)</button>
-            <button class="tab-button" onclick="showTab('tab-data')">📊 דוח נתונים</button>
-            <button class="tab-button" onclick="showTab('tab-graphs')">📈 גרפים</button>
-            <button class="tab-button" onclick="showTab('tab-trims')">📋 רמות גימור</button>
-        </nav>
-
-        <!-- תוכן הטאבים -->
-        <main class="p-4 md:p-8 space-y-8">
-
-            <!-- ########## TAB 4: כלי החלטה (אסטרטגיה) - עכשיו הטאב הראשי ########## -->
-            <div id="tab-strategy" class="tab-content active space-y-10">
-                
-                <!-- חלק 0: ניתוח מצב קיים (מעודכן חשבוניות) -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-yellow-400">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 0: ניתוח מצב קיים (מבוסס חשבוניות)</h2>
-                    <p class="text-slate-600 mb-6">לפני שמחליטים, חשוב להבין כמה עולה המצב הנוכחי. הטבלה מנתחת את ההוצאה החודשית הריאלית על האופל קורסה, מבוססת על החשבוניות שסיפקת.</p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
-                                    <th class="p-4 w-1/2">סעיף הוצאה (אופל קורסה)</th>
-                                    <th class="p-4 w-1/4">חישוב (ינואר 2023 - מרץ 2025)</th>
-                                    <th class="p-4 w-1/4">עלות חודשית ממוצעת</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr><td class="p-3 font-medium">הלוואה</td><td class="p-3">1,000 ₪ * 12</td><td class="p-3 font-bold text-red-600">1,000 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">דלק</td><td class="p-3">700 ₪ * 12</td><td class="p-3 font-bold text-red-600">700 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">ביטוח (נתון ממך)</td><td class="p-3">4,500 ₪ / 12</td><td class="p-3 font-bold text-red-600">375 ₪</td></tr>
-                                <tr><td class="p-3 font-medium">אגרת רישוי (הערכה)</td><td class="p-3">~700 ₪ / 12</td><td class="p-3 font-bold text-red-600">58 ₪</td></tr>
-                                <tr><td class="p-3 font-medium bg-yellow-50">בלאי ותיקונים (מבוסס חשבוניות)</td><td class="p-3 bg-yellow-50">(5,835 ₪ + 1,890 ₪ + 1,200 ₪) / 27 חודשים</td><td class="p-3 font-bold text-red-600 bg-yellow-50">330 ₪</td></tr>
-                            </tbody>
-                            <tfoot class="final-row">
-                                <tr>
-                                    <td class="p-6 text-lg" colspan="2">שורה תחתונה: עלות חודשית אמיתית (קורסה)</td>
-                                    <td class="p-6 text-3xl font-bold text-red-300">
-                                        ~2,463 ₪
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="p-4 bg-yellow-100 text-center border-t border-yellow-300 mt-4 rounded-b-lg">
-                        <h3 class="text-xl font-bold text-yellow-900">מסקנה: אתה כבר משלם מחיר של SUV</h3>
-                        <p class="text-yellow-800 mt-1">העלות האמיתית של הקורסה הישנה היא כ-2,463 ₪ בחודש. הצעת הליסינג לאטקה חדשה (2,670 ₪) יקרה ב-<b>207 ₪ בלבד</b>.</p>
-                    </div>
-                </div>
-
-                <!-- חלק 1: מצפן החלטה -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 1: מצפן ההחלטה (פסיכולוגיה)</h2>
-                    <p class="text-slate-600 mb-6">ענה על 4 השאלות הבאות ובדוק לאיזה פרופיל אתה משתייך.</p>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <p class="font-medium text-slate-700">1. כשאתה חושב על מוסך, אתה מרגיש:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> חרדה. אין לי זמן/כוח לזה, רק שלא ירמו אותי.</li>
-                                <li><b>(ב)</b> חלק מהחיים. מוצאים מוסכניק אמין ומטפלים כשצריך.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">2. כשאתה רואה חשבון של 2,670 ₪ על ליסינג חודשי:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> מרגיש נוח. אני יודע בדיוק מה ההוצאה ואין הפתעות.</li>
-                                <li><b>(ב)</b> בזבוז. אני "זורק" כסף לפח במקום לקנות נכס.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">3. המחשבה על מכירת רכב בעוד 4 שנים גורמת לך:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> כאב ראש. להתעסק עם קונים, בדיקות, טלפונים.</li>
-                                <li><b>(ב)</b> סבבה. זה חלק מהתהליך, אקבל כסף טוב חזרה.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-700">4. כשתינוק בוכה באוטו ואתה ממהר, הדבר האחרון שאתה רוצה הוא:</p>
-                            <ul class="list-disc pr-6 mt-2 text-slate-600">
-                                <li><b>(א)</b> נורה שנדלקת בלוח מחוונים או רעש מוזר מהגיר.</li>
-                                <li><b>(ב)</b> לחשוב כמה כסף הליסינג הזה עולה לי כל חודש.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <h4 class="font-bold text-blue-800 text-lg">רוב התשובות (א): פרופיל "שקט נפשי"</h4>
-                            <p class="text-slate-700 mt-2">הנוחות, הוודאות והיעדר הסיכון שווים לך את הפרמיה החודשית. אתה מעדיף לשלם קצת יותר ולהוריד את הרכב מרשימת הדאגות שלך. הלחץ מתיקונים גדול יותר מהלחץ על חשבון הבנק.<br><b>המלצה: לך על עסקת הליסינג.</b></p>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                            <h4 class="font-bold text-green-800 text-lg">פרופיל "ערך כלכלי"</h4>
-                            <p class="text-slate-700 mt-2">אתה מבין שרכב זה כסף, ומוכן להתעסק קצת עם תחזוקה ובלאי כדי לחסוך עשרות אלפי שקלים בטווח הארוך. אתה לא מפחד ממוסכים ורואה בקנייה השקעה נבונה.<br><b>המלצה: קנה משומש לטווח ארוך (6+ שנים).</b></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- חלק 2: טבלת כסף שרוף -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 2: טבלת "הכסף שנעלם" (3 שנים) - מעודכן</h2>
-                    <p class="text-slate-600 mb-6">השוואה לטווח קצר (3 שנים): כמה כסף "נשרף" (יצא ולא יחזור) בקניית אטקה 2021 משומשת לעומת הצעת הליסינג החדשה (2,670 ₪).</p>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="bg-slate-100 border-b-2 border-slate-200 text-slate-700">
-                                    <th class="p-4 w-1/3">סעיף</th>
-                                    <th class="p-4 w-1/3 bg-orange-50 border-r border-orange-100">🔧 קניית אטקה 2021 (משומשת)</th>
-                                    <th class="p-4 w-1/3 bg-blue-50 border-r border-blue-100">✨ ליסינג אטקה 2025 (2,670 ₪)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה יוצא מהכיס במשך 3 שנים?</td></tr>
-                                <tr><td class="p-4">עלות הרכב / עסקה</td><td class="p-4 money-out">90,000 ₪-</td><td class="p-4 money-out">103,620 ₪- (7.5k + 36*2.67k)</td></tr>
-                                <tr><td class="p-4">ריבית על הלוואה</td><td class="p-4 money-out">5,000 ₪-</td><td class="p-4 text-gray-400">0 ₪</td></tr>
-                                <tr><td class="p-4">ביטוח (חובה+מקיף)</td><td class="p-4 money-out">16,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">טיפולים + טסטים</td><td class="p-4 money-out">7,500 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">אגרת רישוי שנתית (x3)</td><td class="p-4 money-out">6,000 ₪- (2k*3)</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4">צמיגים ובלמים (פעם 1)</td><td class="p-4 money-out">3,000 ₪-</td><td class="p-4 font-bold text-green-600">0 ₪ (כלול!)</td></tr>
-                                <tr><td class="p-4 bg-red-50">סיכון תיקונים (גיר/בלאי)</td><td class="p-4 money-out bg-red-50">9,000 ₪-</td><td class="p-4 font-bold text-green-600 bg-red-50">0 ₪ (אחריות)</td></tr>
-                                <tr class="font-bold bg-slate-50"><td class="p-4">סה"כ יצא מהארנק</td><td class="p-4 text-red-700">137,000 ₪-</td><td class="p-4 text-red-700">103,620 ₪-</td></tr>
-                                <tr class="bg-gray-50"><td class="p-4 font-bold text-slate-600" colspan="3">מה חוזר לכיס בסוף התקופה?</td></tr>
-                                <tr><td class="p-4">מכירת הרכב (צפי ל-2028)</td><td class="p-4 money-in">45,000 ₪+</td><td class="p-4 text-gray-400">0 ₪</td></tr>
-                            </tbody>
-                            <tfoot class="final-row">
-                                <tr>
-                                    <td class="p-6 text-lg">שורה תחתונה:<br><span class="text-sm opacity-75">כסף שנשרף סופית</span></td>
-                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
-                                        92,000 ₪
-                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,555 ₪ בחודש</div>
-                                    </td>
-                                    <td class="p-6 text-2xl font-bold text-red-300 border-r border-slate-600">
-                                        103,620 ₪
-                                        <div class="text-sm font-normal text-white mt-1 opacity-75">~2,878 ₪ בחודש</div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="p-4 bg-yellow-50 text-center border-t border-yellow-200 mt-4 rounded-b-lg">
-                        <h3 class="text-xl font-bold text-yellow-800">ההפרש האמיתי: כ-323 ₪ לחודש בלבד!</h3>
-                        <p class="text-yellow-700 mt-1">מסקנה: עלות השקט הנפשי המוחלט ("הכל כלול") היא כ-323 ₪ לחודש.</p>
-                    </div>
-                </div>
-
-                <!-- חלק 3: ציר זמן משפחתי -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-indigo-500">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">חלק 3: אסטרטגיית "מלכודת הילד השלישי" 👶👶👶</h2>
-                    <p class="text-slate-600 mb-6">ניתוח זה מראה מדוע תכנון לילד שלישי הופך את "הקנייה ל-6 שנים" למסוכנת כלכלית, וכיצד הליסינג פותר את הבעיה הזו.</p>
-                    
-                    <div class="bg-red-50 border-r-4 border-red-500 p-4 rounded-lg mb-6">
-                        <h3 class="text-lg font-bold text-red-800 mb-2">🚫 הבעיה: רכב 5 מקומות סטנדרטי (כמו אטקה) אינו מתאים ל-3 כסאות בטיחות.</h3>
-                        <p class="text-slate-700">
-                            כשהילד השלישי יגיע, תהיו חייבים להחליף את הרכב לרכב רחב יותר או 7 מקומות.
-                        </p>
-                    </div>
-
-                    <div class="relative border-l-4 border-slate-300 pr-6 py-2 space-y-12">
-                        <!-- שנה 0-3 -->
-                        <div class="relative">
-                            <div class="absolute -right-9 top-0 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                            <h4 class="text-xl font-bold text-slate-800">השנים הקרובות (2025-2028)</h4>
-                            <p class="text-slate-600 mt-1">הרכב (אטקה/קארוק) מושלם ל-2 ילדים ועגלה.</p>
-                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-blue-100 p-3 rounded border border-blue-200"><span class="font-bold text-blue-800">בליסינג:</span> משלמים תשלום חודשי ונהנים משקט.</div>
-                                <div class="bg-orange-100 p-3 rounded border border-orange-200"><span class="font-bold text-orange-800">בקנייה:</span> משלמים הלוואה כבדה ומתכננים ליהנות מ-3 שנים "חינם" (4-6).</div>
-                            </div>
-                        </div>
-
-                        <!-- שנה 3-4: הילד השלישי מגיע -->
-                        <div class="relative">
-                            <div class="absolute -right-9 top-0 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                            <h4 class="text-xl font-bold text-indigo-700">נקודת המפנה: הילד השלישי מגיע (סביב 2028-2029)</h4>
-                            <p class="text-slate-600 mt-1">פתאום הרכב קטן מדי! חייבים להחליף.</p>
-                            
-                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-green-50 p-4 rounded border border-green-300 shadow-sm">
-                                    <h5 class="font-bold text-green-800 border-b border-green-200 pb-2 mb-2">✅ היתרון האדיר בליסינג</h5>
-                                    <p class="text-sm text-slate-700">
-                                        בדיוק נגמרו ה-3 שנים! פשוט מחזירים את המפתח של האטקה, ואומרים: "תודה, עכשיו תביאו לי רכב 7 מקומות".
-                                        <br><b>עלות המעבר: 0 ₪. גמישות מוחלטת.</b>
-                                    </p>
-                                </div>
-                                <div class="bg-red-50 p-4 rounded border border-red-300 shadow-sm">
-                                    <h5 class="font-bold text-red-800 border-b border-red-200 pb-2 mb-2">❌ המלכודת בקנייה</h5>
-                                    <p class="text-sm text-slate-700">
-                                        בדיוק סיימת לשלם את ההלוואה. תכננת ליהנות מהרכב "בחינם" – אבל הוא קטן מדי! אתה חייב למכור אותו בלחץ ולקחת הלוואה חדשה לרכב גדול יותר.
-                                        <br><b>הפסדת את כל החיסכון של "הטווח הארוך".</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-indigo-50 p-6 rounded-xl text-center border border-indigo-200 mt-8">
-                        <h3 class="text-2xl font-bold text-indigo-900 mb-2">מסקנה אסטרטגית</h3>
-                        <p class="text-lg text-indigo-800">
-                            בגלל הילד השלישי, אתם צריכים <b>תחנת יציאה</b> בעוד 3 שנים. הליסינג הוא הכלי היחיד שנותן לכם את הגמישות הזו בעלות כמעט זהה.
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- ########## TAB 1: דוח נתונים מלא ########## -->
-            <div id="tab-data" class="tab-content space-y-8">
-                
-                <!-- תקציר מנהלים -->
-                <div class="bg-indigo-50 border-r-4 border-indigo-400 p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-indigo-900 mb-4">סיכום והמלצה סופית</h2>
-                    
-                    <h3 class="text-xl font-bold text-slate-800 mt-4">1. ניתוח כלכלי (TCO ל-6 שנים)</h3>
-                    <p class="text-slate-700 mt-2">
-                        הניתוח הכלכלי לטווח ארוך (6 שנים) חושף תמונה ברורה: ה**מאזדה CX-5** היא הזולה ביותר לאחזקה, בזכות האמינות המוכחת (0₪ סיכון גיר) שמפצה על צריכת הדלק הגבוהה. אחריה, בפער קטן, נמצאת ה**סקודה אוקטביה 1.0ל'**.
-                        רכבי ה-SUV מקבוצת פולקסווגן (<b>אטקה וקארוק</b>) יקרים יותר בכ-10-15 אלף ש"ח לאורך התקופה, בעיקר עקב "קנס" סיכון הגיר (DSG) שחושב בעלות של 18,000 ₪.
-                    </p>
-
-                    <h3 class="text-xl font-bold text-slate-800 mt-4">2. ניתוח פרקטי (התלבטות ה-SUV)</h3>
-                    <p class="text-slate-700 mt-2">
-                        בעוד המאזדה מנצחת כלכלית (בטווח הארוך), יש לה טרייד-אוף ברור:
-                    </p>
-                    <ul class="list-disc pr-6 mt-2 space-y-1 text-slate-700">
-                        <li><b>מאזדה CX-5:</b> אמינות מוכחת, אך תא מטען קטן משמעותית (442ל') וצריכת דלק גבוהה.</li>
-                        <li><b>אטקה / קארוק:</b> פרקטיות מצוינת (תא מטען ענק 510-521ל'), חיסכון בדלק, אך מגיעים עם סיכון הגיר ועלות כוללת גבוהה יותר.</li>
-                    </ul>
-
-                    <h3 class="text-xl font-bold text-slate-800 mt-4">3. ממצאים עיקריים (קלות חניה וליסינג)</h3>
-                    <p class="text-slate-700 mt-2">
-                        <b>קלות חניה:</b> המאזדה (4.55מ') והטיגואן (4.51מ') הן הארוכות והמאתגרות ביותר לחניה. האוקטביה (4.69מ') ארוכה מאוד אך צרה. ה<b>קארוק (4.38מ') והאטקה (4.36מ') הן הקומפקטיות והנוחות ביותר לחניה</b>.
-                        <br><b>ניתוח ליסינג מול מצב קיים:</b> העלות החודשית האמיתית של החזקת האופל קורסה הנוכחית (כ-2,380 ₪, מבוסס חשבוניות) כמעט זהה לעלות עסקת ליסינג "הכל כלול" (2,670 ₪) לאטקה חדשה. <b>המשמעות: בתוספת של כ-290 ₪ בחודש, ניתן לשדרג מרכב ישן וקטן ל-SUV משפחתי חדש עם 0 סיכונים.</b>
-                    </p>
-                </div>
-
-                <!-- טבלת השוואה ראשית -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">טבלת השוואה ראשית</h2>
-                    <div class="table-responsive">
-                        <table class="w-full text-right border-collapse">
-                            <thead>
-                                <tr class="bg-slate-100 text-slate-600">
-                                    <th class="p-3 border">פרמטר</th>
-                                    <th class="p-3 border">סקודה אוקטביה (1.0ל')</th>
-                                    <th class="p-3 border">סקודה קארוק</th>
-                                    <th class="p-3 border">סיאט אטקה</th>
-                                    <th class="p-3 border">מאזדה CX-5</th>
-                                    <th class="p-3 border">פולקסווגן טיגואן</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr>
-                                    <td class="p-3 border font-medium">שנתונים רלוונטיים</td>
-                                    <td class="p-3 border">2021-2022</td>
-                                    <td class="p-3 border">2021-2022</td>
-                                    <td class="p-3 border">2021-2022</td>
-                                    <td class="p-3 border">2019-2020</td>
-                                    <td class="p-3 border">2020-2022</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">צריכת דלק (משולב)</td>
-                                    <td class="p-3 border bg-green-50">17 ק"מ/ליטר</td>
-                                    <td class="p-3 border bg-green-50">16 ק"מ/ליטר</td>
-                                    <td class="p-3 border bg-green-50">16 ק"מ/ליטר</td>
-                                    <td class="p-3 border bg-red-50">12 ק"מ/ליטר</td>
-                                    <td class="p-3 border bg-red-50">12.5 ק"מ/ליטר</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">נפח תא מטען</td>
-                                    <td class="p-3 border bg-green-50">600 ליטר (ענק אך נמוך)</td>
-                                    <td class="p-3 border bg-green-50">521 ליטר (מצוין)</td>
-                                    <td class="p-3 border bg-green-50">510 ליטר (מצוין)</td>
-                                    <td class="p-3 border bg-red-50">442 ליטר (הכי קטן)</td>
-                                    <td class="p-3 border bg-green-50">615 ליטר (עם הזזת מושב)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">קלות חניה (אורך רכב)</td>
-                                    <td class="p-3 border bg-red-50">קשה (4.69מ')</td>
-                                    <td class="p-3 border bg-green-50">קל (4.38מ')</td>
-                                    <td class="p-3 border bg-green-50">קל (4.36מ')</td>
-                                    <td class="p-3 border bg-red-50">בינוני-קשה (4.55מ')</td>
-                                    <td class="p-3 border bg-red-50">בינוני-קשה (4.51מ')</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">נוחות הכנסת תינוקות</td>
-                                    <td class="p-3 border bg-red-50">נמוך (רכב סדאן)</td>
-                                    <td class="p-3 border bg-green-50">גבוה (SUV)</td>
-                                    <td class="p-3 border bg-green-50">גבוה (SUV)</td>
-                                    <td class="p-3 border bg-green-50">גבוה (SUV)</td>
-                                    <td class="p-3 border bg-green-50">גבוה (SUV)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">התאמה ל-3 מושבי בטיחות</td>
-                                    <td class="p-3 border bg-red-50">בלתי אפשרי</td>
-                                    <td class="p-3 border bg-yellow-50">קשה/דחוק</td>
-                                    <td class="p-3 border bg-yellow-50">קשה/דחוק</td>
-                                    <td class="p-3 border bg-yellow-50">קשה/דחוק</td>
-                                    <td class="p-3 border bg-green-50">אפשרי (הטוב בחבורה)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">אמינות גיר (סיכון)</td>
-                                    <td class="p-3 border bg-red-50">גבוה (DSG7)</td>
-                                    <td class="p-3 border bg-red-50">גבוה (DSG7)</td>
-                                    <td class="p-3 border bg-red-50">גבוה (DSG7)</td>
-                                    <td class="p-3 border bg-green-50">נמוך מאוד (פלנטרי)</td>
-                                    <td class="p-3 border bg-red-50">גבוה (DSG7)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- ניתוח הלוואה -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">ניתוח הלוואה (ריבית 5.5% קבועה)</h2>
-                    <p class="text-slate-600 mb-6">הטבלאות מציגות את ההחזר החודשי הצפוי לפי שני תרחישי מימון (70% ו-90%) ולפי שתי תקופות פריסה (36 ו-48 חודשים).</p>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="text-slate-600">
+                            <th class="p-4 border-b-2">סעיף הוצאה</th>
+                            <th class="p-4 border-b-2 bg-gray-50 border-r">🚗 המצב היום<br><span class="text-sm font-normal">(אופל קורסה 2013)</span></th>
+                            <th class="p-4 border-b-2 bg-orange-50 border-r">🔧 קניית משומשת<br><span class="text-sm font-normal">(אטקה 2021)</span></th>
+                            <th class="p-4 border-b-2 bg-blue-50 border-r">✨ ליסינג חדש<br><span class="text-sm font-normal">(אטקה 2025)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <!-- עלות בסיס / הלוואה -->
+                        <tr>
+                            <td class="p-3 font-medium">תשלום חודשי (הלוואה/ליסינג)</td>
+                            <td class="p-3 bg-gray-50 border-r">1,000 ₪</td>
+                            <td class="p-3 bg-orange-50 border-r text-red-600 font-bold">~1,900 ₪<br><span class="text-xs text-gray-500 font-normal">(הלוואה 70%)</span></td>
+                            <td class="p-3 bg-blue-50 border-r text-blue-600 font-bold">2,670 ₪<br><span class="text-xs text-gray-500 font-normal">(ליסינג)</span></td>
+                        </tr>
+                        <!-- דלק -->
+                        <tr>
+                            <td class="p-3 font-medium">דלק (הערכה ריאלית)</td>
+                            <td class="p-3 bg-gray-50 border-r">700 ₪</td>
+                            <td class="p-3 bg-orange-50 border-r">750 ₪<br><span class="text-xs text-gray-500">(צריכה דומה לקורסה)</span></td>
+                            <td class="p-3 bg-blue-50 border-r">750 ₪<br><span class="text-xs text-gray-500">(צריכה דומה)</span></td>
+                        </tr>
+                        <!-- ביטוח -->
+                        <tr>
+                            <td class="p-3 font-medium">ביטוח (חובה + מקיף)</td>
+                            <td class="p-3 bg-gray-50 border-r text-red-500">375 ₪</td>
+                            <td class="p-3 bg-orange-50 border-r text-red-500">450 ₪</td>
+                            <td class="p-3 bg-blue-50 border-r text-green-600 font-bold">0 ₪<br><span class="text-xs font-normal">(כלול)</span></td>
+                        </tr>
+                        <!-- תחזוקה -->
+                        <tr>
+                            <td class="p-3 font-medium">טיפולים / טסט / בלאי</td>
+                            <td class="p-3 bg-gray-50 border-r text-red-500">388 ₪<br><span class="text-xs text-gray-500">(לפי חשבוניות)</span></td>
+                            <td class="p-3 bg-orange-50 border-r text-red-500">300 ₪<br><span class="text-xs text-gray-500">(הערכה + סיכון)</span></td>
+                            <td class="p-3 bg-blue-50 border-r text-green-600 font-bold">0 ₪<br><span class="text-xs font-normal">(כלול)</span></td>
+                        </tr>
                         
-                        <!-- 36 חודשים -->
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-700 mb-3">תרחיש 1: פריסה ל-36 חודשים</h3>
-                            <div class="table-responsive">
-                                <table class="w-full text-right border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-100 text-slate-600">
-                                            <th class="p-2 border">רכב</th>
-                                            <th class="p-2 border">מחיר 2026</th>
-                                            <th class="p-2 border">הלוואה (70%)</th>
-                                            <th class="p-2 border">החזר (70%)</th>
-                                            <th class="p-2 border">הלוואה (90%)</th>
-                                            <th class="p-2 border">החזר (90%)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100">
-                                        <tr><td class="p-2 border">אוקטביה</td><td class="p-2 border">88,000 ₪</td><td class="p-2 border">61,600 ₪</td><td class="p-2 border font-medium text-red-600">1,862 ₪</td><td class="p-2 border">79,200 ₪</td><td class="p-2 border font-medium text-red-700">2,393 ₪</td></tr>
-                                        <tr><td class="p-2 border">קארוק</td><td class="p-2 border">93,000 ₪</td><td class="p-2 border">65,100 ₪</td><td class="p-2 border font-medium text-red-600">1,968 ₪</td><td class="p-2 border">83,700 ₪</td><td class="p-2 border font-medium text-red-700">2,530 ₪</td></tr>
-                                        <tr><td class="p-2 border">אטקה</td><td class="p-2 border">90,000 ₪</td><td class="p-2 border">63,000 ₪</td><td class="p-2 border font-medium text-red-600">1,904 ₪</td><td class="p-2 border">81,000 ₪</td><td class="p-2 border font-medium text-red-700">2,448 ₪</td></tr>
-                                        <tr><td class="p-2 border">מאזדה CX-5</td><td class="p-2 border">94,500 ₪</td><td class="p-2 border">66,150 ₪</td><td class="p-2 border font-medium text-red-600">2,000 ₪</td><td class="p-2 border">85,050 ₪</td><td class="p-2 border font-medium text-red-700">2,570 ₪</td></tr>
-                                        <tr><td class="p-2 border">טיגואן</td><td class="p-2 border">103,500 ₪</td><td class="p-2 border">72,450 ₪</td><td class="p-2 border font-medium text-red-600">2,190 ₪</td><td class="p-2 border">93,150 ₪</td><td class="p-2 border font-medium text-red-700">2,815 ₪</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- 48 חודשים -->
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-700 mb-3">תרחיש 2: פריסה ל-48 חודשים</h3>
-                            <div class="table-responsive">
-                                <table class="w-full text-right border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-100 text-slate-600">
-                                            <th class="p-2 border">רכב</th>
-                                            <th class="p-2 border">מחיר 2026</th>
-                                            <th class="p-2 border">הלוואה (70%)</th>
-                                            <th class="p-2 border">החזר (70%)</th>
-                                            <th class="p-2 border">הלוואה (90%)</th>
-                                            <th class="p-2 border">החזר (90%)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100">
-                                        <tr><td class="p-2 border">אוקטביה</td><td class="p-2 border">88,000 ₪</td><td class="p-2 border">61,600 ₪</td><td class="p-2 border font-medium text-red-600">1,446 ₪</td><td class="p-2 border">79,200 ₪</td><td class="p-2 border font-medium text-red-700">1,860 ₪</td></tr>
-                                        <tr><td class="p-2 border">קארוק</td><td class="p-2 border">93,000 ₪</td><td class="p-2 border">65,100 ₪</td><td class="p-2 border font-medium text-red-600">1,523 ₪</td><td class="p-2 border">83,700 ₪</td><td class="p-2 border font-medium text-red-700">1,959 ₪</td></tr>
-                                        <tr><td class="p-2 border">אטקה</td><td class="p-2 border">90,000 ₪</td><td class="p-2 border">63,000 ₪</td><td class="p-2 border font-medium text-red-600">1,474 ₪</td><td class="p-2 border">81,000 ₪</td><td class="p-2 border font-medium text-red-700">1,896 ₪</td></tr>
-                                        <tr><td class="p-2 border">מאזדה CX-5</td><td class="p-2 border">94,500 ₪</td><td class="p-2 border">66,150 ₪</td><td class="p-2 border font-medium text-red-600">1,547 ₪</td><td class="p-2 border">85,050 ₪</td><td class="p-2 border font-medium text-red-700">1,990 ₪</td></tr>
-                                        <tr><td class="p-2 border">טיגואן</td><td class="p-2 border">103,500 ₪</td><td class="p-2 border">72,450 ₪</td><td class="p-2 border font-medium text-red-600">1,695 ₪</td><td class="p-2 border">93,150 ₪</td><td class="p-2 border font-medium text-red-700">2,180 ₪</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- עלות כוללת TCO 6 שנים -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">עלות בעלות כוללת (TCO) ל-6 שנים</h2>
-                    <p class="text-slate-600 mb-6">טבלה זו מסכמת את **כל** ההוצאות הצפויות לאורך 6 שנות בעלות (72 חודשים), כולל סיום החזרי ההלוואה (לפי 48 חודש), דלק, ביטוחים, טיפולים, אגרות רישוי וסיכון גיר.</p>
-                    <div class="table-responsive">
-                        <table class="w-full text-right border-collapse">
-                            <thead>
-                                <tr class="bg-slate-100 text-slate-600">
-                                    <th class="p-2 border">רכב</th>
-                                    <th class="p-2 border">סה"כ עלויות שוטפות (6 שנים)</th>
-                                    <th class="p-2 border bg-blue-50">TCO (70% מימון, 36 חודשים)</th>
-                                    <th class="p-2 border bg-blue-100">TCO (70% מימון, 48 חודשים)</th>
-                                    <th class="p-2 border bg-red-50">TCO (90% מימון, 36 חודשים)</th>
-                                    <th class="p-2 border bg-red-100">TCO (90% מימון, 48 חודשים)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <!-- הנתונים כאן חושבו מחדש על בסיס אגרות רישוי מעודכנות -->
-                                <tr>
-                                    <td class="p-2 border">אוקטביה</td>
-                                    <td class="p-2 border">89,820 ₪</td>
-                                    <td class="p-2 border bg-blue-50 font-bold">156,848 ₪</td>
-                                    <td class="p-2 border bg-blue-100 font-bold">159,228 ₪</td>
-                                    <td class="p-2 border bg-red-50 font-bold">165,153 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">168,020 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">קארוק</td>
-                                    <td class="p-2 border">94,308 ₪</td>
-                                    <td class="p-2 border bg-blue-50 font-bold">166,031 ₪</td>
-                                    <td class="p-2 border bg-blue-100 font-bold">168,591 ₪</td>
-                                    <td class="p-2 border bg-red-50 font-bold">174,701 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">177,843 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">אטקה</td>
-                                    <td class="p-2 border">94,308 ₪</td>
-                                    <td class="p-2 border bg-blue-50 font-bold">164,156 ₪</td>
-                                    <td class="p-2 border bg-blue-100 font-bold">166,632 ₪</td>
-                                    <td class="p-2 border bg-red-50 font-bold">172,461 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">175,428 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">מאזדה CX-5</td>
-                                    <td class="p-2 border">85,950 ₪</td>
-                                    <td class="p-2 border bg-blue-50 font-bold">158,700 ₪</td>
-                                    <td class="p-2 border bg-blue-100 font-bold">161,346 ₪</td>
-                                    <td class="p-2 border bg-red-50 font-bold">167,703 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">170,910 ₪</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">טיגואן</td>
-                                    <td class="p-2 border">105,600 ₪</td>
-                                    <td class="p-2 border bg-blue-50 font-bold">185,934 ₪</td>
-                                    <td class="p-2 border bg-blue-100 font-bold">188,832 ₪</td>
-                                    <td class="p-2 border bg-red-50 font-bold">196,757 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">200,244 ₪</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- עלות נטו מול ליסינג -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">ניתוח "עלות נטו" (כסף אבוד) ל-4 שנים</h2>
-                    <p class="text-slate-600 mb-6">טבלה זו משנה את החשיבה: היא מחשבת כמה כסף "נשרף" נטו ב-4 שנים (קנייה + עלויות - מחיר מכירה משוער) ומשווה זאת לעלות "שריפת כסף" בליסינג ל-3 שנים. 
-                    <b>הממצא המפתיע:</b> העלות האמיתית כמעט זהה, מה שהופך את הליסינג לאופציה אטרקטיבית ביותר בטווח הקצר.</p>
-                    <div class="table-responsive">
-                        <table class="w-full text-right border-collapse">
-                            <thead>
-                                <tr class="bg-slate-100 text-slate-600">
-                                    <th class="p-2 border">רכב</th>
-                                    <th class="p-2 border">מחיר קנייה (2026)</th>
-                                    <th class="p-2 border">עלויות ב-4 שנים</th>
-                                    <th class="p-2 border">מחיר מכירה (2030)</th>
-                                    <th class="p-2 border bg-red-100">סה"כ עלות נטו (4 שנים)</th>
-                                    <th class="p-2 border bg-blue-100">עלות ליסינג חדש (3 שנים)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr>
-                                    <td class="p-2 border">אוקטביה</td>
-                                    <td class="p-2 border">88,000 ₪</td>
-                                    <td class="p-2 border">65,560 ₪</td>
-                                    <td class="p-2 border">48,000 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">105,560 ₪ (2,200 ₪/חודש)</td>
-                                    <td class="p-2 border bg-blue-100" rowspan="5" style="vertical-align: middle; text-align: center;">
-                                        <div class="font-bold text-lg">כ-103,620 ₪</div>
-                                        <div class="text-sm">(~2,878 ₪/חודש)</div>
-                                        <div class="text-xs mt-2">כולל הכל! (טיפולים, ביטוח, רישוי, צמיגים, בלמים)</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">קארוק</td>
-                                    <td class="p-2 border">93,000 ₪</td>
-                                    <td class="p-2 border">68,488 ₪</td>
-                                    <td class="p-2 border">51,000 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">110,488 ₪ (2,302 ₪/חודש)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">אטקה</td>
-                                    <td class="p-2 border">90,000 ₪</td>
-                                    <td class="p-2 border">68,488 ₪</td>
-                                    <td class="p-2 border">50,000 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">108,488 ₪ (2,260 ₪/חודש)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">מאזדה CX-5</td>
-                                    <td class="p-2 border">94,500 ₪</td>
-                                    <td class="p-2 border">62,940 ₪</td>
-                                    <td class="p-2 border">52,000 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">105,440 ₪ (2,197 ₪/חודש)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border">טיגואן</td>
-                                    <td class="p-2 border">103,500 ₪</td>
-                                    <td class="p-2 border">75,680 ₪</td>
-                                    <td class="p-2 border">57,000 ₪</td>
-                                    <td class="p-2 border bg-red-100 font-bold">122,180 ₪ (2,545 ₪/חודש)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+                        <!-- שורה תחתונה -->
+                        <tr class="bg-slate-800 text-white font-bold text-lg">
+                            <td class="p-4">סה"כ יציאה מהכיס (חודשי)</td>
+                            <td class="p-4 border-r border-slate-600">2,463 ₪</td>
+                            <td class="p-4 border-r border-slate-600 bg-orange-600">~3,400 ₪</td>
+                            <td class="p-4 border-r border-slate-600 bg-blue-600">3,420 ₪</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- ########## TAB 2: גרפים ########## -->
-            <div id="tab-graphs" class="tab-content space-y-8">
-                
-                <!-- Radar Chart -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">גרף רדאר השוואתי</h2>
-                    <p class="text-slate-600 mb-4">השוואה רב-ממדית של כל הרכבים לפי הפרמטרים החשובים. שטח גדול יותר = רכב מאוזן וטוב יותר.</p>
-                    <div class="w-full max-w-4xl mx-auto cost-graph-container" style="height: 500px;">
-                        <canvas id="radarChart"></canvas>
-                    </div>
-                    <div id="radar-legend" class="flex flex-wrap justify-center gap-4 mt-6"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <!-- תובנה 1 -->
+                <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
+                    <h3 class="font-bold text-yellow-800 text-lg mb-2">1. מחיר השדרוג (קורסה -> אטקה)</h3>
+                    <p class="text-yellow-900">
+                        כדי לעבור מרכב ישן וקטן לג'יפון משפחתי בטיחותי, תצטרך להוסיף כ-<b>950 ₪ בחודש</b> לתקציב המשפחתי.
+                        <br>זה המחיר של איכות חיים, מקום לעגלה ובטיחות. אי אפשר לברוח מזה.
+                    </p>
                 </div>
 
-                <!-- TCO 6 Year Graph -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">גרף: עלות בעלות כוללת (TCO) ל-6 שנים</h2>
-                    <p class="text-slate-600 mb-4">הגרף מציג את סך ההוצאה הכוללת הצפויה ב-6 שנים, לפי 4 תרחישי מימון. <b>עמודה נמוכה יותר = זול יותר.</b> (מעודכן עם אגרות רישוי)</p>
-                    <div class="w-full max-w-4xl mx-auto cost-graph-container" style="height: 500px;">
-                        <canvas id="tcoChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Net Cost Graph -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">גרף: "עלות נטו" (כסף אבוד) מול ליסינג</h2>
-                    <p class="text-slate-600 mb-4">הגרף מציג את העלות החודשית ה"אמיתית" (כמה כסף נשרף) בקניית רכב משומש ל-4 שנים (באדום) לעומת העלות הפשוטה של עסקת ליסינג ל-3 שנים (בכחול).</p>
-                    <div class="w-full max-w-4xl mx-auto cost-graph-container" style="height: 500px;">
-                        <canvas id="netCostChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Trunk Space Graph -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">גרף: נפח תא מטען (ליטרים)</h2>
-                    <p class="text-slate-600 mb-4">השוואה ישירה של נפח ההטענה. קריטי למשפחה עם עגלה.</p>
-                    <div class="w-full max-w-2xl mx-auto cost-graph-container" style="height: 400px;">
-                        <canvas id="trunkChart"></canvas>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- ########## TAB 3: רמות גימור ########## -->
-            <div id="tab-trims" class="tab-content">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-4">השוואת רמות גימור (בסיס מול פופולרית)</h2>
-                    <p class="text-slate-600 mb-6">טבלה זו מפרטת את ההבדלים העיקריים באבזור בין רמת הכניסה לרמה המאובזרת הנפוצה (כגון 'סטייל', 'פרימיום' או 'קומפורטליין').</p>
-                    <div class="table-responsive">
-                        <table class="w-full text-right border-collapse">
-                            <thead>
-                                <tr class="bg-slate-100 text-slate-600">
-                                    <th class="p-3 border">פיצ'ר</th>
-                                    <th class="p-3 border">סקודה אוקטביה (Ambition/Style)</th>
-                                    <th class="p-3 border">קארוק / אטקה (Ambition/Style)</th>
-                                    <th class="p-3 border">מאזדה CX-5 (Comfort/Premium)</th>
-                                    <th class="p-3 border">פולקסווגן טיגואן (Comfortline)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr class="bg-gray-50"><td class="p-3 border font-bold" colspan="5">מערכות בטיחות</td></tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">בקרת שיוט אדפטיבית</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">ניטור שטח מת</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">קיים ב-Style</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">תיקון סטייה מנתיב</td>
-                                    <td class="p-3 border">סטנדרט (אקטיבי)</td>
-                                    <td class="p-3 border">סטנדרט (אקטיבי)</td>
-                                    <td class="p-3 border">סטנדרט (אקטיבי)</td>
-                                    <td class="p-3 border">סטנדרט (אקטיבי)</td>
-                                </tr>
-                                <tr class="bg-gray-50"><td class="p-3 border font-bold" colspan="5">נוחות ומולטימדיה</td></tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">לוח מחוונים דיגיטלי</td>
-                                    <td class="p-3 border">סטנדרט (קטן) / מלא ב-Style</td>
-                                    <td class="p-3 border">סטנדרט (קטן) / מלא ב-Style</td>
-                                    <td class="p-3 border">משולב (חצי דיגיטלי)</td>
-                                    <td class="p-3 border">סטנדרט (מלא)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">גודל מסך מולטימדיה</td>
-                                    <td class="p-3 border">8.25 אינץ' / 10 ב-Style</td>
-                                    <td class="p-3 border">8 אינץ'</td>
-                                    <td class="p-3 border">8 אינץ'</td>
-                                    <td class="p-3 border">8 אינץ'</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">גג שמש פנורמי</td>
-                                    <td class="p-3 border">לא קיים / אופציה</td>
-                                    <td class="p-3 border">אופציה ב-Style / Premium</td>
-                                    <td class="p-3 border">קיים ב-Premium</td>
-                                    <td class="p-3 border">קיים (סטנדרט)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">ריפוד (עור/משולב)</td>
-                                    <td class="p-3 border">בד / משולב ב-Style</td>
-                                    <td class="p-3 border">בד / משולב ב-Style</td>
-                                    <td class="p-3 border">בד / עור ב-Premium</td>
-                                    <td class="p-3 border">בד משודרג</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">מושב נהג חשמלי</td>
-                                    <td class="p-3 border">לא קיים</td>
-                                    <td class="p-3 border">לא קיים</td>
-                                    <td class="p-3 border">קיים ב-Premium</td>
-                                    <td class="p-3 border">לא קיים</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">דלת תא מטען חשמלית</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">אופציה / קיים ב-Style</td>
-                                    <td class="p-3 border">קיים ב-Premium</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 border font-medium">פתחי מיזוג מאחור</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט</td>
-                                    <td class="p-3 border">סטנדרט (בקרת אקלים נפרדת)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <!-- תובנה 2 -->
+                <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                    <h3 class="font-bold text-green-800 text-lg mb-2">2. ההתלבטות (יד 2 מול ליסינג)</h3>
+                    <p class="text-green-900">
+                        כאן ההפתעה הגדולה. הפער בין לקנות משומשת (עם כל הסיכונים) לבין לקחת חדשה (בראש שקט) הוא <b>20 ש"ח בחודש בלבד!</b>
+                        <br>(3,400 מול 3,420).
+                    </p>
                 </div>
             </div>
+            
+            <div class="mt-8 text-center">
+                 <p class="text-xl font-medium text-slate-700">המסקנה הסופית נשארת:</p>
+                 <p class="text-2xl font-bold text-blue-600 mt-2">אם כבר החלטת לשדרג לאטקה - הליסינג עדיף בהרבה.</p>
+                 <p class="text-sm text-gray-500 mt-1">למה לקחת סיכון על רכב משומש בשביל לחסוך 20 שקל בחודש?</p>
+            </div>
 
-        </main>
+        </div>
     </div>
-
-    <script>
-        let charts = {};
-        let graphsTabInitialized = false;
-
-        function showTab(tabId) {
-            // הסתרת כל התכנים
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            // הסרת 'active' מכל הכפתורים
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-
-            // הצגת התוכן הרצוי
-            document.getElementById(tabId).classList.add('active');
-            // הוספת 'active' לכפתור הרצוי
-            document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
-
-            // טעינה עצלה של הגרפים
-            if (tabId === 'tab-graphs' && !graphsTabInitialized) {
-                initAllCharts();
-                graphsTabInitialized = true;
-            }
-        }
-
-        // טעינת גרפים בטאב הראשון
-        document.addEventListener('DOMContentLoaded', () => {
-             // הפעל את הטאב האסטרטגי כברירת מחדל
-             showTab('tab-strategy');
-        });
-
-
-        function initAllCharts() {
-            // נתוני בסיס (מעודכנים עם אגרות רישוי)
-            const labels = ['סקודה אוקטביה 1.0ל\'', 'סקודה קארוק', 'סיאט אטקה', 'מאזדה CX-5', 'פולקסווגן טיגואן'];
-            const tcoData = {
-                'סקודה אוקטביה 1.0ל\'': [156848, 159228, 165153, 168020],
-                'סקודה קארוק': [166031, 168591, 174701, 177843],
-                'סיאט אטקה': [164156, 166632, 172461, 175428],
-                'מאזדה CX-5': [158700, 161346, 167703, 170910],
-                'פולקסווגן טיגואן': [185934, 188832, 196757, 200244]
-            };
-            const netCostData = {
-                'אוקטביה (קנייה)': 2200,
-                'קארוק (קנייה)': 2302,
-                'אטקה (קנייה)': 2260,
-                'מאזדה (קנייה)': 2197,
-                'טיגואן (קנייה)': 2545,
-                'ליסינג אטקה 2025': 2878 
-            };
-            const trunkData = {
-                'סקודה אוקטביה 1.0ל\'': 600,
-                'סקודה קארוק': 521,
-                'סיאט אטקה': 510,
-                'מאזדה CX-5': 442,
-                'פולקסווגן טיגואן': 615
-            };
-            const radarData = {
-                labels: ['עלות נמוכה (TCO)', 'חיסכון בדלק', 'תא מטען', 'אמינות (גיר)', 'נוחות ילדים (גובה/מושב 3)', 'קלות חניה'],
-                datasets: [
-                    // ציונים מעודכנים קלות עקב שינוי TCO
-                    { label: 'סקודה אוקטביה 1.0ל\'', data: [4.5, 5, 4.5, 2, 2, 2], borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.2)' },
-                    { label: 'סקודה קארוק', data: [3, 4, 4.5, 2, 4, 5], borderColor: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.2)' },
-                    { label: 'סיאט אטקה', data: [3, 4, 4.5, 2, 4, 5], borderColor: '#ea580c', backgroundColor: 'rgba(234, 88, 12, 0.2)' },
-                    { label: 'מאזדה CX-5', data: [4.5, 2, 3, 5, 4, 3], borderColor: '#dc2626', backgroundColor: 'rgba(220, 38, 38, 0.2)' },
-                    { label: 'פולקסווגן טיגואן', data: [2, 2, 5, 2, 5, 3], borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.2)' }
-                ]
-            };
-            
-            // יצירת הגרפים
-            createRadarChart('radarChart', radarData);
-            createTCOChart('tcoChart', tcoData);
-            createNetCostChart('netCostChart', netCostData);
-            createTrunkChart('trunkChart', trunkData);
-        }
-        
-        // פונקציות יצירת גרפים (עם בדיקה אם כבר קיים)
-        function createChart(ctx, type, data, options) {
-            if (charts[ctx]) {
-                charts[ctx].destroy();
-            }
-            charts[ctx] = new Chart(document.getElementById(ctx).getContext('2d'), { type, data, options });
-        }
-
-        function createRadarChart(ctx, data) {
-            const options = {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { r: { beginAtZero: true, max: 5, stepSize: 1, pointLabels: { font: { size: 12 }, className: 'radar-label' } } },
-                plugins: { legend: { display: false } }
-            };
-            createChart(ctx, 'radar', data, options);
-            
-            // יצירת מקרא HTML
-            const legendContainer = document.getElementById('radar-legend');
-            legendContainer.innerHTML = '';
-            data.datasets.forEach(dataset => {
-                legendContainer.innerHTML += `
-                    <div class="flex items-center">
-                        <span class="w-4 h-4 rounded-full mr-2" style="background-color: ${dataset.borderColor}"></span>
-                        <span>${dataset.label}</span>
-                    </div>
-                `;
-            });
-        }
-
-        function createTCOChart(ctx, data) {
-            const labels = Object.keys(data);
-            const datasets = [
-                { label: '70% מימון (36 חודשים)', data: labels.map(l => data[l][0]), backgroundColor: '#bfdbfe' },
-                { label: '70% מימון (48 חודשים)', data: labels.map(l => data[l][1]), backgroundColor: '#93c5fd' },
-                { label: '90% מימון (36 חודשים)', data: labels.map(l => data[l][2]), backgroundColor: '#fecaca' },
-                { label: '90% מימון (48 חודשים)', data: labels.map(l => data[l][3]), backgroundColor: '#fca5a5' }
-            ];
-            createChart(ctx, 'bar', { labels, datasets }, {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true, ticks: { callback: value => `₪${(value / 1000).toFixed(0)}k` } } },
-                plugins: { tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ₪${c.raw.toLocaleString()}` } } }
-            });
-        }
-
-        function createNetCostChart(ctx, data) {
-            const labels = Object.keys(data);
-            const datasets = [{
-                label: 'עלות חודשית נטו ("כסף אבוד")',
-                data: Object.values(data),
-                backgroundColor: labels.map(l => l.startsWith('ליסינג') ? '#3b82f6' : '#ef4444')
-            }];
-            createChart(ctx, 'bar', { labels, datasets }, {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, ticks: { callback: value => `₪${value.toLocaleString()}` } } },
-                plugins: { tooltip: { callbacks: { label: c => ` ₪${c.raw.toLocaleString()}` } } }
-            });
-        }
-
-        function createTrunkChart(ctx, data) {
-            const labels = Object.keys(data);
-            const datasets = [{
-                label: 'נפח תא מטען (ליטר)',
-                data: Object.values(data),
-                backgroundColor: ['#0284c7', '#16a34a', '#ea580c', '#dc2626', '#4f46e5']
-            }];
-            createChart(ctx, 'bar', { labels, datasets }, {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true, ticks: { callback: value => `${value} ליטר` } } },
-                plugins: { tooltip: { callbacks: { label: c => ` ${c.raw} ליטר` } } }
-            });
-        }
-    </script>
 
 </body>
 </html>
