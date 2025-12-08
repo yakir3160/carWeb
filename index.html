@@ -770,17 +770,22 @@
             loader.classList.remove('hidden');
             textDiv.innerHTML = '';
 
-            const prompt = `
-            אתה יועץ רכב מומחה. נתח את הנתונים הבאים בעברית:
-            - שנים: ${currentAnalysisData.years}, ק"מ: ${currentAnalysisData.kmYear}
-            - TCO ליסינג: ${currentAnalysisData.leaseNetTotal}
-            - TCO קנייה: ${currentAnalysisData.buyNetCost}
-            - תזרים חודשי ליסינג: ${currentAnalysisData.avgLease}
-            - תזרים חודשי קנייה: ${currentAnalysisData.avgBuy}
-            - סיכון תקלות שנתי שהוזן: ${currentAnalysisData.riskYearly}
-            
-            תן המלצה חדה (עד 80 מילים) שמשקללת את הכדאיות הכלכלית מול השקט הנפשי.
-            `;
+   const prompt = `
+אתה יועץ רכב מומחה ואובייקטיבי. נתח את הנתונים הבאים בעברית והשתמש בחשיבה רחבה, לא רק במספרים:
+- שנות שימוש מתוכננות: ${currentAnalysisData.years}
+- ק"מ שנתי: ${currentAnalysisData.kmYear}
+- עלות כוללת ליסינג (TCO): ${currentAnalysisData.leaseNetTotal}
+- עלות כוללת קנייה (TCO): ${currentAnalysisData.buyNetCost}
+- תזרים חודשי ליסינג: ${currentAnalysisData.avgLease}
+- תזרים חודשי קנייה: ${currentAnalysisData.avgBuy}
+- רמת סיכון תקלות שנתית שסופקה: ${currentAnalysisData.riskYearly}
+
+הנחיות:
+1. איזון בין עלות כוללת, תזרים חודשי, סיכון תקלות, ירידת ערך, נוחות תפעולית, גמישות עתידית ושקט נפשי.
+2. אל תזרום עם ההנחות של המשתמש—אם הנתונים מצביעים אחרת, ציין זאת בבירור.
+3. התעלם מהעדפות רגשיות; התייחס אך ורק לכדאיות ריאלית.
+4. כתוב המלצה חד־משמעית וברורה, עד 80 מילים.
+`;
 
             try {
                 const response = await fetch('/api/analyze', {
