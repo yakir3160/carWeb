@@ -51,7 +51,7 @@
         
         /* Glass Effect Cards */
         .glass-card {
-            background: rgba(10, 49, 80, 0.7);
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -131,7 +131,7 @@
                     </div>
                     <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-200">SmartCar Calc</span>
                 </div>
-                <div class="text-xs text-slate-400 font-mono hidden sm:block">v2.4 Pro</div>
+                <div class="text-xs text-slate-400 font-mono hidden sm:block">v9.0 - Age-Adjusted Depreciation</div>
             </div>
         </div>
     </nav>
@@ -148,7 +148,7 @@
                 </h3>
                 
                 <div class="mb-4">
-                    <label class="text-xs text-slate-400 mb-1 block">תקופת בדיקה</label>
+                    <label class="text-xs text-slate-400 mb-1 block">תקופת בדיקה (אחזקה בפועל)</label>
                     <div class="tab-group">
                         <div class="tab-item"><input type="radio" name="usageYears" id="u3" value="3" checked onclick="recalc()"><label for="u3">3 שנים</label></div>
                         <div class="tab-item"><input type="radio" name="usageYears" id="u6" value="6" onclick="recalc()"><label for="u6">6 שנים</label></div>
@@ -158,15 +158,9 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-slate-400 mb-1 block">ק"מ בשנה</label>
-                        <input type="number" id="kmPerYear" value="17000" class="input-modern" oninput="recalc()">
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-400 mb-1 block">צריכה (ק"מ/ל')</label>
-                        <input type="number" id="kmPerLiter" value="12" class="input-modern" oninput="recalc()">
-                    </div>
+                <div>
+                    <label class="text-xs text-slate-400 mb-1 block">ק"מ בשנה (משותף)</label>
+                    <input type="number" inputmode="numeric" id="kmPerYear" value="10000" class="input-modern" oninput="recalc()">
                 </div>
             </div>
 
@@ -177,16 +171,34 @@
                 </div>
                 <h3 class="text-lg font-bold text-indigo-400 mb-4 flex items-center gap-2">
                     <span class="w-2 h-6 bg-indigo-500 rounded-full"></span>
-                    ליסינג תפעולי
+                    ליסינג תפעולי (רכב חדש)
                 </h3>
                 <div class="space-y-4 relative z-10">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">תשלום חודשי קבוע (₪)</label>
-                        <input type="number" id="leaseMonthly" value="2500" class="input-modern font-bold text-lg" oninput="recalc()">
+                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב (לייעוץ ה-AI)</label>
+                        <select id="leaseModelSelect" class="input-modern border-indigo-500/30 focus:border-indigo-500 mb-2 cursor-pointer" onchange="toggleCustomInput('lease')">
+                            <option value="יונדאי קונה" selected>יונדאי קונה</option>
+                            <option value="ניסאן קשקאי">ניסאן קשקאי</option>
+                            <option value="סקודה קארוק">סקודה קארוק</option>
+                            <option value="סיאט אטקה">סיאט אטקה</option>
+                            <option value="MG ZS">MG ZS</option>
+                            <option value="other">אחר (הזן טקסט חופשי)...</option>
+                        </select>
+                        <input type="text" id="leaseModelCustom" class="input-modern border-indigo-500/30 focus:border-indigo-500 hidden" placeholder="הקלד דגם רכב..." oninput="recalc()">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-slate-400 mb-1 block">תשלום חודשי</label>
+                            <input type="number" inputmode="numeric" id="leaseMonthly" value="2500" class="input-modern font-bold text-lg" oninput="recalc()">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 mb-1 block">מקדמה</label>
+                            <input type="number" inputmode="numeric" id="leaseDown" value="7500" class="input-modern" oninput="recalc()">
+                        </div>
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">מקדמה לחוזה (₪)</label>
-                        <input type="number" id="leaseDown" value="7500" class="input-modern" oninput="recalc()">
+                        <label class="text-xs text-slate-400 mb-1 block">צריכת דלק (ק"מ לליטר)</label>
+                        <input type="number" inputmode="numeric" id="leaseKmLiter" value="18" class="input-modern text-sm" oninput="recalc()">
                     </div>
                 </div>
             </div>
@@ -203,42 +215,84 @@
                 
                 <div class="space-y-4 relative z-10">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">מחיר רכב (₪)</label>
-                        <input type="number" id="buyPrice" value="85000" class="input-modern font-bold text-lg" oninput="recalc()">
+                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב (לייעוץ ה-AI)</label>
+                        <select id="buyModelSelect" class="input-modern border-emerald-500/30 focus:border-emerald-500 mb-2 cursor-pointer" onchange="toggleCustomInput('buy')">
+                            <option value="סקודה קארוק" selected>סקודה קארוק</option>
+                            <option value="ניסאן קשקאי">ניסאן קשקאי</option>
+                            <option value="יונדאי קונה">יונדאי קונה</option>
+                            <option value="סיאט אטקה">סיאט אטקה</option>
+                            <option value="MG ZS">MG ZS</option>
+                            <option value="other">אחר (הזן טקסט חופשי)...</option>
+                        </select>
+                        <input type="text" id="buyModelCustom" class="input-modern border-emerald-500/30 focus:border-emerald-500 hidden" placeholder="הקלד דגם רכב..." oninput="recalc()">
+                    </div>
+
+                    <!-- NEW: Car Age -->
+                    <div class="bg-emerald-900/20 p-3 rounded-lg border border-emerald-500/30">
+                         <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-emerald-300">גיל הרכב ביום הרכישה (בשנים)</label>
+                            <span id="carAgeVal" class="text-xs font-mono font-bold text-white bg-emerald-600/50 px-2 py-0.5 rounded">4 שנים</span>
+                        </div>
+                        <input type="range" id="carStartAge" min="1" max="10" step="1" value="4" oninput="updateCarAgeUI(); recalc()" class="accent-emerald-500">
+                        <p class="text-[10px] text-slate-400 mt-1">* קובע מאיזו נקודה על עקומת הפחת מתחיל החישוב</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-slate-400 mb-1 block">מחיר רכב (₪)</label>
+                            <input type="number" inputmode="numeric" id="buyPrice" value="95000" class="input-modern font-bold text-lg" oninput="recalc()">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 mb-1 block">צריכת דלק (ק"מ/ל')</label>
+                            <input type="number" inputmode="numeric" id="buyKmLiter" value="13" class="input-modern text-sm" oninput="recalc()">
+                        </div>
                     </div>
 
                     <!-- Loan Config -->
                     <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-bold text-slate-300">הלוואה ומימון</span>
+                            <span class="text-xs font-bold text-slate-300">מימון והלוואה</span>
                             <span id="loanPmtDisplay" class="text-[10px] font-mono text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded"></span>
                         </div>
-                        <div class="tab-group mb-3">
+                        
+                        <div class="mb-3">
+                            <label class="text-[10px] text-slate-500 mb-1 block">סכום ההלוואה (השאר הון עצמי)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-slate-500 text-xs">₪</span>
+                                <input type="number" inputmode="numeric" id="loanAmount" value="95000" class="input-modern text-sm pl-8" oninput="recalc()">
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-1 flex justify-between">
+                                <span>הון עצמי (מקדמה) נדרש:</span>
+                                <span id="equityNeeded" class="font-bold text-white">0 ₪</span>
+                            </div>
+                        </div>
+
+                        <div class="tab-group mb-2">
                             <div class="tab-item"><input type="radio" name="loanMonths" id="lm36" value="36" onclick="recalc()"><label for="lm36">36 ח'</label></div>
                             <div class="tab-item"><input type="radio" name="loanMonths" id="lm48" value="48" onclick="recalc()"><label for="lm48">48 ח'</label></div>
                             <div class="tab-item"><input type="radio" name="loanMonths" id="lm60" value="60" checked onclick="recalc()"><label for="lm60">60 ח'</label></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div><label class="text-[10px] text-slate-500">ריבית %</label><input type="number" id="interestRate" value="8" class="input-modern text-xs" oninput="recalc()"></div>
-                            <div><label class="text-[10px] text-slate-500">מימון %</label><input type="number" id="financingPercent" value="100" class="input-modern text-xs" oninput="recalc()"></div>
+                        <div>
+                            <label class="text-[10px] text-slate-500">ריבית שנתית %</label>
+                            <input type="number" inputmode="numeric" id="interestRate" value="7" class="input-modern text-xs" oninput="recalc()">
                         </div>
                     </div>
 
                     <!-- Maintenance Accordion-like -->
                     <div class="border-t border-slate-700 pt-3">
                         <div class="grid grid-cols-2 gap-3 text-sm">
-                            <div><label class="text-xs text-slate-500">ביטוח שנתי</label><input type="number" id="insCost" value="5500" class="input-modern text-sm" oninput="recalc()"></div>
-                            <div><label class="text-xs text-slate-500">טסט שנתי</label><input type="number" id="testCost" value="2400" class="input-modern text-sm" oninput="recalc()"></div>
-                            <div class="col-span-2"><label class="text-xs text-slate-500">טיפול שוטף</label><input type="number" id="routineCost" value="1200" class="input-modern text-sm" oninput="recalc()"></div>
+                            <div><label class="text-xs text-slate-500">ביטוח שנתי</label><input type="number" inputmode="numeric" id="insCost" value="5500" class="input-modern text-sm" oninput="recalc()"></div>
+                            <div><label class="text-xs text-slate-500">טסט שנתי</label><input type="number" inputmode="numeric" id="testCost" value="2400" class="input-modern text-sm" oninput="recalc()"></div>
+                            <div class="col-span-2"><label class="text-xs text-slate-500">טיפול שוטף</label><input type="number" inputmode="numeric" id="routineCost" value="1200" class="input-modern text-sm" oninput="recalc()"></div>
                         </div>
                         
                         <!-- Risk Slider -->
                         <div class="mt-4 bg-red-500/5 p-3 rounded border border-red-500/20">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-xs font-bold text-red-400">קרן סיכון (תקלות)</label>
-                                <span id="riskVal" class="text-xs font-mono font-bold text-white bg-red-500/20 px-2 rounded">2000 ₪</span>
+                                <span id="riskVal" class="text-xs font-mono font-bold text-white bg-red-500/20 px-2 rounded">3500 ₪</span>
                             </div>
-                            <input type="range" id="riskCost" min="0" max="10000" step="500" value="2000" oninput="document.getElementById('riskVal').innerText = this.value + ' ₪'; recalc()">
+                            <input type="range" id="riskCost" min="0" max="10000" step="500" value="3500" oninput="document.getElementById('riskVal').innerText = this.value + ' ₪'; recalc()">
                             <div class="flex justify-between text-[10px] text-slate-500 mt-1">
                                 <span>0 (חדש)</span>
                                 <span>10K (ישן/בעייתי)</span>
@@ -302,14 +356,42 @@
                     <div class="text-[10px] text-slate-500">אחרי מכירת הרכב וסילוק הלוואה</div>
                 </div>
             </div>
+            
+            <!-- Asset Valuation Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card p-4 bg-slate-800/50">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">
+                        שווי רכב בתום התקופה
+                        <i class="fa-solid fa-circle-info text-slate-500 cursor-help" title="הערכת שווי הרכב ביד 2 לאחר ירידת ערך מצטברת בתקופת הבדיקה, בהתחשב בגיל הרכב ההתחלתי."></i>
+                    </h4>
+                    <div class="text-xl font-bold text-emerald-400 font-mono" id="dispCarValueEnd">0 ₪</div>
+                    <div class="text-[10px] text-slate-500 mt-1">הסכום שתקבלו ממכירה</div>
+                </div>
+                <div class="glass-card p-4 bg-slate-800/50">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">
+                        יתרת חוב לבנק (סילוק)
+                        <i class="fa-solid fa-circle-info text-slate-500 cursor-help" title="הסכום הנדרש לסגירת ההלוואה במידה ומוכרים את הרכב לפני תום תקופת ההלוואה המקורית"></i>
+                    </h4>
+                    <div class="text-xl font-bold text-red-400 font-mono" id="dispLoanBalance">0 ₪</div>
+                    <div class="text-[10px] text-slate-500 mt-1">הסכום שצריך להחזיר לבנק</div>
+                </div>
+                <div class="glass-card p-4 bg-slate-800/50 border-t border-t-amber-500/50">
+                    <h4 class="text-xs font-bold text-amber-500 uppercase flex justify-between items-center mb-2">
+                        הון נטו ביד (אקוויטי)
+                        <i class="fa-solid fa-circle-info text-amber-500/70 cursor-help" title="שווי הרכב פחות יתרת ההלוואה לבנק. סכום שלילי אומר שתצטרכו להביא כסף מהבית כדי למכור."></i>
+                    </h4>
+                    <div class="text-xl font-bold text-white font-mono" id="dispNetEquity">0 ₪</div>
+                    <div class="text-[10px] text-slate-500 mt-1">כמה כסף נשאר בכיס אחרי המכירה</div>
+                </div>
+            </div>
 
             <!-- Detailed Table -->
             <div class="glass-card overflow-hidden">
                 <div class="p-4 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center">
                     <h3 class="font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-table-list text-amber-400"></i> טבלת תזרים (Cash Out)
+                        <i class="fa-solid fa-table-list text-amber-400"></i> טבלת תזרים יוצא (Cash Out)
                     </h3>
-                    <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-1 rounded">לכל התקופה</span>
+                    <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-1 rounded" id="tableDurationLabel">ל-3 שנים</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-right cost-table">
@@ -322,7 +404,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-700/50 text-slate-300">
                             <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium" id="buyVehicleLabel">רכב (מקדמות/קרן)</td>
+                                <td class="px-4 py-3 font-medium" id="buyVehicleLabel">רכב (מקדמות/קרן הלוואה)</td>
                                 <td class="px-4 py-3 font-mono" id="tblLeaseBase">0</td>
                                 <td class="px-4 py-3 font-mono text-emerald-300" id="tblBuyVehicleReal">0</td>
                             </tr>
@@ -347,12 +429,15 @@
                                 <td class="px-4 py-3 font-mono" id="tblBuyMaint">0</td>
                             </tr>
                             <tr class="bg-red-500/5 table-row-hover">
-                                <td class="px-4 py-3 font-medium text-red-300">סיכון תקלות</td>
+                                <td class="px-4 py-3 font-medium text-red-300">קרן סיכון תקלות</td>
                                 <td class="px-4 py-3 font-mono text-slate-600 text-xs italic">כלול</td>
                                 <td class="px-4 py-3 font-mono text-red-400 font-bold" id="tblBuyRisk">0</td>
                             </tr>
                             <tr class="bg-slate-800/80 font-bold text-white text-base">
-                                <td class="px-4 py-4">סה"כ יצא מהכיס</td>
+                                <td class="px-4 py-4 flex items-center gap-2">
+                                    סה"כ יצא מהכיס
+                                    <i class="fa-solid fa-circle-info text-slate-500 text-xs cursor-help" title="סכום זה אינו מקזז את שווי הרכב שתקבלו במכירה. הוא מציג את התזרים בלבד."></i>
+                                </td>
                                 <td class="px-4 py-4 font-mono text-indigo-400" id="tblTotalLease">0</td>
                                 <td class="px-4 py-4 font-mono text-emerald-400" id="tblTotalBuy">0</td>
                             </tr>
@@ -386,7 +471,7 @@
                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                                 <i class="fa-solid fa-robot text-white text-xs"></i>
                             </div>
-                            <span class="font-bold text-white text-sm">יועץ AI</span>
+                            <span class="font-bold text-white text-sm">יועץ AI (כולל דגמי רכב)</span>
                         </div>
                         <button onclick="analyzeWithGemini()" id="aiBtn" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-4 rounded-lg shadow transition-all border border-slate-600 flex items-center gap-2">
                             <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> קבל ניתוח עומק
@@ -396,7 +481,7 @@
                     <div id="aiResponse" class="hidden bg-slate-900/50 p-5 rounded-xl border border-purple-500/20 text-sm text-slate-300 leading-relaxed markdown-content relative min-h-[100px]">
                         <div id="aiLoader" class="absolute inset-0 flex flex-col justify-center items-center bg-slate-900/80 z-20 rounded-xl">
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mb-2"></div>
-                            <span class="text-xs text-purple-300">מעבד נתונים...</span>
+                            <span class="text-xs text-purple-300">מנתח נתונים (ספציפית לדגמים שבחרת)...</span>
                         </div>
                         <div id="aiText"></div>
                     </div>
@@ -417,12 +502,23 @@
         const BATTERY_INTERVAL_YEARS = 2.5;
         const BATTERY_COST = 600;
         
+        // Depreciation Curve (Years 1 to 15)
+        // Year 1 is 15%, Y2-3: 12%, Y4-6: 10%, Y7-10: 8%, >10: 5%
+        const GLOBAL_DEP_CURVE = [0.15, 0.12, 0.12, 0.10, 0.10, 0.10, 0.08, 0.08, 0.08, 0.08, 0.05, 0.05, 0.05, 0.05, 0.05];
+        
+        // IMPORTANT: API Key logic
+        const apiKey = ""; // Should be empty for prod env usage via proxy or filled for local test
+
         // --- Helpers ---
         const ils = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
         let flowChartInstance = null;
         let currentAnalysisData = {};
 
-        function getVal(id) { return Number(document.getElementById(id).value); }
+        function getVal(id) { 
+            const val = document.getElementById(id).value;
+            return val === "" ? 0 : Number(val);
+        }
+        function getStr(id) { return document.getElementById(id).value; }
         
         function getRadio(name) { 
             const radios = document.getElementsByName(name);
@@ -431,11 +527,48 @@
             }
             return 3; 
         }
+
+        function updateCarAgeUI() {
+            const age = document.getElementById('carStartAge').value;
+            document.getElementById('carAgeVal').innerText = age + ' שנים';
+            
+            // Suggest higher risk if older car
+            const riskSlider = document.getElementById('riskCost');
+            const riskValDisplay = document.getElementById('riskVal');
+            
+            if(age > 6 && riskSlider.value < 4000) {
+                // Not forcing the user, but it's a good UX practice if we wanted to auto-adjust
+                // riskValDisplay.classList.add('text-red-500');
+            } else {
+                // riskValDisplay.classList.remove('text-red-500');
+            }
+        }
         
         function pmt(rate, nper, pv) {
             if(rate === 0) return -(pv / nper);
             const q = Math.pow(1 + rate, nper);
             return -(rate * (q * pv)) / (q - 1);
+        }
+
+        // Toggle visibility of custom text inputs for car models
+        function toggleCustomInput(type) {
+            const selectVal = document.getElementById(`${type}ModelSelect`).value;
+            const customInput = document.getElementById(`${type}ModelCustom`);
+            if (selectVal === 'other') {
+                customInput.classList.remove('hidden');
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+            }
+            recalc();
+        }
+
+        function getCarModel(type) {
+            const selectVal = document.getElementById(`${type}ModelSelect`).value;
+            if (selectVal === 'other') {
+                return document.getElementById(`${type}ModelCustom`).value || 'רכב כללי';
+            }
+            return selectVal;
         }
 
         // --- Main Calculation ---
@@ -444,26 +577,41 @@
             const years = getRadio('usageYears');
             const months = years * 12;
             const kmYear = getVal('kmPerYear');
-            const kmLiter = getVal('kmPerLiter');
             
-            // Lease
+            // Lease Inputs
             const leaseMonthly = getVal('leaseMonthly');
             const leaseDown = getVal('leaseDown');
+            const leaseKmLiter = getVal('leaseKmLiter');
+            const leaseModelVal = getCarModel('lease');
             
-            // Logic: 6 years = 2 lease cycles
-            const warningEl = document.getElementById('cycleWarning');
-            if (years === 6) {
-                warningEl.classList.remove('hidden');
-            } else {
-                warningEl.classList.add('hidden');
-            }
-
-            // Buy
+            // Buy Inputs
             const buyPrice = getVal('buyPrice');
+            const carStartAge = getVal('carStartAge'); // NEW: Car Age
             const loanMonths = getRadio('loanMonths');
             const interestYearly = getVal('interestRate');
-            const financePercent = getVal('financingPercent');
+            const loanAmount = getVal('loanAmount'); 
+            const buyKmLiter = getVal('buyKmLiter');
+            const buyModelVal = getCarModel('buy');
             
+            // Validation: Loan can't exceed price
+            if (loanAmount > buyPrice) {
+                document.getElementById('equityNeeded').innerText = "שגיאה: הלוואה גדולה ממחיר הרכב";
+                document.getElementById('equityNeeded').classList.add('text-red-500');
+            } else {
+                const equity = buyPrice - loanAmount;
+                document.getElementById('equityNeeded').innerText = ils.format(equity);
+                document.getElementById('equityNeeded').classList.remove('text-red-500');
+            }
+
+            const cashDown = Math.max(0, buyPrice - loanAmount);
+
+            // 6 Year Warning Logic
+            const warningEl = document.getElementById('cycleWarning');
+            if (years === 6) warningEl.classList.remove('hidden');
+            else warningEl.classList.add('hidden');
+
+            document.getElementById('tableDurationLabel').innerText = `ל-${years} שנים`;
+
             // Maintenance
             const insCostYearly = getVal('insCost');
             const testCostYearly = getVal('testCost');
@@ -471,38 +619,43 @@
             const riskCostYearly = Number(document.getElementById('riskCost').value);
 
             // --- LEASE MATH ---
-            const monthlyFuel = ((kmYear / 12) / kmLiter) * FUEL_PRICE;
+            // Lease Fuel
+            const monthlyFuelLease = ((kmYear / 12) / leaseKmLiter) * FUEL_PRICE;
+            
             const leaseCycles = Math.ceil(years / 3);
             const totalLeaseDown = leaseDown * leaseCycles;
             
             const leaseBaseCost = totalLeaseDown + (leaseMonthly * months);
-            const leaseTotalFuel = monthlyFuel * months;
+            const leaseTotalFuel = monthlyFuelLease * months;
             const leaseNetTotal = leaseBaseCost + leaseTotalFuel;
 
             // --- BUY MATH ---
-            const loanPrincipal = buyPrice * (financePercent / 100);
-            const cashDown = buyPrice - loanPrincipal;
             const rateMonthly = (interestYearly / 100) / 12;
-            const loanPmt = -pmt(rateMonthly, loanMonths, loanPrincipal); 
+            const loanPmt = -pmt(rateMonthly, loanMonths, loanAmount); 
             const loanPmtVal = Math.abs(loanPmt);
+
+            // Buy Fuel
+            const monthlyFuelBuy = ((kmYear / 12) / buyKmLiter) * FUEL_PRICE;
 
             let sumBuyFuel = 0, sumBuyIns = 0, sumBuyTest = 0, sumBuyMaint = 0, sumBuyRisk = 0, sumLoanPaidTotal = 0;
             let timelineEvents = [];
-            let accumulatedKm = 0;
+            // Assume the car already has km based on its age * avg km (15k) to trigger realistic wear
+            let accumulatedKm = carStartAge * 15000; 
+            
             let leaseFlowData = [], buyFlowData = [], chartLabels = [];
 
             for(let m = 1; m <= months; m++) {
                 chartLabels.push(m);
                 
                 // Lease Flow (Visual)
-                let currentLeaseFlow = leaseMonthly + monthlyFuel;
+                let currentLeaseFlow = leaseMonthly + monthlyFuelLease;
                 if (m === 1) currentLeaseFlow += leaseDown;
                 if (years === 6 && m === 37) currentLeaseFlow += leaseDown;
                 leaseFlowData.push(currentLeaseFlow);
 
                 // Buy Flow
-                let currentBuyFlow = monthlyFuel;
-                sumBuyFuel += monthlyFuel;
+                let currentBuyFlow = monthlyFuelBuy;
+                sumBuyFuel += monthlyFuelBuy;
 
                 if (m <= loanMonths) {
                     currentBuyFlow += loanPmtVal;
@@ -525,20 +678,20 @@
                     
                     currentBuyFlow += riskCostYearly; 
                     sumBuyRisk += riskCostYearly;
-                    // Note: Risk is usually spread, but for timeline we add it visually as "Potential" or hidden cost
                 }
 
                 accumulatedKm += (kmYear / 12);
 
-                if (accumulatedKm >= TIRE_INTERVAL_KM) {
-                    currentBuyFlow += TIRE_COST_SET;
-                    sumBuyMaint += TIRE_COST_SET;
-                    monthEvents.push({ name: 'צמיגים', cost: TIRE_COST_SET, icon: 'fa-dharmachakra' });
-                    accumulatedKm -= TIRE_INTERVAL_KM;
+                if (accumulatedKm > 0 && Math.floor(accumulatedKm) % TIRE_INTERVAL_KM < (kmYear/12) && m > 1) {
+                     const exists = monthEvents.find(e => e.name.includes('צמיגים'));
+                     if(!exists) {
+                        currentBuyFlow += TIRE_COST_SET;
+                        sumBuyMaint += TIRE_COST_SET;
+                        monthEvents.push({ name: 'צמיגים', cost: TIRE_COST_SET, icon: 'fa-dharmachakra' });
+                     }
                 }
                 
-                const currentKmTotal = m * (kmYear / 12);
-                if (currentKmTotal > 0 && Math.floor(currentKmTotal) % BRAKE_INTERVAL_KM < (kmYear/12) && m > 1) {
+                if (accumulatedKm > 0 && Math.floor(accumulatedKm) % BRAKE_INTERVAL_KM < (kmYear/12) && m > 1) {
                     const exists = monthEvents.find(e => e.name.includes('בלמים'));
                     if(!exists) {
                         currentBuyFlow += BRAKE_COST;
@@ -547,7 +700,8 @@
                     }
                 }
 
-                if (m > 1 && m % Math.floor(BATTERY_INTERVAL_YEARS * 12) === 0) {
+                const totalCarAgeMonths = (carStartAge * 12) + m;
+                if (totalCarAgeMonths > 0 && totalCarAgeMonths % Math.floor(BATTERY_INTERVAL_YEARS * 12) === 0 && m > 1) {
                     currentBuyFlow += BATTERY_COST;
                     sumBuyMaint += BATTERY_COST;
                     monthEvents.push({ name: 'מצבר', cost: BATTERY_COST, icon: 'fa-car-battery' });
@@ -559,18 +713,24 @@
                 if (monthEvents.length > 0) timelineEvents.push({ month: m, events: monthEvents });
             }
 
-            // End Calc
+            // End Calc - Value & Equity (AGE ADJUSTED DEPRECIATION)
             let carValue = buyPrice;
-            const depRates = [0.15, 0.12, 0.12, 0.10, 0.10, 0.10]; 
-            for(let i=0; i<years; i++) carValue = carValue * (1 - depRates[i]);
+            
+            // Loop through the years we own the car, applying the depreciation rate that matches the car's true age.
+            for(let i=0; i<years; i++) {
+                // The car's age in this year of ownership is carStartAge + i
+                // E.g., if we bought a 4 year old car, in year 0 of ownership the car is 4 years old. We use curve index [4].
+                let curveIndex = Math.min(carStartAge + i, GLOBAL_DEP_CURVE.length - 1);
+                carValue = carValue * (1 - GLOBAL_DEP_CURVE[curveIndex]);
+            }
             
             let loanBalance = 0;
             if (months < loanMonths) {
                 const r = rateMonthly;
                 const n = loanMonths;
                 const p = months;
-                if (r === 0) loanBalance = loanPrincipal - (loanPrincipal/n)*p;
-                else loanBalance = loanPrincipal * (Math.pow(1+r, n) - Math.pow(1+r, p)) / (Math.pow(1+r, n) - 1);
+                if (r === 0) loanBalance = loanAmount - (loanAmount/n)*p;
+                else loanBalance = loanAmount * (Math.pow(1+r, n) - Math.pow(1+r, p)) / (Math.pow(1+r, n) - 1);
             }
             
             const netEquity = carValue - loanBalance;
@@ -578,7 +738,7 @@
             const buyNetCost = totalBuyCashOut - netEquity; 
 
             // Table specific
-            const principalPaid = loanPrincipal - loanBalance; 
+            const principalPaid = loanAmount - loanBalance; 
             const interestPaid = sumLoanPaidTotal - principalPaid;
             const vehicleRealCost = cashDown + principalPaid;
 
@@ -589,6 +749,9 @@
             // Store Data for AI
             currentAnalysisData = {
                 years, kmYear,
+                carStartAge,
+                leaseModel: leaseModelVal,
+                buyModel: buyModelVal,
                 leaseNetTotal: ils.format(leaseNetTotal),
                 buyNetCost: ils.format(buyNetCost),
                 avgLease: ils.format(avgLeaseTrue),
@@ -599,16 +762,31 @@
             };
 
             // Update DOM
-            updateDOM(leaseNetTotal, buyNetCost, avgLeaseTrue, avgBuy, leaseBaseCost, vehicleRealCost, interestPaid, leaseTotalFuel, sumBuyFuel, sumBuyIns + sumBuyTest, sumBuyMaint, sumBuyRisk, totalBuyCashOut, netEquity, riskCostYearly, years);
+            updateDOM(leaseNetTotal, buyNetCost, avgLeaseTrue, avgBuy, leaseBaseCost, vehicleRealCost, interestPaid, leaseTotalFuel, sumBuyFuel, sumBuyIns + sumBuyTest, sumBuyMaint, sumBuyRisk, totalBuyCashOut, netEquity, riskCostYearly, years, carValue, loanBalance);
             updateTimeline(timelineEvents, cashDown, years, leaseDown);
             updateFlowChart(chartLabels, leaseFlowData, buyFlowData);
+            document.getElementById('loanPmtDisplay').innerText = `החזר חודשי: ${ils.format(loanPmtVal)}`;
         }
 
-        function updateDOM(leaseNet, buyNet, avgLease, avgBuy, leaseBase, vehicleReal, interest, leaseFuel, buyFuel, buyInsTest, buyMaint, buyRisk, buyCashOut, equity, riskYearly, years) {
+        function updateDOM(leaseNet, buyNet, avgLease, avgBuy, leaseBase, vehicleReal, interest, leaseFuel, buyFuel, buyInsTest, buyMaint, buyRisk, buyCashOut, equity, riskYearly, years, carValueEnd, loanBalEnd) {
             document.getElementById('avgMonthlyLease').innerText = ils.format(avgLease);
             document.getElementById('avgMonthlyBuy').innerText = ils.format(avgBuy);
             document.getElementById('dispLeaseNet').innerText = ils.format(leaseNet);
             document.getElementById('dispBuyNet').innerText = ils.format(buyNet);
+
+            // New Valuation Elements
+            document.getElementById('dispCarValueEnd').innerText = ils.format(carValueEnd);
+            document.getElementById('dispLoanBalance').innerText = ils.format(loanBalEnd);
+            
+            const eqEl = document.getElementById('dispNetEquity');
+            eqEl.innerText = ils.format(equity);
+            if (equity < 0) {
+                eqEl.classList.remove('text-white');
+                eqEl.classList.add('text-red-400');
+            } else {
+                eqEl.classList.add('text-white');
+                eqEl.classList.remove('text-red-400');
+            }
 
             document.getElementById('tblLeaseBase').innerText = ils.format(leaseBase);
             document.getElementById('tblBuyVehicleReal').innerText = ils.format(vehicleReal);
@@ -648,6 +826,14 @@
                     </div>
                 `;
             }
+            if (equity < 0) {
+                html += `
+                    <div class="bg-red-900/20 p-4 rounded-lg border-r-4 border-red-500 mt-2">
+                        <span class="font-bold text-red-400 block mb-1">אזהרת הון שלילי:</span>
+                        בתום התקופה תהיה חייב לבנק יותר ממה שהרכב שווה. תצטרך להביא ${ils.format(Math.abs(equity))} מהבית כדי למכור.
+                    </div>
+                `;
+            }
             document.getElementById('dynamicConclusion').innerHTML = html;
         }
 
@@ -655,7 +841,6 @@
             const container = document.getElementById('timelineContainer');
             container.innerHTML = '';
             
-            // 6 Year Warning
             if (years === 6) {
                  container.innerHTML += `
                 <div class="timeline-item border-r-2 border-indigo-500/50 pr-4 mr-1 pb-4">
@@ -665,12 +850,11 @@
                 </div>`;
             }
 
-            // Start Event
             container.innerHTML += `
                 <div class="timeline-item border-r-2 border-emerald-500/50 pr-4 mr-1 pb-4">
                     <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-glow"></div>
                     <div class="font-bold text-white text-xs">חודש 0 (התחלה)</div>
-                    <div class="text-[10px] text-slate-400">תשלום ראשוני: ${ils.format(cashDown)}</div>
+                    <div class="text-[10px] text-slate-400">תשלום הון עצמי: ${ils.format(cashDown)}</div>
                 </div>`;
 
             events.forEach(item => {
@@ -757,12 +941,16 @@
             });
         }
 
-        // --- AI INTEGRATION (Use server proxy or local key) ---
+        // --- AI INTEGRATION ---
         async function analyzeWithGemini() {
             const btn = document.getElementById('aiBtn');
             const responseDiv = document.getElementById('aiResponse');
             const loader = document.getElementById('aiLoader');
             const textDiv = document.getElementById('aiText');
+
+            if (!apiKey && window.location.hostname !== 'localhost') {
+                // In production without proxy, warn user
+            }
 
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -770,41 +958,44 @@
             loader.classList.remove('hidden');
             textDiv.innerHTML = '';
 
-   const prompt = `
-אתה יועץ רכב מומחה ואובייקטיבי. נתח את הנתונים הבאים בעברית והשתמש בחשיבה רחבה, לא רק במספרים:
-- שנות שימוש מתוכננות: ${currentAnalysisData.years}
-- ק"מ שנתי: ${currentAnalysisData.kmYear}
-- עלות כוללת ליסינג (TCO): ${currentAnalysisData.leaseNetTotal}
-- עלות כוללת קנייה (TCO): ${currentAnalysisData.buyNetCost}
-- תזרים חודשי ליסינג: ${currentAnalysisData.avgLease}
-- תזרים חודשי קנייה: ${currentAnalysisData.avgBuy}
-- רמת סיכון תקלות שנתית שסופקה: ${currentAnalysisData.riskYearly}
-
-הנחיות:
-1. איזון בין עלות כוללת, תזרים חודשי, סיכון תקלות, ירידת ערך, נוחות תפעולית, גמישות עתידית ושקט נפשי.
-2. אל תזרום עם ההנחות של המשתמש—אם הנתונים מצביעים אחרת, ציין זאת בבירור.
-3. התעלם מהעדפות רגשיות; התייחס אך ורק לכדאיות ריאלית.
-4. כתוב המלצה חד־משמעית וברורה, עד 80 מילים.
-`;
+            const prompt = `
+            אתה יועץ רכב מומחה. נתח השוואה עבור המשתמש:
+            - הרכב הנרכש בן ${currentAnalysisData.carStartAge} שנים ביום הקנייה.
+            - תקופה: ${currentAnalysisData.years} שנים, נסועה: ${currentAnalysisData.kmYear} ק"מ/שנה.
+            
+            אופציה א' (ליסינג): ${currentAnalysisData.leaseModel}. TCO: ${currentAnalysisData.leaseNetTotal}. תזרים חודשי: ${currentAnalysisData.avgLease}.
+            אופציה ב' (יד 2): ${currentAnalysisData.buyModel}. TCO: ${currentAnalysisData.buyNetCost}. תזרים חודשי: ${currentAnalysisData.avgBuy}.
+            
+            הערכת סיכון שהוזנה ליד 2: ${currentAnalysisData.riskYearly}.
+            
+            תן המלצה חדה וקצרה בעברית. התייחס ספציפית לדגמי הרכב שהוזנו (אמינות ידועה, בעיות גיר/מנוע אם יש לדגמים אלו כמו ה-DSG, או מנועי טורבו) והאם הם מצדיקים את הליסינג או הקנייה. ענה בעברית בלבד.
+            `;
 
             try {
-                const response = await fetch('/api/analyze', {
+                const apiUrl = apiKey ? 
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}` : 
+                    '/api/analyze';
+
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
+                    body: JSON.stringify(apiKey ? { contents: [{ parts: [{ text: prompt }] }] } : { prompt })
                 });
 
                 const data = await response.json();
                 
-                if (data.candidates && data.candidates[0].content) {
-                    const rawText = data.candidates[0].content.parts[0].text;
+                let rawText = "";
+                if (data.candidates) rawText = data.candidates[0].content.parts[0].text;
+                else if (data.text) rawText = data.text; 
+                
+                if (rawText) {
                     textDiv.innerHTML = marked.parse(rawText);
                 } else {
-                    textDiv.innerText = "שגיאה בניתוח הנתונים.";
+                    textDiv.innerText = "לא התקבל ניתוח. בדוק את חיבור הרשת או ה-API Key.";
                 }
             } catch (error) {
                 console.error("Gemini Error:", error);
-                textDiv.innerText = "שגיאת תקשורת.";
+                textDiv.innerText = "שגיאת תקשורת עם השרת.";
             } finally {
                 loader.classList.add('hidden');
                 btn.disabled = false;
