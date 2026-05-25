@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCar | מחשבון החלטה חכם לרכב</title>
     
-    <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,226 +18,83 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Rubik', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Rubik', 'sans-serif'] },
                     colors: {
-                        dark: {
-                            bg: '#f4fbf9',
-                            surface: '#e9f7f3',
-                            surfaceLight: '#d8ece6'
-                        },
-                        accent: {
-                            lease: '#0ea5e9', // Sky
-                            buy: '#0f5132',   // Bottle green
-                            highlight: '#0ea5e9'
-                        }
+                        dark: { bg: '#f4fbf9', surface: '#e9f7f3', surfaceLight: '#d8ece6' },
+                        accent: { lease: '#0ea5e9', buy: '#0f5132', highlight: '#0ea5e9' }
                     },
-                    boxShadow: {
-                        'glow': '0 0 15px rgba(99, 102, 241, 0.3)',
-                    }
+                    boxShadow: { 'glow': '0 0 15px rgba(99, 102, 241, 0.3)' }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background: radial-gradient(circle at top left, #e8f8ff 0%, #f8fffd 45%, #e9f7f1 100%);
-            color: #0f2f2a;
-        }
-        
-        /* Glass Effect Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(15, 81, 50, 0.14);
-            border-radius: 1rem;
-            box-shadow: 0 8px 20px -12px rgba(11, 79, 60, 0.28), 0 4px 8px -8px rgba(14, 165, 233, 0.18);
-        }
-
-        /* Custom Scrollbar */
+        body { background: radial-gradient(circle at top left, #e8f8ff 0%, #f8fffd 45%, #e9f7f1 100%); color: #0f2f2a; }
+        .glass-card { background: rgba(255,255,255,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(15,81,50,0.14); border-radius: 1rem; box-shadow: 0 8px 20px -12px rgba(11,79,60,0.28), 0 4px 8px -8px rgba(14,165,233,0.18); }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #e6f3ef; }
         ::-webkit-scrollbar-thumb { background: #7eb6c9; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #5f9ab1; }
-
-        /* Custom Inputs */
-        .input-modern {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid #9fc7bd;
-            color: #11312b;
-            padding: 0.6rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-        .input-modern:focus {
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
-            background: #f7feff;
-        }
-
-        /* Radio Tabs */
+        .input-modern { width: 100%; background: #ffffff; border: 1px solid #9fc7bd; color: #11312b; padding: 0.6rem 1rem; border-radius: 0.5rem; transition: all 0.2s ease; outline: none; }
+        .input-modern:focus { border-color: #0ea5e9; box-shadow: 0 0 0 2px rgba(14,165,233,0.2); background: #f7feff; }
         .tab-group { display: flex; background: #eef8f5; padding: 4px; border-radius: 0.75rem; border: 1px solid #b8d8ce; }
         .tab-item { flex: 1; position: relative; }
         .tab-item input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; z-index: 10; }
-        .tab-item label {
-            display: flex; justify-content: center; align-items: center;
-            padding: 8px; cursor: pointer; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 500;
-            color: #3e6a60; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .tab-item input:checked + label {
-            background: #0ea5e9; color: white;
-            box-shadow: 0 2px 10px rgba(14, 165, 233, 0.25);
-        }
-
-        /* Range Slider */
-        input[type=range] {
-            -webkit-appearance: none; appearance: none; width: 100%; background: transparent;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
-            background: #0f5132; cursor: pointer; margin-top: -6px;
-            box-shadow: 0 0 10px rgba(15, 81, 50, 0.4);
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%; height: 4px; background: #b8d8ce; border-radius: 2px;
-        }
-
-        /* Table Design */
-        .table-row-hover:hover { background-color: rgba(14, 165, 233, 0.08); }
-        
-        /* Markdown Styles */
+        .tab-item label { display: flex; justify-content: center; align-items: center; padding: 8px; cursor: pointer; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 500; color: #3e6a60; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .tab-item input:checked + label { background: #0ea5e9; color: white; box-shadow: 0 2px 10px rgba(14,165,233,0.25); }
+        input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #0f5132; cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(15,81,50,0.4); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: #b8d8ce; border-radius: 2px; }
+        .table-row-hover:hover { background-color: rgba(14,165,233,0.08); }
         .markdown-content h1, .markdown-content h2 { font-weight: 700; color: #0f2f2a; margin-top: 1em; margin-bottom: 0.5em; }
         .markdown-content ul { list-style: disc; padding-right: 1.5em; margin-bottom: 1em; }
         .markdown-content p { margin-bottom: 0.8em; line-height: 1.6; }
         .markdown-content strong { color: #0f5132; }
-
-        /* Light-surface overrides for existing Tailwind utility classes */
-        .bg-slate-900\/50, .bg-slate-900\/80, .bg-slate-900\/30, .bg-slate-800\/80, .bg-slate-800\/50, .bg-slate-800\/30, .bg-slate-800 {
-            background-color: rgba(232, 247, 241, 0.8) !important;
-        }
-        .bg-indigo-900\/30 { background-color: rgba(224, 242, 254, 0.92) !important; }
-        .bg-emerald-900\/30 { background-color: rgba(221, 247, 232, 0.9) !important; }
-        .bg-red-900\/20 { background-color: rgba(254, 226, 226, 0.72) !important; }
-        .bg-blue-900\/20 { background-color: rgba(219, 234, 254, 0.75) !important; }
-        .border-slate-700\/50, .border-slate-700, .border-slate-600 {
-            border-color: rgba(15, 81, 50, 0.18) !important;
-        }
+        .bg-slate-900\/50, .bg-slate-900\/80, .bg-slate-900\/30, .bg-slate-800\/80, .bg-slate-800\/50, .bg-slate-800\/30, .bg-slate-800 { background-color: rgba(232,247,241,0.8) !important; }
+        .bg-indigo-900\/30 { background-color: rgba(224,242,254,0.92) !important; }
+        .bg-emerald-900\/30 { background-color: rgba(221,247,232,0.9) !important; }
+        .bg-red-900\/20 { background-color: rgba(254,226,226,0.72) !important; }
+        .bg-blue-900\/20 { background-color: rgba(219,234,254,0.75) !important; }
+        .border-slate-700\/50, .border-slate-700, .border-slate-600 { border-color: rgba(15,81,50,0.18) !important; }
         .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500 { color: #3f6f64 !important; }
-
-        /* Legibility safety net: darken color utilities that are too light on bright surfaces */
         .text-indigo-200\/60, .text-indigo-300, .text-indigo-400 { color: #1f4f8a !important; }
         .text-emerald-200\/60, .text-emerald-300, .text-emerald-400 { color: #1e6148 !important; }
         .text-blue-300, .text-blue-400 { color: #20558f !important; }
         .text-amber-400, .text-amber-500, .text-amber-500\/70 { color: #8a5600 !important; }
         .text-purple-300, .text-purple-400 { color: #6f3d9a !important; }
         .text-red-300 { color: #b42318 !important; }
-
-        /* Dark mode overrides */
-        .dark body {
-            background: radial-gradient(circle at top left, #0b1220 0%, #0f172a 45%, #10241e 100%);
-            color: #e2e8f0;
-        }
-        .dark .glass-card {
-            background: rgba(15, 23, 42, 0.82);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.6);
-        }
-        .dark .input-modern {
-            background: rgba(15, 23, 42, 0.7);
-            border-color: #334155;
-            color: #e2e8f0;
-        }
-        .dark .input-modern:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-            background: rgba(15, 23, 42, 0.92);
-        }
-        .dark .tab-group {
-            background: #0f172a;
-            border-color: #334155;
-        }
+        .dark body { background: radial-gradient(circle at top left, #0b1220 0%, #0f172a 45%, #10241e 100%); color: #e2e8f0; }
+        .dark .glass-card { background: rgba(15,23,42,0.82); border: 1px solid rgba(148,163,184,0.2); box-shadow: 0 10px 24px -14px rgba(0,0,0,0.6); }
+        .dark .input-modern { background: rgba(15,23,42,0.7); border-color: #334155; color: #e2e8f0; }
+        .dark .input-modern:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56,189,248,0.2); background: rgba(15,23,42,0.92); }
+        .dark .tab-group { background: #0f172a; border-color: #334155; }
         .dark .tab-item label { color: #94a3b8; }
-        .dark .tab-item input:checked + label {
-            background: #0284c7;
-            color: #ffffff;
-        }
-
-        .dark .bg-slate-900\/50,
-        .dark .bg-slate-900\/80,
-        .dark .bg-slate-900\/30,
-        .dark .bg-slate-800\/80,
-        .dark .bg-slate-800\/50,
-        .dark .bg-slate-800\/30,
-        .dark .bg-slate-800 {
-            background-color: rgba(15, 23, 42, 0.72) !important;
-        }
-        .dark .bg-indigo-900\/30 { background-color: rgba(49, 46, 129, 0.45) !important; }
-        .dark .bg-emerald-900\/30 { background-color: rgba(6, 78, 59, 0.45) !important; }
-        .dark .bg-red-900\/20 { background-color: rgba(127, 29, 29, 0.35) !important; }
-        .dark .bg-blue-900\/20 { background-color: rgba(30, 58, 138, 0.35) !important; }
-
-        .dark .border-slate-700\/50,
-        .dark .border-slate-700,
-        .dark .border-slate-600 {
-            border-color: rgba(100, 116, 139, 0.45) !important;
-        }
-
-        .dark .text-slate-200,
-        .dark .text-slate-300,
-        .dark .text-slate-400,
-        .dark .text-slate-500 {
-            color: #cbd5e1 !important;
-        }
+        .dark .tab-item input:checked + label { background: #0284c7; color: #ffffff; }
+        .dark .bg-slate-900\/50,.dark .bg-slate-900\/80,.dark .bg-slate-900\/30,.dark .bg-slate-800\/80,.dark .bg-slate-800\/50,.dark .bg-slate-800\/30,.dark .bg-slate-800 { background-color: rgba(15,23,42,0.72) !important; }
+        .dark .bg-indigo-900\/30 { background-color: rgba(49,46,129,0.45) !important; }
+        .dark .bg-emerald-900\/30 { background-color: rgba(6,78,59,0.45) !important; }
+        .dark .bg-red-900\/20 { background-color: rgba(127,29,29,0.35) !important; }
+        .dark .bg-blue-900\/20 { background-color: rgba(30,58,138,0.35) !important; }
+        .dark .border-slate-700\/50,.dark .border-slate-700,.dark .border-slate-600 { border-color: rgba(100,116,139,0.45) !important; }
+        .dark .text-slate-200,.dark .text-slate-300,.dark .text-slate-400,.dark .text-slate-500 { color: #cbd5e1 !important; }
         .dark .text-slate-900 { color: #f8fafc !important; }
-        .dark .text-indigo-200\/60,
-        .dark .text-indigo-300,
-        .dark .text-indigo-400 { color: #a5b4fc !important; }
-        .dark .text-emerald-200\/60,
-        .dark .text-emerald-300,
-        .dark .text-emerald-400 { color: #6ee7b7 !important; }
-        .dark .text-blue-300,
-        .dark .text-blue-400 { color: #7dd3fc !important; }
-        .dark .text-amber-400,
-        .dark .text-amber-500,
-        .dark .text-amber-500\/70 { color: #fbbf24 !important; }
-        .dark .text-purple-300,
-        .dark .text-purple-400 { color: #d8b4fe !important; }
+        .dark .text-indigo-200\/60,.dark .text-indigo-300,.dark .text-indigo-400 { color: #a5b4fc !important; }
+        .dark .text-emerald-200\/60,.dark .text-emerald-300,.dark .text-emerald-400 { color: #6ee7b7 !important; }
+        .dark .text-blue-300,.dark .text-blue-400 { color: #7dd3fc !important; }
+        .dark .text-amber-400,.dark .text-amber-500,.dark .text-amber-500\/70 { color: #fbbf24 !important; }
+        .dark .text-purple-300,.dark .text-purple-400 { color: #d8b4fe !important; }
         .dark .text-red-300 { color: #fca5a5 !important; }
         .dark .text-red-900 { color: #fecaca !important; }
-
-        .theme-toggle-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.45rem 0.7rem;
-            border-radius: 0.6rem;
-            border: 1px solid rgba(15, 81, 50, 0.25);
-            background: rgba(255, 255, 255, 0.8);
-            color: #12342d;
-            font-size: 0.75rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-        .theme-toggle-btn:hover {
-            background: rgba(224, 247, 240, 0.95);
-        }
-        .dark .theme-toggle-btn {
-            border-color: rgba(148, 163, 184, 0.3);
-            background: rgba(15, 23, 42, 0.85);
-            color: #e2e8f0;
-        }
-        .dark .theme-toggle-btn:hover {
-            background: rgba(30, 41, 59, 0.95);
-        }
+        .theme-toggle-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 0.6rem; border: 1px solid rgba(15,81,50,0.25); background: rgba(255,255,255,0.8); color: #12342d; font-size: 0.75rem; font-weight: 700; transition: all 0.2s ease; }
+        .theme-toggle-btn:hover { background: rgba(224,247,240,0.95); }
+        .dark .theme-toggle-btn { border-color: rgba(148,163,184,0.3); background: rgba(15,23,42,0.85); color: #e2e8f0; }
+        .dark .theme-toggle-btn:hover { background: rgba(30,41,59,0.95); }
+        /* Included badge for lease table */
+        .badge-included { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; background: rgba(14,165,233,0.12); color: #0369a1; border: 1px solid rgba(14,165,233,0.3); border-radius: 4px; padding: 2px 6px; font-weight: 600; }
     </style>
 </head>
 <body class="min-h-screen pb-12">
 
-    <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass-card rounded-none border-x-0 border-t-0 border-b border-white/10 mb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -251,7 +105,7 @@
                     <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-200">SmartCar Calc</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="text-xs text-slate-400 font-mono hidden sm:block">v9.0 - Age-Adjusted Depreciation</div>
+                    <div class="text-xs text-slate-400 font-mono hidden sm:block">v9.3 - Clear Breakdown</div>
                     <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="החלפת ערכת נושא">
                         <i id="themeToggleIcon" class="fa-solid fa-moon"></i>
                         <span id="themeToggleText">דארק</span>
@@ -263,15 +117,12 @@
 
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- --- LEFT SIDEBAR: INPUTS --- -->
         <div class="lg:col-span-4 space-y-6">
             
-            <!-- Global Settings -->
             <div class="glass-card p-5 border-t-4 border-t-blue-500">
                 <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-sliders"></i> הגדרות בסיס
                 </h3>
-                
                 <div class="mb-4">
                     <label class="text-xs text-slate-400 mb-1 block">תקופת בדיקה (אחזקה בפועל)</label>
                     <div class="tab-group">
@@ -282,26 +133,22 @@
                         <i class="fa-solid fa-rotate mr-1"></i> ליסינג ב-6 שנים יחושב כשני חוזים עוקבים (מקדמה כפולה).
                     </div>
                 </div>
-
                 <div>
                     <label class="text-xs text-slate-400 mb-1 block">ק"מ בשנה (משותף)</label>
                     <input type="text" inputmode="decimal" id="kmPerYear" value="10" class="input-modern" oninput="recalc()">
-                    <p class="text-[10px] text-slate-500 mt-1">הזנה באלפים בשדות כסף/ק"מ: 60 = 60,000 | 7.5 = 7,500</p>
+                    <p class="text-[10px] text-slate-500 mt-1">הזנה באלפים: 10 = 10,000 | 7.5 = 7,500</p>
                 </div>
             </div>
 
-            <!-- Family Needs Form -->
             <div class="glass-card p-5 border-t-4 border-t-cyan-600">
                 <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-people-roof"></i> טופס משפחה ושימוש
                 </h3>
-
                 <div class="space-y-3 text-sm">
                     <div>
-                        <label class="text-xs text-slate-500 mb-1 block">הרכב משפחתי</label>
+                        <label class="text-xs text-slate-500 mb-1 block">הרכב המשפחתי</label>
                         <input type="text" id="familyType" value="זוג עם שני ילדים" class="input-modern" oninput="recalc()">
                     </div>
-
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="text-xs text-slate-500 mb-1 block">כמות ילדים</label>
@@ -312,23 +159,20 @@
                             <input type="number" inputmode="numeric" id="minTrunkLiters" value="450" class="input-modern" oninput="recalc()">
                         </div>
                     </div>
-
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="text-xs text-slate-500 mb-1 block">גיל ילד 1 בתחילת התקופה (בחודשים)</label>
+                            <label class="text-xs text-slate-500 mb-1 block">גיל ילד 1 - תחילה (חודשים)</label>
                             <input type="number" inputmode="numeric" id="child1AgeMonths" value="24" class="input-modern" oninput="recalc()">
                         </div>
                         <div>
-                            <label class="text-xs text-slate-500 mb-1 block">גיל ילד 2 בתחילת התקופה (בחודשים)</label>
+                            <label class="text-xs text-slate-500 mb-1 block">גיל ילד 2 - תחילה (חודשים)</label>
                             <input type="number" inputmode="numeric" id="child2AgeMonths" value="1" class="input-modern" oninput="recalc()">
                         </div>
                     </div>
-
                     <div>
-                        <label class="text-xs text-slate-500 mb-1 block">הכנסה/הוצאה מכיסאות בטיחות ביום</label>
+                        <label class="text-xs text-slate-500 mb-1 block">הכנסת/הוצאת ילדים מכיסאות ביום</label>
                         <input type="number" inputmode="numeric" id="seatOpsPerDay" value="2" class="input-modern" oninput="recalc()">
                     </div>
-
                     <div class="grid grid-cols-1 gap-2 pt-1">
                         <label class="flex items-center gap-2 text-xs text-slate-500">
                             <input type="checkbox" id="needWideCabin" checked onchange="recalc()"> חשוב מרחב פנימי נוח לילדים
@@ -349,9 +193,13 @@
                     <span class="w-2 h-6 bg-indigo-500 rounded-full"></span>
                     ליסינג תפעולי (רכב חדש)
                 </h3>
+                <div class="bg-indigo-900/30 text-[10px] text-indigo-400 px-3 py-2 rounded-lg border border-indigo-500/20 mb-3 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check mt-0.5 text-indigo-500"></i>
+                    <span>התשלום החודשי בליסינג <strong>כולל הכל</strong>: ביטוח, טסט, טיפולים, ובלאי רגיל. הלוואה אין.</span>
+                </div>
                 <div class="space-y-4 relative z-10">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב (לייעוץ ה-AI)</label>
+                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב</label>
                         <select id="leaseModelSelect" class="input-modern border-indigo-500/30 focus:border-indigo-500 mb-2 cursor-pointer" onchange="toggleCustomInput('lease')">
                             <option value="יונדאי קונה" selected>יונדאי קונה</option>
                             <option value="ניסאן קשקאי">ניסאן קשקאי</option>
@@ -364,7 +212,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="text-xs text-slate-400 mb-1 block">תשלום חודשי</label>
+                            <label class="text-xs text-slate-400 mb-1 block">תשלום חודשי (כולל הכל)</label>
                             <input type="text" inputmode="decimal" id="leaseMonthly" value="2.5" class="input-modern font-bold text-lg" oninput="recalc()">
                         </div>
                         <div>
@@ -396,7 +244,7 @@
                 
                 <div class="space-y-4 relative z-10">
                     <div>
-                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב (לייעוץ ה-AI)</label>
+                        <label class="text-xs text-slate-400 mb-1 block">דגם רכב</label>
                         <select id="buyModelSelect" class="input-modern border-emerald-500/30 focus:border-emerald-500 mb-2 cursor-pointer" onchange="toggleCustomInput('buy')">
                             <option value="סקודה קארוק" selected>סקודה קארוק</option>
                             <option value="ניסאן קשקאי">ניסאן קשקאי</option>
@@ -408,15 +256,13 @@
                         <input type="text" id="buyModelCustom" class="input-modern border-emerald-500/30 focus:border-emerald-500 hidden" placeholder="הקלד דגם רכב..." oninput="recalc()">
                     </div>
 
-                    <!-- NEW: Car Age -->
                     <div class="bg-emerald-900/20 p-3 rounded-lg border border-emerald-500/30">
-                         <div class="flex justify-between items-center mb-1">
-                            <label class="text-xs font-bold text-emerald-300">גיל הרכב ביום הרכישה (בשנים)</label>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-emerald-300">גיל הרכב ביום הרכישה (שנים)</label>
                             <span id="carAgeVal" class="text-xs font-mono font-bold text-white bg-emerald-600/50 px-2 py-0.5 rounded">4 שנים</span>
                         </div>
                         <input type="range" id="carStartAge" min="1" max="10" step="1" value="4" oninput="updateCarAgeUI(); recalc()" class="accent-emerald-500">
-                        <p id="buyYearFromAgeLabel" class="text-[10px] text-slate-500 mt-1">שנתון משוער לפי הגיל: --</p>
-                        <p class="text-[10px] text-slate-400 mt-1">* קובע מאיזו נקודה על עקומת הפחת מתחיל החישוב</p>
+                        <p id="buyYearFromAgeLabel" class="text-[10px] text-slate-500 mt-1">שנתון משוער: --</p>
                     </div>
 
                     <div>
@@ -424,34 +270,32 @@
                         <input type="number" inputmode="numeric" id="buyCarYear" class="input-modern text-sm" oninput="onBuyCarYearInput()">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-xs text-slate-400 mb-1 block">מחיר רכב (₪)</label>
-                            <input type="text" inputmode="decimal" id="buyPrice" value="95" class="input-modern font-bold text-lg" oninput="recalc()">
-                        </div>
-                        <div>
-                            <label class="text-xs text-slate-400 mb-1 block">צריכת דלק (ק"מ/ל')</label>
-                            <input type="number" inputmode="numeric" id="buyKmLiter" value="13" class="input-modern text-sm" oninput="recalc()">
-                        </div>
+                    <div>
+                        <label class="text-xs text-slate-400 mb-1 block">מחיר רכב (₪)</label>
+                        <input type="text" inputmode="decimal" id="buyPrice" value="95" class="input-modern font-bold text-lg" oninput="recalc()">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 mb-1 block">צריכת דלק (ק"מ/ל')</label>
+                        <input type="number" inputmode="numeric" id="buyKmLiter" value="13" class="input-modern text-sm" oninput="recalc()">
                     </div>
 
-                    <!-- Loan Config -->
                     <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
-                        <div class="flex justify-between items-center mb-2">
+                        <div class="flex justify-between items-center mb-3">
                             <span class="text-xs font-bold text-slate-300">מימון והלוואה</span>
                             <span id="loanPmtDisplay" class="text-[10px] font-mono text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded"></span>
                         </div>
                         
                         <div class="mb-3">
-                            <label class="text-[10px] text-slate-500 mb-1 block">סכום ההלוואה (השאר הון עצמי)</label>
+                            <label class="text-[10px] text-slate-500 mb-1 block font-bold">הון עצמי (מקדמה שלך) ↓</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-slate-500 text-xs">₪</span>
-                                <input type="text" inputmode="decimal" id="loanAmount" value="95" class="input-modern text-sm pl-8" oninput="recalc()">
+                                <input type="text" inputmode="decimal" id="equityAmount" value="30" class="input-modern text-sm pl-8 border-emerald-500/50 focus:border-emerald-500" oninput="recalc()">
                             </div>
-                            <div class="text-[10px] text-slate-500 mt-1 flex justify-between">
-                                <span>הון עצמי (מקדמה) נדרש:</span>
-                                <span id="equityNeeded" class="font-bold text-slate-900">0 ₪</span>
-                            </div>
+                        </div>
+                        <div class="mb-3 bg-emerald-900/20 p-2 rounded border border-emerald-500/20">
+                            <div class="text-[10px] text-slate-500 mb-1">סכום הלוואה מחושב (מחיר – הון עצמי):</div>
+                            <div id="loanAmountDisplay" class="font-mono font-bold text-emerald-400 text-sm">0 ₪</div>
+                            <div id="equityWarning" class="text-[10px] text-red-400 mt-1 hidden">⚠️ הון עצמי גדול ממחיר הרכב</div>
                         </div>
 
                         <div class="tab-group mb-2">
@@ -465,15 +309,12 @@
                         </div>
                     </div>
 
-                    <!-- Maintenance Accordion-like -->
                     <div class="border-t border-slate-700 pt-3">
                         <div class="grid grid-cols-2 gap-3 text-sm">
                             <div><label class="text-xs text-slate-500">ביטוח שנתי</label><input type="text" inputmode="decimal" id="insCost" value="5.5" class="input-modern text-sm" oninput="recalc()"></div>
                             <div><label class="text-xs text-slate-500">טסט שנתי</label><input type="text" inputmode="decimal" id="testCost" value="2.4" class="input-modern text-sm" oninput="recalc()"></div>
                             <div class="col-span-2"><label class="text-xs text-slate-500">טיפול שוטף</label><input type="text" inputmode="decimal" id="routineCost" value="1.2" class="input-modern text-sm" oninput="recalc()"></div>
                         </div>
-                        
-                        <!-- Risk Slider -->
                         <div class="mt-4 bg-red-500/5 p-3 rounded border border-red-500/20">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-xs font-bold text-red-400">קרן סיכון (תקלות)</label>
@@ -481,8 +322,7 @@
                             </div>
                             <input type="range" id="riskCost" min="0" max="10000" step="500" value="3500" oninput="document.getElementById('riskVal').innerText = this.value + ' ₪'; recalc()">
                             <div class="flex justify-between text-[10px] text-slate-500 mt-1">
-                                <span>0 (חדש)</span>
-                                <span>10K (ישן/בעייתי)</span>
+                                <span>0 (חדש)</span><span>10K (ישן/בעייתי)</span>
                             </div>
                         </div>
                     </div>
@@ -494,48 +334,62 @@
             </button>
         </div>
 
-        <!-- --- RIGHT MAIN CONTENT: RESULTS --- -->
+        <!-- RIGHT MAIN CONTENT -->
         <div class="lg:col-span-8 space-y-6">
             
-            <!-- Monthly Cash Flow Cards (Head to Head) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Lease Monthly -->
-                <div class="glass-card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                <!-- LEASE FLOW CARD -->
+                <div class="glass-card p-6 flex flex-col relative overflow-hidden">
                     <div class="absolute inset-0 bg-indigo-500/5"></div>
-                    <div class="text-indigo-400 font-bold uppercase text-xs mb-2 tracking-widest z-10">תזרים חודשי ממוצע (ליסינג)</div>
-                    <div class="text-4xl md:text-5xl font-bold text-slate-900 z-10 mb-2" id="avgMonthlyLease">0 ₪</div>
-                    <div class="text-xs text-indigo-200/60 z-10 px-4 py-1 rounded-full bg-indigo-900/30 border border-indigo-500/20">
-                        כולל דלק ושקלול מקדמות
+                    <div class="text-indigo-400 font-bold uppercase text-xs mb-2 tracking-widest z-10 text-center">תזרים חודשי ממוצע (ליסינג)</div>
+                    <div class="text-4xl md:text-5xl font-bold text-slate-900 z-10 mb-4 text-center" id="avgMonthlyLease">0 ₪</div>
+                    
+                    <div class="z-10 relative bg-indigo-500/5 p-3 rounded-lg border border-indigo-500/10 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-file-contract ml-1 text-indigo-400"></i>תשלום חודשי</span>
+                            <span class="font-mono font-bold text-indigo-600 dark:text-indigo-300" id="bdLeasePmt">0 ₪</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-gas-pump ml-1 text-orange-400"></i>דלק</span>
+                            <span class="font-mono font-bold text-indigo-600 dark:text-indigo-300" id="bdLeaseFuel">0 ₪</span>
+                        </div>
+                        <div class="flex justify-between items-center opacity-60">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-wrench ml-1 text-slate-400"></i>אחזקה (ביטוח/טיפולים)</span>
+                            <span class="font-mono font-bold text-indigo-600 dark:text-indigo-300 text-xs">כלול</span>
+                        </div>
                     </div>
+                    <div class="text-[10px] text-slate-400 z-10 mt-3 text-center">* התזרים לא כולל את המקדמה הראשונית</div>
                 </div>
 
-                <!-- Buy Monthly -->
-                <div class="glass-card p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                <!-- BUY FLOW CARD -->
+                <div class="glass-card p-6 flex flex-col relative overflow-hidden">
                     <div class="absolute inset-0 bg-emerald-500/5"></div>
-                    <div class="text-emerald-400 font-bold uppercase text-xs mb-2 tracking-widest z-10">תזרים חודשי ממוצע (יד 2)</div>
-                    <div class="text-4xl md:text-5xl font-bold text-slate-900 z-10 mb-2" id="avgMonthlyBuy">0 ₪</div>
-                    <div class="text-xs text-emerald-200/60 z-10 px-4 py-1 rounded-full bg-emerald-900/30 border border-emerald-500/20">
-                        הלוואה + דלק + אחזקה שוטפת
+                    <div class="text-emerald-400 font-bold uppercase text-xs mb-2 tracking-widest z-10 text-center">תזרים חודשי ממוצע (יד 2)</div>
+                    <div class="text-4xl md:text-5xl font-bold text-slate-900 z-10 mb-4 text-center" id="avgMonthlyBuy">0 ₪</div>
+                    
+                    <div class="z-10 relative bg-emerald-500/5 p-3 rounded-lg border border-emerald-500/10 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-building-columns ml-1 text-emerald-400"></i>הלוואה (ממוצע)</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-300" id="bdBuyLoan">0 ₪</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs"><i class="fa-solid fa-gas-pump ml-1 text-orange-400"></i>דלק</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-300" id="bdBuyFuel">0 ₪</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-xs" title="כולל ביטוח, טסט, טיפולים וקרן תקלות"><i class="fa-solid fa-wrench ml-1 text-slate-400"></i>אחזקה (ממוצע)</span>
+                            <span class="font-mono font-bold text-emerald-600 dark:text-emerald-300" id="bdBuyMaint">0 ₪</span>
+                        </div>
                     </div>
+                    <div class="text-[10px] text-slate-400 z-10 mt-3 text-center">* התזרים לא כולל את ההון העצמי מיום הקנייה</div>
                 </div>
             </div>
 
-            <!-- Chart -->
-            <div class="glass-card p-4">
-                <h3 class="text-sm font-bold text-slate-300 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line text-blue-400"></i> גרף הוצאה חודשית בפועל
-                </h3>
-                <div class="h-[250px] w-full relative">
-                    <canvas id="monthlyFlowChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Total Cost (Net) Comparison -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="glass-card p-4 border-r-4 border-r-indigo-500">
                     <div class="text-xs text-slate-400 uppercase font-bold">עלות סופית נטו (ליסינג)</div>
                     <div class="text-2xl font-bold text-indigo-300 font-mono mt-1" id="dispLeaseNet">0 ₪</div>
-                    <div class="text-[10px] text-slate-500">כסף שיצא ולא חזר</div>
+                    <div class="text-[10px] text-slate-500">כל הכסף שיצא ולא חזר</div>
                 </div>
                 <div class="glass-card p-4 border-r-4 border-r-emerald-500">
                     <div class="text-xs text-slate-400 uppercase font-bold">עלות סופית נטו (יד 2)</div>
@@ -544,89 +398,147 @@
                 </div>
             </div>
             
-            <!-- Asset Valuation Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="glass-card p-4 bg-slate-800/50">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">
-                        שווי רכב בתום התקופה
-                        <i class="fa-solid fa-circle-info text-slate-500 cursor-help" title="הערכת שווי הרכב ביד 2 לאחר ירידת ערך מצטברת בתקופת הבדיקה, בהתחשב בגיל הרכב ההתחלתי."></i>
-                    </h4>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">שווי רכב בתום התקופה</h4>
                     <div class="text-xl font-bold text-emerald-400 font-mono" id="dispCarValueEnd">0 ₪</div>
                     <div class="text-[10px] text-slate-500 mt-1">הסכום שתקבלו ממכירה</div>
                 </div>
                 <div class="glass-card p-4 bg-slate-800/50">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">
-                        יתרת חוב לבנק (סילוק)
-                        <i class="fa-solid fa-circle-info text-slate-500 cursor-help" title="הסכום הנדרש לסגירת ההלוואה במידה ומוכרים את הרכב לפני תום תקופת ההלוואה המקורית"></i>
-                    </h4>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase flex justify-between items-center mb-2">יתרת חוב לבנק (סילוק)</h4>
                     <div class="text-xl font-bold text-red-400 font-mono" id="dispLoanBalance">0 ₪</div>
-                    <div class="text-[10px] text-slate-500 mt-1">הסכום שצריך להחזיר לבנק</div>
+                    <div class="text-[10px] text-slate-500 mt-1">לסגירת ההלוואה לפני הזמן</div>
                 </div>
                 <div class="glass-card p-4 bg-slate-800/50 border-t border-t-amber-500/50">
-                    <h4 class="text-xs font-bold text-amber-500 uppercase flex justify-between items-center mb-2">
-                        הון נטו ביד (אקוויטי)
-                        <i class="fa-solid fa-circle-info text-amber-500/70 cursor-help" title="שווי הרכב פחות יתרת ההלוואה לבנק. סכום שלילי אומר שתצטרכו להביא כסף מהבית כדי למכור."></i>
-                    </h4>
+                    <h4 class="text-xs font-bold text-amber-500 uppercase flex justify-between items-center mb-2">הון נטו ביד (אקוויטי)</h4>
                     <div class="text-xl font-bold text-slate-900 font-mono" id="dispNetEquity">0 ₪</div>
-                    <div class="text-[10px] text-slate-500 mt-1">כמה כסף נשאר בכיס אחרי המכירה</div>
+                    <div class="text-[10px] text-slate-500 mt-1">שווי רכב פחות יתרת הלוואה</div>
                 </div>
             </div>
 
-            <!-- Detailed Table -->
+            <!-- IMPROVED COMPARISON TABLE -->
             <div class="glass-card overflow-hidden">
                 <div class="p-4 border-b border-slate-700/50 bg-slate-800/30 flex justify-between items-center">
                     <h3 class="font-bold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-table-list text-amber-400"></i> טבלת תזרים יוצא (Cash Out)
+                        <i class="fa-solid fa-table-list text-amber-400"></i> טבלת השוואה מפורטת
                     </h3>
                     <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-1 rounded" id="tableDurationLabel">ל-3 שנים</span>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-right cost-table">
-                        <thead class="bg-slate-900/50 text-slate-400 text-xs uppercase font-semibold">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-slate-900/50 text-xs uppercase font-semibold">
                             <tr>
-                                <th class="py-3 px-4">סעיף</th>
-                                <th class="py-3 px-4 text-indigo-400">ליסינג</th>
-                                <th class="py-3 px-4 text-emerald-400">יד 2</th>
+                                <th class="py-3 px-4 text-slate-400">סעיף</th>
+                                <th class="py-3 px-4 text-indigo-400 text-center">
+                                    <div>ליסינג</div>
+                                    <div class="text-[9px] font-normal normal-case text-indigo-300 opacity-70 mt-0.5">הכל כלול בתשלום</div>
+                                </th>
+                                <th class="py-3 px-4 text-emerald-400 text-center">
+                                    <div>יד 2</div>
+                                    <div class="text-[9px] font-normal normal-case text-emerald-300 opacity-70 mt-0.5">כל הוצאה בנפרד</div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-700/50 text-slate-300">
+                            <!-- מקדמה / הון עצמי -->
                             <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium" id="buyVehicleLabel">רכב (מקדמות/קרן הלוואה)</td>
-                                <td class="px-4 py-3 font-mono" id="tblLeaseBase">0</td>
-                                <td class="px-4 py-3 font-mono text-emerald-300" id="tblBuyVehicleReal">0</td>
-                            </tr>
-                            <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium">ריבית מימון</td>
-                                <td class="px-4 py-3 font-mono text-slate-600">-</td>
-                                <td class="px-4 py-3 font-mono text-amber-400" id="tblBuyFin">0</td>
-                            </tr>
-                            <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium">דלק</td>
-                                <td class="px-4 py-3 font-mono" id="tblLeaseFuel">0</td>
-                                <td class="px-4 py-3 font-mono" id="tblBuyFuel">0</td>
-                            </tr>
-                            <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium">ביטוח + טסט</td>
-                                <td class="px-4 py-3 font-mono text-slate-600 text-xs italic">כלול</td>
-                                <td class="px-4 py-3 font-mono" id="tblBuyInsTest">0</td>
-                            </tr>
-                            <tr class="table-row-hover">
-                                <td class="px-4 py-3 font-medium">טיפולים ובלאי</td>
-                                <td class="px-4 py-3 font-mono text-slate-600 text-xs italic">כלול</td>
-                                <td class="px-4 py-3 font-mono" id="tblBuyMaint">0</td>
-                            </tr>
-                            <tr class="bg-red-500/5 table-row-hover">
-                                <td class="px-4 py-3 font-medium text-red-300">קרן סיכון תקלות</td>
-                                <td class="px-4 py-3 font-mono text-slate-600 text-xs italic">כלול</td>
-                                <td class="px-4 py-3 font-mono text-red-400 font-bold" id="tblBuyRisk">0</td>
-                            </tr>
-                            <tr class="bg-slate-800/80 font-bold text-slate-900 text-base">
-                                <td class="px-4 py-4 flex items-center gap-2">
-                                    סה"כ יצא מהכיס
-                                    <i class="fa-solid fa-circle-info text-slate-500 text-xs cursor-help" title="סכום זה אינו מקזז את שווי הרכב שתקבלו במכירה. הוא מציג את התזרים בלבד."></i>
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-coins text-amber-400 ml-1"></i>
+                                    מקדמה / הון עצמי
                                 </td>
-                                <td class="px-4 py-4 font-mono text-indigo-400" id="tblTotalLease">0</td>
-                                <td class="px-4 py-4 font-mono text-emerald-400" id="tblTotalBuy">0</td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblLeaseDown">0</td>
+                                <td class="px-4 py-3 font-mono text-emerald-300 text-center" id="tblBuyEquity">0</td>
+                            </tr>
+                            <!-- תשלומי ליסינג / קרן הלוואה -->
+                            <tr class="table-row-hover">
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-calendar-check text-indigo-400 ml-1"></i>
+                                    תשלומים חודשיים (קרן)
+                                </td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblLeaseMonthly">0</td>
+                                <td class="px-4 py-3 font-mono text-emerald-300 text-center" id="tblBuyPrincipal">0</td>
+                            </tr>
+                            <!-- ריבית -->
+                            <tr class="table-row-hover">
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-percent text-amber-400 ml-1"></i>
+                                    ריבית מימון
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge-included"><i class="fa-solid fa-check text-[9px]"></i> כלול</span>
+                                </td>
+                                <td class="px-4 py-3 font-mono text-amber-400 text-center font-bold" id="tblBuyFin">0</td>
+                            </tr>
+                            <!-- דלק -->
+                            <tr class="table-row-hover">
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-gas-pump text-orange-400 ml-1"></i>
+                                    דלק
+                                </td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblLeaseFuel">0</td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblBuyFuel">0</td>
+                            </tr>
+                            <!-- ביטוח + טסט -->
+                            <tr class="table-row-hover">
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-shield-halved text-blue-400 ml-1"></i>
+                                    ביטוח + טסט
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge-included"><i class="fa-solid fa-check text-[9px]"></i> כלול</span>
+                                </td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblBuyInsTest">0</td>
+                            </tr>
+                            <!-- טיפולים ובלאי -->
+                            <tr class="table-row-hover">
+                                <td class="px-4 py-3 font-medium text-slate-900">
+                                    <i class="fa-solid fa-wrench text-slate-400 ml-1"></i>
+                                    טיפולים + בלאי
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge-included"><i class="fa-solid fa-check text-[9px]"></i> כלול</span>
+                                </td>
+                                <td class="px-4 py-3 font-mono text-center" id="tblBuyMaint">0</td>
+                            </tr>
+                            <!-- קרן סיכון -->
+                            <tr class="bg-red-500/5 table-row-hover">
+                                <td class="px-4 py-3 font-medium text-red-300">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-400 ml-1"></i>
+                                    קרן סיכון תקלות
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="badge-included"><i class="fa-solid fa-check text-[9px]"></i> כלול</span>
+                                </td>
+                                <td class="px-4 py-3 font-mono text-red-400 font-bold text-center" id="tblBuyRisk">0</td>
+                            </tr>
+                            <!-- סה"כ יצא -->
+                            <tr class="bg-slate-800/80 font-bold text-slate-900 text-base border-t-2 border-slate-600">
+                                <td class="px-4 py-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-sigma text-slate-500 text-sm"></i>
+                                    סה"כ יצא מהכיס
+                                </td>
+                                <td class="px-4 py-4 font-mono text-indigo-400 text-center" id="tblTotalLease">0</td>
+                                <td class="px-4 py-4 font-mono text-emerald-400 text-center" id="tblTotalBuy">0</td>
+                            </tr>
+                            <!-- החזר לאחר מכירה -->
+                            <tr class="table-row-hover bg-emerald-900/20">
+                                <td class="px-4 py-3 font-medium text-emerald-300">
+                                    <i class="fa-solid fa-arrow-right-to-bracket text-emerald-400 ml-1"></i>
+                                    פחות: שווי מכירה נטו
+                                    <div class="text-[9px] text-slate-500 font-normal">(שווי רכב – יתרת הלוואה)</div>
+                                </td>
+                                <td class="px-4 py-3 text-center text-slate-500 font-mono text-sm italic">לא רלוונטי</td>
+                                <td class="px-4 py-3 font-mono text-emerald-300 font-bold text-center" id="tblBuyNetEquity">0</td>
+                            </tr>
+                            <!-- עלות נטו אמיתית -->
+                            <tr class="font-bold text-base" style="background: linear-gradient(to left, rgba(16,185,129,0.08), rgba(99,102,241,0.08));">
+                                <td class="px-4 py-4 text-slate-900">
+                                    <i class="fa-solid fa-star text-amber-400 ml-1"></i>
+                                    עלות נטו אמיתית
+                                    <div class="text-[9px] text-slate-500 font-normal">מה שבאמת עולה לך הרכב</div>
+                                </td>
+                                <td class="px-4 py-4 font-mono text-indigo-400 text-center text-lg" id="tblFinalLease">0</td>
+                                <td class="px-4 py-4 font-mono text-emerald-400 text-center text-lg" id="tblFinalBuy">0</td>
                             </tr>
                         </tbody>
                     </table>
@@ -638,9 +550,7 @@
                 <h3 class="text-sm font-bold text-slate-300 mb-4 border-b border-slate-700 pb-2">
                     <i class="fa-solid fa-timeline text-slate-500 mr-2"></i> לוח זמנים: הוצאות חריגות (יד 2)
                 </h3>
-                <div class="relative pl-2 overflow-y-auto max-h-[180px] custom-scrollbar pr-2" id="timelineContainer">
-                    <!-- Injected via JS -->
-                </div>
+                <div class="relative pl-2 overflow-y-auto max-h-[180px] pr-2" id="timelineContainer"></div>
             </div>
 
             <!-- Verdict & AI -->
@@ -648,10 +558,8 @@
                 <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-lightbulb text-amber-500"></i> ניתוח השורה התחתונה
                 </h3>
-                
                 <div id="dynamicConclusion" class="space-y-4 text-sm leading-relaxed mb-6"></div>
 
-                <!-- AI Section -->
                 <div class="border-t border-slate-700 pt-4 mt-6">
                     <div class="flex justify-between items-center mb-4">
                         <div class="flex items-center gap-2">
@@ -668,7 +576,7 @@
                     <div id="aiResponse" class="hidden bg-slate-900/50 p-5 rounded-xl border border-purple-500/20 text-sm text-slate-300 leading-relaxed markdown-content relative min-h-[100px]">
                         <div id="aiLoader" class="absolute inset-0 flex flex-col justify-center items-center bg-slate-900/80 z-20 rounded-xl">
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mb-2"></div>
-                            <span class="text-xs text-purple-300">מנתח נתונים (ספציפית לדגמים שבחרת)...</span>
+                            <span class="text-xs text-purple-300">מנתח נתונים...</span>
                         </div>
                         <div id="aiText"></div>
                     </div>
@@ -685,18 +593,15 @@
                                 </button>
                             </div>
                         </div>
-                        <textarea id="comparisonPromptText" class="input-modern text-xs leading-6 min-h-[180px] font-mono" placeholder="לחץ על 'צור פרומפט דוח' כדי לקבל דוח מלא להדבקה בכל מודל AI..." readonly></textarea>
+                        <textarea id="comparisonPromptText" class="input-modern text-xs leading-6 min-h-[180px] font-mono" placeholder="לחץ על 'צור פרומפט דוח'..." readonly></textarea>
                         <div id="comparisonPromptStatus" class="text-[10px] text-slate-500 mt-2"></div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- JS LOGIC -->
     <script>
-        // --- Constants & Config ---
         const FUEL_PRICE = 7.6;
         const TIRE_INTERVAL_KM = 55000;
         const TIRE_COST_SET = 1800; 
@@ -704,82 +609,49 @@
         const BRAKE_COST = 1400; 
         const BATTERY_INTERVAL_YEARS = 2.5;
         const BATTERY_COST = 600;
-        
-        // Depreciation Curve (Years 1 to 15)
-        // Year 1 is 15%, Y2-3: 12%, Y4-6: 10%, Y7-10: 8%, >10: 5%
         const GLOBAL_DEP_CURVE = [0.15, 0.12, 0.12, 0.10, 0.10, 0.10, 0.08, 0.08, 0.08, 0.08, 0.05, 0.05, 0.05, 0.05, 0.05];
-        
-        // IMPORTANT: API Key logic
-        const apiKey = ""; // Should be empty for prod env usage via proxy or filled for local test
-
-        // --- Helpers ---
-        const ils = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
         const CURRENT_YEAR = new Date().getFullYear();
-        let flowChartInstance = null;
+        const ils = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 });
         let currentAnalysisData = {};
 
         function updateThemeToggleUI() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
+            const isDark = document.documentElement.classList.contains('dark');
             const icon = document.getElementById('themeToggleIcon');
             const text = document.getElementById('themeToggleText');
             if (!icon || !text) return;
-
             icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
             text.innerText = isDark ? 'בהיר' : 'דארק';
         }
 
         function initTheme() {
-            const savedTheme = localStorage.getItem('smartcar-theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
+            if (localStorage.getItem('smartcar-theme') === 'dark') document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
             updateThemeToggleUI();
         }
 
         function toggleTheme() {
-            const html = document.documentElement;
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('smartcar-theme', isDark ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('smartcar-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             updateThemeToggleUI();
         }
 
-        const THOUSAND_SHORTCUT_FIELDS = new Set([
-            'kmPerYear',
-            'leaseMonthly',
-            'leaseDown',
-            'buyPrice',
-            'loanAmount',
-            'insCost',
-            'testCost',
-            'routineCost'
-        ]);
+        const THOUSAND_SHORTCUT_FIELDS = new Set(['kmPerYear','leaseMonthly','leaseDown','buyPrice','equityAmount','insCost','testCost','routineCost']);
 
         function parseSmartNumber(rawValue, id) {
             const rawString = String(rawValue || '').trim();
             const hadComma = rawString.includes(',');
             const normalized = rawString.replace(/,/g, '');
             if (normalized === '') return 0;
-
             const parsed = Number(normalized);
             if (Number.isNaN(parsed)) return 0;
-
-            // Money/km inputs are entered in thousands: 60 => 60,000 and 7.5 => 7,500
             if (THOUSAND_SHORTCUT_FIELDS.has(id)) {
-                // Backward compatibility: pasted/typed full values still work
                 if (hadComma || Math.abs(parsed) >= 1000) return parsed;
                 return parsed * 1000;
             }
-
             return parsed;
         }
 
-        function getVal(id) {
-            return parseSmartNumber(document.getElementById(id).value, id);
-        }
+        function getVal(id) { return parseSmartNumber(document.getElementById(id).value, id); }
         function getStr(id) { return document.getElementById(id).value; }
         function getChecked(id) { return document.getElementById(id).checked; }
 
@@ -796,7 +668,6 @@
             const usageMonths = getRadio('usageYears') * 12;
             const child1Start = getVal('child1AgeMonths');
             const child2Start = getVal('child2AgeMonths');
-
             return {
                 familyType: getStr('familyType') || 'משפחה',
                 childrenCount: getVal('childrenCount'),
@@ -822,29 +693,14 @@
         function updateCarAgeUI() {
             const age = Number(document.getElementById('carStartAge').value || 1);
             document.getElementById('carAgeVal').innerText = age + ' שנים';
-
             syncBuyAgeAndYear('age');
-            
-            // Suggest higher risk if older car
-            const riskSlider = document.getElementById('riskCost');
-            const riskValDisplay = document.getElementById('riskVal');
-            
-            if(age > 6 && riskSlider.value < 4000) {
-                // Not forcing the user, but it's a good UX practice if we wanted to auto-adjust
-                // riskValDisplay.classList.add('text-red-500');
-            } else {
-                // riskValDisplay.classList.remove('text-red-500');
-            }
         }
 
-        function clamp(num, min, max) {
-            return Math.min(max, Math.max(min, num));
-        }
+        function clamp(num, min, max) { return Math.min(max, Math.max(min, num)); }
 
         function ensureLeaseYearDefault() {
-            const leaseYearInput = document.getElementById('leaseCarYear');
-            if (!leaseYearInput) return;
-            if (!leaseYearInput.value) leaseYearInput.value = String(CURRENT_YEAR);
+            const el = document.getElementById('leaseCarYear');
+            if (el && !el.value) el.value = String(CURRENT_YEAR);
         }
 
         function syncBuyAgeAndYear(source) {
@@ -852,7 +708,6 @@
             const yearInput = document.getElementById('buyCarYear');
             const label = document.getElementById('buyYearFromAgeLabel');
             if (!ageInput || !yearInput || !label) return;
-
             if (source === 'year') {
                 const parsedYear = Math.round(Number(yearInput.value) || CURRENT_YEAR - Number(ageInput.value || 1));
                 const safeYear = clamp(parsedYear, CURRENT_YEAR - 15, CURRENT_YEAR);
@@ -863,9 +718,7 @@
                 ageInput.value = String(age);
                 yearInput.value = String(CURRENT_YEAR - age);
             }
-
-            const derivedYear = Number(yearInput.value || CURRENT_YEAR - Number(ageInput.value || 1));
-            label.innerText = `שנתון משוער לפי הגיל: ${derivedYear}`;
+            label.innerText = `שנתון משוער: ${yearInput.value}`;
         }
 
         function onBuyCarYearInput() {
@@ -875,345 +728,191 @@
         }
         
         function pmt(rate, nper, pv) {
-            if(rate === 0) return -(pv / nper);
+            if (rate === 0) return -(pv / nper);
             const q = Math.pow(1 + rate, nper);
             return -(rate * (q * pv)) / (q - 1);
         }
 
-        // Toggle visibility of custom text inputs for car models
         function toggleCustomInput(type) {
             const selectVal = document.getElementById(`${type}ModelSelect`).value;
             const customInput = document.getElementById(`${type}ModelCustom`);
-            if (selectVal === 'other') {
-                customInput.classList.remove('hidden');
-                customInput.focus();
-            } else {
-                customInput.classList.add('hidden');
-            }
+            if (selectVal === 'other') { customInput.classList.remove('hidden'); customInput.focus(); }
+            else customInput.classList.add('hidden');
             recalc();
         }
 
         function getCarModel(type) {
             const selectVal = document.getElementById(`${type}ModelSelect`).value;
-            if (selectVal === 'other') {
-                return document.getElementById(`${type}ModelCustom`).value || 'רכב כללי';
-            }
+            if (selectVal === 'other') return document.getElementById(`${type}ModelCustom`).value || 'רכב כללי';
             return selectVal;
-        }
-
-        function buildComparisonPrompt() {
-            const years = getRadio('usageYears');
-            const kmYear = getVal('kmPerYear');
-            const loanMonths = getRadio('loanMonths');
-            const family = getFamilyDetails();
-            const leaseCarYear = getVal('leaseCarYear');
-            const buyCarYear = getVal('buyCarYear');
-
-            return `
-אתה יועץ רכב וכלכלן אישי. בצע ניתוח מקצועי להשוואה בין ליסינג לרכישת יד 2 על בסיס הנתונים הבאים, ותן המלצה סופית עם נימוקים, סיכונים, וצעדים פרקטיים.
-
-נתוני שימוש:
-- תקופת שימוש: ${years} שנים
-- ק"מ שנתי: ${Math.round(kmYear).toLocaleString('he-IL')}
-
-נתוני משפחה וצרכים פרקטיים:
-- הרכב משפחתי: ${family.familyType}
-- כמות ילדים: ${family.childrenCount}
-- ילד 1: מתחיל בגיל ${formatAgeFromMonths(family.child1StartMonths)} ומסיים בגיל ${formatAgeFromMonths(family.child1EndMonths)}
-- ילד 2: מתחיל בגיל ${formatAgeFromMonths(family.child2StartMonths)} ומסיים בגיל ${formatAgeFromMonths(family.child2EndMonths)}
-- תא מטען מינימלי נדרש: ${family.minTrunkLiters} ליטר
-- הוצאה/הכנסה מכיסאות בטיחות ביום: ${family.seatOpsPerDay} פעמים
-- חשיבות מרחב פנימי: ${family.needWideCabin ? 'גבוהה' : 'רגילה'}
-- חשיבות גישה נוחה לכיסאות: ${family.needEasySeatAccess ? 'גבוהה' : 'רגילה'}
-
-אופציה א' - ליסינג:
-- דגם: ${getCarModel('lease')}
-- שנת רכב: ${leaseCarYear}
-- תשלום חודשי: ${ils.format(getVal('leaseMonthly'))}
-- מקדמה: ${ils.format(getVal('leaseDown'))}
-- צריכת דלק: ${getVal('leaseKmLiter')} ק"מ/ליטר
-- עלות נטו כוללת (מהמחשבון): ${document.getElementById('dispLeaseNet').innerText}
-- תזרים חודשי ממוצע: ${document.getElementById('avgMonthlyLease').innerText}
-
-אופציה ב' - רכישת יד 2:
-- דגם: ${getCarModel('buy')}
-- שנת רכב: ${buyCarYear}
-- מחיר רכב: ${ils.format(getVal('buyPrice'))}
-- גיל הרכב בקנייה: ${getVal('carStartAge')} שנים
-- סכום הלוואה: ${ils.format(getVal('loanAmount'))}
-- תקופת הלוואה: ${loanMonths} חודשים
-- ריבית שנתית: ${getVal('interestRate')}%
-- צריכת דלק: ${getVal('buyKmLiter')} ק"מ/ליטר
-- ביטוח שנתי: ${ils.format(getVal('insCost'))}
-- טסט שנתי: ${ils.format(getVal('testCost'))}
-- טיפול שוטף שנתי: ${ils.format(getVal('routineCost'))}
-- קרן סיכון תקלות שנתית: ${Number(document.getElementById('riskCost').value).toLocaleString('he-IL')} ₪
-- עלות נטו כוללת (מהמחשבון): ${document.getElementById('dispBuyNet').innerText}
-- תזרים חודשי ממוצע: ${document.getElementById('avgMonthlyBuy').innerText}
-
-תוצאות נוספות מהמחשבון:
-- שווי רכב בסוף התקופה: ${document.getElementById('dispCarValueEnd').innerText}
-- יתרת חוב לבנק בסוף התקופה: ${document.getElementById('dispLoanBalance').innerText}
-- הון נטו לאחר מכירה: ${document.getElementById('dispNetEquity').innerText}
-- דלק מצטבר ליסינג: ${document.getElementById('tblLeaseFuel').innerText}
-- דלק מצטבר יד 2: ${document.getElementById('tblBuyFuel').innerText}
-- ריבית מימון בפועל: ${document.getElementById('tblBuyFin').innerText}
-- עלות תחזוקה+בלאי: ${document.getElementById('tblBuyMaint').innerText}
-- קרן סיכון תקלות: ${document.getElementById('tblBuyRisk').innerText}
-
-מה אני מבקש ממך בתשובה:
-1) המלצה ברורה: מה עדיף ולמי.
-2) הסבר כמותי על ההפרש הכספי והתזרימי.
-3) התאמה משפחתית: מרווח מושבים אחוריים, נוחות הכנסת/הוצאת ילדים, התאמה לכיסאות בטיחות ותא מטען מול דרישת ${family.minTrunkLiters} ליטר.
-4) בדיקת רגישות קצרה (מה קורה אם הריבית/תקלות/ק"מ עולים ב-15%).
-5) סיכוני אמינות ספציפיים לדגמים שנבחרו (גיר/מנוע/עלות תיקון), אם ידוע.
-6) מסקנה פרקטית ב-5 נקודות קצרות.
-
-ענה בעברית בלבד.
-`.trim();
-        }
-
-        function generateComparisonPrompt(silent = false) {
-            const textarea = document.getElementById('comparisonPromptText');
-            const status = document.getElementById('comparisonPromptStatus');
-            const copyBtn = document.getElementById('copyPromptBtn');
-            if (!textarea || !status || !copyBtn) return;
-
-            textarea.value = buildComparisonPrompt();
-            copyBtn.disabled = textarea.value.trim().length === 0;
-            if (!silent) status.innerText = 'הדוח נוצר. אפשר להעתיק ולהדביק בכל מודל AI.';
-        }
-
-        async function copyComparisonPrompt() {
-            const textarea = document.getElementById('comparisonPromptText');
-            const status = document.getElementById('comparisonPromptStatus');
-            if (!textarea || !status || textarea.value.trim() === '') {
-                status.innerText = 'קודם צור דוח פרומפט.';
-                return;
-            }
-
-            try {
-                await navigator.clipboard.writeText(textarea.value);
-                status.innerText = 'הדוח הועתק ללוח.';
-            } catch (error) {
-                textarea.focus();
-                textarea.select();
-                document.execCommand('copy');
-                status.innerText = 'הדוח הועתק ללוח.';
-            }
         }
 
         function setupShortcutHints() {
             THOUSAND_SHORTCUT_FIELDS.forEach((id) => {
                 const input = document.getElementById(id);
                 if (!input) return;
-
-                input.addEventListener('focus', () => {
-                    input.value = String(input.value || '').replace(/,/g, '');
-                });
-
+                input.addEventListener('focus', () => { input.value = String(input.value || '').replace(/,/g, ''); });
                 input.addEventListener('blur', () => {
                     const parsed = parseSmartNumber(input.value, id);
                     if (parsed >= 0 && input.value.trim() !== '') {
-                        const inThousands = parsed / 1000;
-                        input.value = Number(inThousands.toFixed(2)).toString();
+                        input.value = Number((parsed / 1000).toFixed(2)).toString();
                     }
                 });
-
-                // Normalize initial values to thousands display format
                 const initialParsed = parseSmartNumber(input.value, id);
-                if (initialParsed > 0) {
-                    input.value = Number((initialParsed / 1000).toFixed(2)).toString();
-                }
+                if (initialParsed > 0) input.value = Number((initialParsed / 1000).toFixed(2)).toString();
             });
         }
 
         // --- Main Calculation ---
         function recalc() {
-            // Inputs
             const years = getRadio('usageYears');
             const months = years * 12;
             const kmYear = getVal('kmPerYear');
             
-            // Lease Inputs
+            // Lease
             const leaseMonthly = getVal('leaseMonthly');
             const leaseDown = getVal('leaseDown');
             const leaseKmLiter = getVal('leaseKmLiter');
             const leaseCarYear = getVal('leaseCarYear');
-            const leaseModelVal = getCarModel('lease');
             
-            // Buy Inputs
+            // Buy
             const buyPrice = getVal('buyPrice');
-            const carStartAge = getVal('carStartAge'); // NEW: Car Age
+            const equityAmount = getVal('equityAmount');
+            const carStartAge = getVal('carStartAge');
             const loanMonths = getRadio('loanMonths');
             const interestYearly = getVal('interestRate');
-            const loanAmount = getVal('loanAmount'); 
             const buyKmLiter = getVal('buyKmLiter');
             const buyCarYear = getVal('buyCarYear');
-            const buyModelVal = getCarModel('buy');
             const familyDetails = getFamilyDetails();
-            
-            // Validation: Loan can't exceed price
-            if (loanAmount > buyPrice) {
-                document.getElementById('equityNeeded').innerText = "שגיאה: הלוואה גדולה ממחיר הרכב";
-                document.getElementById('equityNeeded').classList.add('text-red-500');
+
+            // LOAN = PRICE - EQUITY
+            const loanAmount = Math.max(0, buyPrice - equityAmount);
+            const cashDown = equityAmount;
+
+            // Update loan display
+            document.getElementById('loanAmountDisplay').innerText = ils.format(loanAmount);
+            const warnEl = document.getElementById('equityWarning');
+            if (equityAmount > buyPrice) {
+                warnEl.classList.remove('hidden');
+                document.getElementById('loanAmountDisplay').innerText = ils.format(0);
             } else {
-                const equity = buyPrice - loanAmount;
-                document.getElementById('equityNeeded').innerText = ils.format(equity);
-                document.getElementById('equityNeeded').classList.remove('text-red-500');
+                warnEl.classList.add('hidden');
             }
 
-            const cashDown = Math.max(0, buyPrice - loanAmount);
-
-            // 6 Year Warning Logic
+            // 6-year warning
             const warningEl = document.getElementById('cycleWarning');
             if (years === 6) warningEl.classList.remove('hidden');
             else warningEl.classList.add('hidden');
-
             document.getElementById('tableDurationLabel').innerText = `ל-${years} שנים`;
 
-            // Maintenance
             const insCostYearly = getVal('insCost');
             const testCostYearly = getVal('testCost');
             const routineCostYearly = getVal('routineCost');
             const riskCostYearly = Number(document.getElementById('riskCost').value);
 
             // --- LEASE MATH ---
-            // Lease Fuel
             const monthlyFuelLease = ((kmYear / 12) / leaseKmLiter) * FUEL_PRICE;
-            
             const leaseCycles = Math.ceil(years / 3);
             const totalLeaseDown = leaseDown * leaseCycles;
-            
-            const leaseBaseCost = totalLeaseDown + (leaseMonthly * months);
+            const leaseMonthlyPayments = leaseMonthly * months;
+            const leaseBaseCost = totalLeaseDown + leaseMonthlyPayments;
             const leaseTotalFuel = monthlyFuelLease * months;
             const leaseNetTotal = leaseBaseCost + leaseTotalFuel;
 
             // --- BUY MATH ---
             const rateMonthly = (interestYearly / 100) / 12;
-            const loanPmt = -pmt(rateMonthly, loanMonths, loanAmount); 
-            const loanPmtVal = Math.abs(loanPmt);
+            const loanPmtVal = loanAmount > 0 ? Math.abs(pmt(rateMonthly, loanMonths, loanAmount)) : 0;
 
-            // Buy Fuel
             const monthlyFuelBuy = ((kmYear / 12) / buyKmLiter) * FUEL_PRICE;
 
             let sumBuyFuel = 0, sumBuyIns = 0, sumBuyTest = 0, sumBuyMaint = 0, sumBuyRisk = 0, sumLoanPaidTotal = 0;
             let timelineEvents = [];
-            // Assume the car already has km based on its age * avg km (15k) to trigger realistic wear
-            let accumulatedKm = carStartAge * 15000; 
-            
-            let leaseFlowData = [], buyFlowData = [], chartLabels = [];
+            let accumulatedKm = carStartAge * 15000;
 
-            for(let m = 1; m <= months; m++) {
-                chartLabels.push(m);
-                
-                // Lease Flow (Visual)
-                let currentLeaseFlow = leaseMonthly + monthlyFuelLease;
-                if (m === 1) currentLeaseFlow += leaseDown;
-                if (years === 6 && m === 37) currentLeaseFlow += leaseDown;
-                leaseFlowData.push(currentLeaseFlow);
-
-                // Buy Flow
-                let currentBuyFlow = monthlyFuelBuy;
+            for (let m = 1; m <= months; m++) {
                 sumBuyFuel += monthlyFuelBuy;
 
-                if (m <= loanMonths) {
-                    currentBuyFlow += loanPmtVal;
+                if (m <= loanMonths && loanAmount > 0) {
                     sumLoanPaidTotal += loanPmtVal;
                 }
-                
+
                 let monthEvents = [];
 
                 if ((m - 1) % 12 === 0) {
-                    currentBuyFlow += insCostYearly + testCostYearly;
                     sumBuyIns += insCostYearly;
                     sumBuyTest += testCostYearly;
                     monthEvents.push({ name: 'ביטוח + טסט', cost: insCostYearly + testCostYearly, icon: 'fa-file-contract' });
                 }
 
                 if (m % 12 === 0) {
-                    currentBuyFlow += routineCostYearly;
                     sumBuyMaint += routineCostYearly;
                     monthEvents.push({ name: 'טיפול שנתי', cost: routineCostYearly, icon: 'fa-oil-can' });
-                    
-                    currentBuyFlow += riskCostYearly; 
                     sumBuyRisk += riskCostYearly;
                 }
 
                 accumulatedKm += (kmYear / 12);
 
                 if (accumulatedKm > 0 && Math.floor(accumulatedKm) % TIRE_INTERVAL_KM < (kmYear/12) && m > 1) {
-                     const exists = monthEvents.find(e => e.name.includes('צמיגים'));
-                     if(!exists) {
-                        currentBuyFlow += TIRE_COST_SET;
+                    if (!monthEvents.find(e => e.name.includes('צמיגים'))) {
                         sumBuyMaint += TIRE_COST_SET;
                         monthEvents.push({ name: 'צמיגים', cost: TIRE_COST_SET, icon: 'fa-dharmachakra' });
-                     }
+                    }
                 }
-                
                 if (accumulatedKm > 0 && Math.floor(accumulatedKm) % BRAKE_INTERVAL_KM < (kmYear/12) && m > 1) {
-                    const exists = monthEvents.find(e => e.name.includes('בלמים'));
-                    if(!exists) {
-                        currentBuyFlow += BRAKE_COST;
+                    if (!monthEvents.find(e => e.name.includes('בלמים'))) {
                         sumBuyMaint += BRAKE_COST;
                         monthEvents.push({ name: 'בלמים', cost: BRAKE_COST, icon: 'fa-compact-disc' });
                     }
                 }
-
                 const totalCarAgeMonths = (carStartAge * 12) + m;
                 if (totalCarAgeMonths > 0 && totalCarAgeMonths % Math.floor(BATTERY_INTERVAL_YEARS * 12) === 0 && m > 1) {
-                    currentBuyFlow += BATTERY_COST;
                     sumBuyMaint += BATTERY_COST;
                     monthEvents.push({ name: 'מצבר', cost: BATTERY_COST, icon: 'fa-car-battery' });
                 }
 
-                if (m === 1) currentBuyFlow += cashDown; 
-
-                buyFlowData.push(currentBuyFlow);
                 if (monthEvents.length > 0) timelineEvents.push({ month: m, events: monthEvents });
             }
 
-            // End Calc - Value & Equity (AGE ADJUSTED DEPRECIATION)
+            // Depreciation (age-adjusted)
             let carValue = buyPrice;
-            
-            // Loop through the years we own the car, applying the depreciation rate that matches the car's true age.
-            for(let i=0; i<years; i++) {
-                // The car's age in this year of ownership is carStartAge + i
-                // E.g., if we bought a 4 year old car, in year 0 of ownership the car is 4 years old. We use curve index [4].
-                let curveIndex = Math.min(carStartAge + i, GLOBAL_DEP_CURVE.length - 1);
+            for (let i = 0; i < years; i++) {
+                const curveIndex = Math.min(carStartAge + i, GLOBAL_DEP_CURVE.length - 1);
                 carValue = carValue * (1 - GLOBAL_DEP_CURVE[curveIndex]);
             }
             
             let loanBalance = 0;
-            if (months < loanMonths) {
+            if (loanAmount > 0 && months < loanMonths) {
                 const r = rateMonthly;
                 const n = loanMonths;
                 const p = months;
                 if (r === 0) loanBalance = loanAmount - (loanAmount/n)*p;
-                else loanBalance = loanAmount * (Math.pow(1+r, n) - Math.pow(1+r, p)) / (Math.pow(1+r, n) - 1);
+                else loanBalance = loanAmount * (Math.pow(1+r,n) - Math.pow(1+r,p)) / (Math.pow(1+r,n) - 1);
             }
             
             const netEquity = carValue - loanBalance;
             const totalBuyCashOut = cashDown + sumLoanPaidTotal + sumBuyFuel + sumBuyIns + sumBuyTest + sumBuyMaint + sumBuyRisk;
-            const buyNetCost = totalBuyCashOut - netEquity; 
+            const buyNetCost = totalBuyCashOut - Math.max(0, netEquity);
 
-            // Table specific
-            const principalPaid = loanAmount - loanBalance; 
+            const principalPaid = loanAmount - loanBalance;
             const interestPaid = sumLoanPaidTotal - principalPaid;
-            const vehicleRealCost = cashDown + principalPaid;
 
-            // Averages
-            const avgLeaseTrue = leaseNetTotal / months;
-            const avgBuy = totalBuyCashOut / months;
+            // Breakdown Averages
+            const avgLeasePmt = ((leaseMonthlyPayments + totalLeaseDown) - leaseDown) / months;
+            const avgLeaseFuel = monthlyFuelLease;
+            const avgLeaseTrue = (leaseNetTotal - leaseDown) / months;
 
-            // Store Data for AI
+            const avgBuyLoan = sumLoanPaidTotal / months;
+            const avgBuyFuel = sumBuyFuel / months;
+            const avgBuyMaint = (sumBuyIns + sumBuyTest + sumBuyMaint + sumBuyRisk) / months;
+            const avgBuy = (totalBuyCashOut - cashDown) / months;
+
+            document.getElementById('loanPmtDisplay').innerText = loanAmount > 0 ? `החזר חודשי: ${ils.format(loanPmtVal)}` : 'אין הלוואה';
+
             currentAnalysisData = {
-                years, kmYear,
-                carStartAge,
-                leaseModel: leaseModelVal,
-                buyModel: buyModelVal,
-                leaseCarYear,
-                buyCarYear,
+                years, kmYear, carStartAge,
+                leaseModel: getCarModel('lease'),
+                buyModel: getCarModel('buy'),
+                leaseCarYear, buyCarYear,
                 familyType: familyDetails.familyType,
                 childrenCount: familyDetails.childrenCount,
                 minTrunkLiters: familyDetails.minTrunkLiters,
@@ -1233,49 +932,65 @@
                 diff: ils.format(Math.abs(leaseNetTotal - buyNetCost))
             };
 
-            // Update DOM
-            updateDOM(leaseNetTotal, buyNetCost, avgLeaseTrue, avgBuy, leaseBaseCost, vehicleRealCost, interestPaid, leaseTotalFuel, sumBuyFuel, sumBuyIns + sumBuyTest, sumBuyMaint, sumBuyRisk, totalBuyCashOut, netEquity, riskCostYearly, years, carValue, loanBalance);
+            updateDOM(
+                leaseNetTotal, buyNetCost, avgLeaseTrue, avgBuy,
+                totalLeaseDown, leaseMonthlyPayments, leaseTotalFuel,
+                cashDown, principalPaid, interestPaid,
+                sumBuyFuel, sumBuyIns + sumBuyTest, sumBuyMaint, sumBuyRisk,
+                totalBuyCashOut, netEquity, years, carValue, loanBalance,
+                avgLeasePmt, avgLeaseFuel, avgBuyLoan, avgBuyFuel, avgBuyMaint
+            );
             updateTimeline(timelineEvents, cashDown, years, leaseDown);
-            updateFlowChart(chartLabels, leaseFlowData, buyFlowData);
-            document.getElementById('loanPmtDisplay').innerText = `החזר חודשי: ${ils.format(loanPmtVal)}`;
 
             const existingPrompt = document.getElementById('comparisonPromptText');
-            if (existingPrompt && existingPrompt.value.trim() !== '') {
-                generateComparisonPrompt(true);
-            }
+            if (existingPrompt && existingPrompt.value.trim() !== '') generateComparisonPrompt(true);
         }
 
-        function updateDOM(leaseNet, buyNet, avgLease, avgBuy, leaseBase, vehicleReal, interest, leaseFuel, buyFuel, buyInsTest, buyMaint, buyRisk, buyCashOut, equity, riskYearly, years, carValueEnd, loanBalEnd) {
+        function updateDOM(leaseNet, buyNet, avgLease, avgBuy,
+            leaseDown, leaseMonthlyTotal, leaseFuel,
+            buyEquity, buyPrincipal, interestPaid,
+            buyFuel, buyInsTest, buyMaint, buyRisk,
+            buyCashOut, netEquity, years, carValueEnd, loanBalEnd,
+            avgLeasePmt, avgLeaseFuel, avgBuyLoan, avgBuyFuel, avgBuyMaint) {
+
+            // Cards Breakdown
             document.getElementById('avgMonthlyLease').innerText = ils.format(avgLease);
+            document.getElementById('bdLeasePmt').innerText = ils.format(avgLeasePmt);
+            document.getElementById('bdLeaseFuel').innerText = ils.format(avgLeaseFuel);
+
             document.getElementById('avgMonthlyBuy').innerText = ils.format(avgBuy);
+            document.getElementById('bdBuyLoan').innerText = ils.format(avgBuyLoan);
+            document.getElementById('bdBuyFuel').innerText = ils.format(avgBuyFuel);
+            document.getElementById('bdBuyMaint').innerText = ils.format(avgBuyMaint);
+
+            // Table Setup
             document.getElementById('dispLeaseNet').innerText = ils.format(leaseNet);
             document.getElementById('dispBuyNet').innerText = ils.format(buyNet);
-
-            // New Valuation Elements
             document.getElementById('dispCarValueEnd').innerText = ils.format(carValueEnd);
             document.getElementById('dispLoanBalance').innerText = ils.format(loanBalEnd);
-            
-            const eqEl = document.getElementById('dispNetEquity');
-            eqEl.innerText = ils.format(equity);
-            if (equity < 0) {
-                eqEl.classList.remove('text-slate-900');
-                eqEl.classList.add('text-red-400');
-            } else {
-                eqEl.classList.add('text-slate-900');
-                eqEl.classList.remove('text-red-400');
-            }
 
-            document.getElementById('tblLeaseBase').innerText = ils.format(leaseBase);
-            document.getElementById('tblBuyVehicleReal').innerText = ils.format(vehicleReal);
-            document.getElementById('buyVehicleLabel').innerText = "רכב (מקדמה + קרן)";
-            document.getElementById('tblBuyFin').innerText = ils.format(interest);
+            const eqEl = document.getElementById('dispNetEquity');
+            eqEl.innerText = ils.format(netEquity);
+            eqEl.className = 'text-xl font-bold font-mono ' + (netEquity < 0 ? 'text-red-400' : 'text-slate-900');
+
+            // TABLE — lease side
+            document.getElementById('tblLeaseDown').innerText = ils.format(leaseDown);
+            document.getElementById('tblLeaseMonthly').innerText = ils.format(leaseMonthlyTotal);
             document.getElementById('tblLeaseFuel').innerText = ils.format(leaseFuel);
+            document.getElementById('tblTotalLease').innerText = ils.format(leaseNet);
+            document.getElementById('tblFinalLease').innerText = ils.format(leaseNet);
+
+            // TABLE — buy side
+            document.getElementById('tblBuyEquity').innerText = ils.format(buyEquity);
+            document.getElementById('tblBuyPrincipal').innerText = ils.format(buyPrincipal);
+            document.getElementById('tblBuyFin').innerText = ils.format(interestPaid);
             document.getElementById('tblBuyFuel').innerText = ils.format(buyFuel);
             document.getElementById('tblBuyInsTest').innerText = ils.format(buyInsTest);
             document.getElementById('tblBuyMaint').innerText = ils.format(buyMaint);
             document.getElementById('tblBuyRisk').innerText = ils.format(buyRisk);
-            document.getElementById('tblTotalLease').innerText = ils.format(leaseNet);
             document.getElementById('tblTotalBuy').innerText = ils.format(buyCashOut);
+            document.getElementById('tblBuyNetEquity').innerText = ils.format(Math.max(0, netEquity));
+            document.getElementById('tblFinalBuy').innerText = ils.format(buyNet);
 
             // Conclusions
             const diff = Math.abs(leaseNet - buyNet);
@@ -1291,25 +1006,21 @@
                     <span class="font-mono font-bold text-slate-900">${ils.format(diff)}</span>.
                 </div>
                 <div class="bg-slate-900/50 p-4 rounded-lg border-r-4 border-slate-500">
-                    <span class="font-bold text-slate-300 block mb-1">2. עומס תזרימי:</span>
+                    <span class="font-bold text-slate-300 block mb-1">2. עומס תזרימי חודשי (שוטף):</span>
                     <span class="font-bold text-slate-900">${flowWinner}</span> משאיר יותר כסף פנוי בחודש (פער ממוצע: ${ils.format(flowDiff)}).
                 </div>
             `;
             if (years === 6) {
-                 html += `
-                    <div class="bg-blue-900/20 p-4 rounded-lg border-r-4 border-blue-500">
-                        <span class="font-bold text-blue-300 block mb-1">3. טווח ארוך (6 שנים):</span>
-                        רכישה לרוב מנצחת בגלל שנת ה"חינם" (ללא הלוואה), בעוד שבליסינג תשלם מקדמה נוספת באמצע.
-                    </div>
-                `;
+                html += `<div class="bg-blue-900/20 p-4 rounded-lg border-r-4 border-blue-500">
+                    <span class="font-bold text-blue-300 block mb-1">3. טווח ארוך (6 שנים):</span>
+                    רכישה לרוב מנצחת בגלל שנת ה"חינם" (ללא הלוואה), בעוד שבליסינג תשלם מקדמה נוספת באמצע.
+                </div>`;
             }
-            if (equity < 0) {
-                html += `
-                    <div class="bg-red-900/20 p-4 rounded-lg border-r-4 border-red-500 mt-2">
-                        <span class="font-bold text-red-400 block mb-1">אזהרת הון שלילי:</span>
-                        בתום התקופה תהיה חייב לבנק יותר ממה שהרכב שווה. תצטרך להביא ${ils.format(Math.abs(equity))} מהבית כדי למכור.
-                    </div>
-                `;
+            if (netEquity < 0) {
+                html += `<div class="bg-red-900/20 p-4 rounded-lg border-r-4 border-red-500 mt-2">
+                    <span class="font-bold text-red-400 block mb-1">אזהרת הון שלילי:</span>
+                    בתום התקופה תהיה חייב לבנק יותר ממה שהרכב שווה. תצטרך להביא ${ils.format(Math.abs(netEquity))} מהבית כדי למכור.
+                </div>`;
             }
             document.getElementById('dynamicConclusion').innerHTML = html;
         }
@@ -1317,117 +1028,100 @@
         function updateTimeline(events, cashDown, years, leaseDown) {
             const container = document.getElementById('timelineContainer');
             container.innerHTML = '';
-            
             if (years === 6) {
-                 container.innerHTML += `
-                <div class="timeline-item border-r-2 border-indigo-500/50 pr-4 mr-1 pb-4">
-                    <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-glow"></div>
+                container.innerHTML += `<div class="timeline-item border-r-2 border-indigo-500/50 pr-4 mr-1 pb-4">
                     <div class="font-bold text-indigo-300 text-xs">הערת ליסינג (6 שנים)</div>
                     <div class="text-[10px] text-slate-400">בחודש 37 תשלם שוב מקדמה של ${ils.format(leaseDown)}.</div>
                 </div>`;
             }
-
-            container.innerHTML += `
-                <div class="timeline-item border-r-2 border-emerald-500/50 pr-4 mr-1 pb-4">
-                    <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-glow"></div>
-                    <div class="font-bold text-slate-900 text-xs">חודש 0 (התחלה)</div>
-                    <div class="text-[10px] text-slate-400">תשלום הון עצמי: ${ils.format(cashDown)}</div>
-                </div>`;
-
+            container.innerHTML += `<div class="timeline-item border-r-2 border-emerald-500/50 pr-4 mr-1 pb-4">
+                <div class="font-bold text-slate-900 text-xs">חודש 0 (התחלה)</div>
+                <div class="text-[10px] text-slate-400">הון עצמי: ${ils.format(cashDown)}</div>
+            </div>`;
             events.forEach(item => {
-                let html = `
-                <div class="timeline-item border-r-2 border-slate-700 pr-4 mr-1 pb-4 relative">
-                    <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-slate-900"></div>
+                let html = `<div class="timeline-item border-r-2 border-slate-700 pr-4 mr-1 pb-4 relative">
                     <div class="font-bold text-slate-200 text-xs mb-1">חודש ${item.month}</div>
-                    <div class="space-y-1">
-                `;
+                    <div class="space-y-1">`;
                 item.events.forEach(e => {
-                    html += `
-                        <div class="flex justify-between items-center bg-slate-800 p-1.5 rounded border border-slate-700">
-                            <span class="flex items-center gap-2 text-[10px] text-slate-300"><i class="fa-solid ${e.icon} w-3 text-center text-slate-500"></i> ${e.name}</span>
-                            <span class="font-mono text-[10px] text-red-300">-${ils.format(e.cost)}</span>
-                        </div>
-                    `;
+                    html += `<div class="flex justify-between items-center bg-slate-800 p-1.5 rounded border border-slate-700">
+                        <span class="flex items-center gap-2 text-[10px] text-slate-300"><i class="fa-solid ${e.icon} w-3 text-center text-slate-500"></i> ${e.name}</span>
+                        <span class="font-mono text-[10px] text-red-300">-${ils.format(e.cost)}</span>
+                    </div>`;
                 });
                 html += `</div></div>`;
                 container.innerHTML += html;
             });
         }
 
-        function updateFlowChart(labels, leaseData, buyData) {
-            const ctx = document.getElementById('monthlyFlowChart').getContext('2d');
-            if (flowChartInstance) flowChartInstance.destroy();
+        function buildComparisonPrompt() {
+            const years = getRadio('usageYears');
+            const kmYear = getVal('kmPerYear');
+            const loanMonths = getRadio('loanMonths');
+            const family = getFamilyDetails();
+            const equityAmount = getVal('equityAmount');
+            const buyPrice = getVal('buyPrice');
+            const loanAmount = Math.max(0, buyPrice - equityAmount);
 
-            flowChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'ליסינג',
-                            data: leaseData,
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            pointRadius: 0,
-                            fill: true
-                        },
-                        {
-                            label: 'יד שנייה',
-                            data: buyData,
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.05)',
-                            borderWidth: 2,
-                            tension: 0.1,
-                            pointRadius: 2,
-                            pointBackgroundColor: '#10b981'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        legend: { labels: { color: '#24554b', font: { family: 'Rubik' } } },
-                        tooltip: { 
-                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                            titleColor: '#fff',
-                            bodyColor: '#cbd5e1',
-                            borderColor: '#334155',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': ' + new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 }).format(context.parsed.y);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false }, 
-                            ticks: { color: '#3f6f64', maxTicksLimit: 10 },
-                        },
-                        y: {
-                            grid: { color: '#b8d8ce' }, 
-                            ticks: { color: '#3f6f64' },
-                        }
-                    }
-                }
-            });
+            return `
+אתה יועץ רכב וכלכלן אישי. בצע ניתוח מקצועי להשוואה בין ליסינג לרכישת יד 2 על בסיס הנתונים הבאים, ותן המלצה סופית עם נימוקים, סיכונים, וצעדים פרקטיים.
+
+נתוני שימוש:
+- תקופת שימוש: ${years} שנים
+- ק"מ שנתי: ${Math.round(kmYear).toLocaleString('he-IL')}
+
+נתוני משפחה:
+- הרכב המשפחתי: ${family.familyType}
+- ילד 1: ${formatAgeFromMonths(family.child1StartMonths)} עד ${formatAgeFromMonths(family.child1EndMonths)}
+- ילד 2: ${formatAgeFromMonths(family.child2StartMonths)} עד ${formatAgeFromMonths(family.child2EndMonths)}
+- תא מטען מינימלי: ${family.minTrunkLiters} ליטר
+
+אופציה א' - ליסינג: ${getCarModel('lease')}
+- תשלום חודשי (כולל הכל): ${ils.format(getVal('leaseMonthly'))}
+- מקדמה: ${ils.format(getVal('leaseDown'))}
+- עלות נטו: ${document.getElementById('dispLeaseNet').innerText}
+
+אופציה ב' - יד 2: ${getCarModel('buy')}
+- מחיר: ${ils.format(buyPrice)}
+- הון עצמי: ${ils.format(equityAmount)}
+- הלוואה: ${ils.format(loanAmount)} ל-${loanMonths} חודשים בריבית ${getVal('interestRate')}%
+- עלות נטו: ${document.getElementById('dispBuyNet').innerText}
+
+תוצאות:
+- שווי רכב בסוף: ${document.getElementById('dispCarValueEnd').innerText}
+- יתרת הלוואה: ${document.getElementById('dispLoanBalance').innerText}
+- הון נטו: ${document.getElementById('dispNetEquity').innerText}
+
+המלצה בעברית בלבד — כולל התאמה משפחתית, סיכוני אמינות לדגמים הספציפיים, ו-5 נקודות פרקטיות.
+`.trim();
         }
 
-        // --- AI INTEGRATION ---
+        function generateComparisonPrompt(silent = false) {
+            const textarea = document.getElementById('comparisonPromptText');
+            const status = document.getElementById('comparisonPromptStatus');
+            const copyBtn = document.getElementById('copyPromptBtn');
+            textarea.value = buildComparisonPrompt();
+            copyBtn.disabled = textarea.value.trim().length === 0;
+            if (!silent) status.innerText = 'הדוח נוצר. אפשר להעתיק ולהדביק בכל מודל AI.';
+        }
+
+        async function copyComparisonPrompt() {
+            const textarea = document.getElementById('comparisonPromptText');
+            const status = document.getElementById('comparisonPromptStatus');
+            if (!textarea || textarea.value.trim() === '') { status.innerText = 'קודם צור דוח פרומפט.'; return; }
+            try {
+                await navigator.clipboard.writeText(textarea.value);
+                status.innerText = 'הדוח הועתק ללוח.';
+            } catch {
+                textarea.focus(); textarea.select(); document.execCommand('copy');
+                status.innerText = 'הדוח הועתק ללוח.';
+            }
+        }
+
         async function analyzeWithGemini() {
             const btn = document.getElementById('aiBtn');
             const responseDiv = document.getElementById('aiResponse');
             const loader = document.getElementById('aiLoader');
             const textDiv = document.getElementById('aiText');
-
-            if (!apiKey && window.location.hostname !== 'localhost') {
-                // In production without proxy, warn user
-            }
 
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -1435,55 +1129,35 @@
             loader.classList.remove('hidden');
             textDiv.innerHTML = '';
 
-            const prompt = `
-            אתה יועץ רכב מומחה. נתח השוואה עבור המשתמש:
-            - הרכב הנרכש בן ${currentAnalysisData.carStartAge} שנים ביום הקנייה.
-            - שנת רכב ליסינג: ${currentAnalysisData.leaseCarYear}.
-            - שנת רכב בקנייה: ${currentAnalysisData.buyCarYear}.
-            - תקופה: ${currentAnalysisData.years} שנים, נסועה: ${currentAnalysisData.kmYear} ק"מ/שנה.
+            const equityAmount = getVal('equityAmount');
+            const buyPrice = getVal('buyPrice');
+            const loanAmount = Math.max(0, buyPrice - equityAmount);
 
-            נתוני משפחה וצרכים:
-            - משפחה: ${currentAnalysisData.familyType}, ${currentAnalysisData.childrenCount} ילדים.
-            - ילד 1: ${currentAnalysisData.child1Start} בתחילת התקופה, ${currentAnalysisData.child1End} בסופה.
-            - ילד 2: ${currentAnalysisData.child2Start} בתחילת התקופה, ${currentAnalysisData.child2End} בסופה.
-            - תא מטען מינימלי נדרש: ${currentAnalysisData.minTrunkLiters} ליטר.
-            - תדירות הכנסת/הוצאת ילדים מכיסאות בטיחות: ${currentAnalysisData.seatOpsPerDay} פעמים ביום.
-            - חשיבות מרחב פנימי: ${currentAnalysisData.needWideCabin ? 'גבוהה' : 'רגילה'}.
-            - חשיבות גישה נוחה לכיסאות: ${currentAnalysisData.needEasySeatAccess ? 'גבוהה' : 'רגילה'}.
-            
-            אופציה א' (ליסינג): ${currentAnalysisData.leaseModel}. TCO: ${currentAnalysisData.leaseNetTotal}. תזרים חודשי: ${currentAnalysisData.avgLease}.
-            אופציה ב' (יד 2): ${currentAnalysisData.buyModel}. TCO: ${currentAnalysisData.buyNetCost}. תזרים חודשי: ${currentAnalysisData.avgBuy}.
-            
-            הערכת סיכון שהוזנה ליד 2: ${currentAnalysisData.riskYearly}.
-            
-            תן המלצה חדה וקצרה בעברית. התייחס ספציפית לדגמי הרכב שהוזנו (אמינות ידועה, בעיות גיר/מנוע אם יש לדגמים אלו כמו ה-DSG, או מנועי טורבו), התאמה למשפחה עם ילדים קטנים (נוחות מושבים אחוריים, שימוש יומיומי בכיסאות בטיחות ותא מטען מול דרישת נפח), והאם זה מצדיק ליסינג או קנייה. ענה בעברית בלבד.
-            `;
+            const prompt = `אתה יועץ רכב מומחה. נתח השוואה עבור המשתמש:
+- הרכב הנרכש בן ${currentAnalysisData.carStartAge} שנים ביום הקנייה.
+- תקופה: ${currentAnalysisData.years} שנים, נסועה: ${currentAnalysisData.kmYear} ק"מ/שנה.
+- משפחה: ${currentAnalysisData.familyType}, ${currentAnalysisData.childrenCount} ילדים.
+- ילד 1: ${currentAnalysisData.child1Start} בתחילה, ${currentAnalysisData.child1End} בסוף.
+- ילד 2: ${currentAnalysisData.child2Start} בתחילה, ${currentAnalysisData.child2End} בסוף.
+- תא מטען מינימלי: ${currentAnalysisData.minTrunkLiters} ליטר.
+
+אופציה א' (ליסינג): ${currentAnalysisData.leaseModel}. TCO: ${currentAnalysisData.leaseNetTotal}. תזרים חודשי (ללא מקדמה): ${currentAnalysisData.avgLease}.
+אופציה ב' (יד 2): ${currentAnalysisData.buyModel}. הון עצמי: ${ils.format(equityAmount)}, הלוואה: ${ils.format(loanAmount)}. TCO: ${currentAnalysisData.buyNetCost}. תזרים חודשי (ללא הון עצמי): ${currentAnalysisData.avgBuy}.
+
+תן המלצה חדה בעברית — התייחס לדגמים הספציפיים, לאמינות, לגישה לכיסאות בטיחות, ולתא המטען. ענה בעברית בלבד.`;
 
             try {
-                const apiUrl = apiKey ? 
-                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}` : 
-                    '/api/analyze';
-
-                const response = await fetch(apiUrl, {
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(apiKey ? { contents: [{ parts: [{ text: prompt }] }] } : { prompt })
+                    body: JSON.stringify({ prompt })
                 });
-
                 const data = await response.json();
-                
-                let rawText = "";
-                if (data.candidates) rawText = data.candidates[0].content.parts[0].text;
-                else if (data.text) rawText = data.text; 
-                
-                if (rawText) {
-                    textDiv.innerHTML = marked.parse(rawText);
-                } else {
-                    textDiv.innerText = "לא התקבל ניתוח. בדוק את חיבור הרשת או ה-API Key.";
-                }
+                let rawText = data.candidates ? data.candidates[0].content.parts[0].text : (data.text || '');
+                if (rawText) textDiv.innerHTML = marked.parse(rawText);
+                else textDiv.innerText = 'לא התקבל ניתוח. בדוק חיבור רשת.';
             } catch (error) {
-                console.error("Gemini Error:", error);
-                textDiv.innerText = "שגיאת תקשורת עם השרת.";
+                textDiv.innerText = 'שגיאת תקשורת עם השרת.';
             } finally {
                 loader.classList.add('hidden');
                 btn.disabled = false;
