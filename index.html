@@ -37,6 +37,7 @@
             --secondary-bg: #ffffff;
             --secondary-text: #1f3a8a;
             --secondary-border: #1f3a8a;
+            --btn-border-subtle: rgba(15, 23, 42, 0.22);
         }
         .dark {
             --bg-color: #0b1220;
@@ -49,6 +50,7 @@
             --secondary-bg: #111827;
             --secondary-text: #93c5fd;
             --secondary-border: #60a5fa;
+            --btn-border-subtle: rgba(148, 163, 184, 0.25);
         }
         body { 
             font-family: 'Assistant', sans-serif;
@@ -407,6 +409,8 @@
 
         .results-zone {
             background: rgba(16, 185, 129, 0.09);
+            align-self: flex-start;
+            height: fit-content;
         }
 
         /* Radius hierarchy: outer wrapper > cards > nested cards */
@@ -428,24 +432,59 @@
             background: rgba(52, 211, 153, 0.14);
         }
 
+        #themeBtn {
+            width: 2.7rem;
+            height: 2.7rem;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        #themeBtn i {
+            font-size: 1rem;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        #themeBtn .fa-moon {
+            color: #60a5fa;
+        }
+
+        #themeBtn .fa-sun {
+            color: #fbbf24;
+        }
+
+        .header-actions .fa-print {
+            color: #10b981;
+            transition: color 0.2s ease;
+        }
+
+        .header-actions .btn-secondary:hover i {
+            color: #ffffff;
+        }
+
+        @keyframes iconPopRotate {
+            0% {
+                transform: scale(0.65) rotate(-20deg);
+                opacity: 0.25;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        #themeBtn i.theme-icon-anim {
+            animation: iconPopRotate 0.28s ease;
+        }
+
+        .btn-primary,
+        .btn-secondary,
+        #copyBtn,
         .header-actions .btn-secondary {
-            border: 1px solid var(--secondary-border) !important;
-        }
-
-        .btn-primary {
-            border: 1px solid var(--primary-hover) !important;
-        }
-
-        .btn-secondary {
-            border: 1px solid var(--secondary-border) !important;
-        }
-
-        .flow-switch-btn {
-            border: none !important;
-        }
-
-        #copyBtn {
-            border: 1px solid var(--secondary-border) !important;
+            border: 0.5px solid var(--btn-border-subtle) !important;
         }
 
     </style>
@@ -477,7 +516,7 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         
         <!-- Settings Panel -->
         <div class="lg:col-span-1 space-y-6 input-zone">
@@ -759,8 +798,8 @@
 
             <!-- AI Analysis -->
             <div class="card p-6 no-print">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <div class="flex flex-col items-center justify-center gap-3 mb-4 text-center">
+                    <h3 class="text-xl font-bold text-gray-800 flex items-center justify-center gap-2">
                         <i class="fas fa-robot text-purple-600"></i>
                         ניתוח AI מתקדם
                     </h3>
@@ -774,7 +813,7 @@
                     <div id="aiLoader" class="flex items-center justify-center py-8">
                         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
                     </div>
-                    <div id="aiText" class="prose max-w-none"></div>
+                    <div id="aiText" class="prose max-w-none text-center mx-auto"></div>
                 </div>
             </div>
 
@@ -822,6 +861,12 @@
                 btn.innerHTML = isDark
                     ? '<i class="fas fa-sun"></i>'
                     : '<i class="fas fa-moon"></i>';
+
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.classList.add('theme-icon-anim');
+                    setTimeout(() => icon.classList.remove('theme-icon-anim'), 280);
+                }
             }
         }
 
